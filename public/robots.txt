@@ -1,0 +1,15 @@
+# HITROO - Intelligence, Unbound
+# AI, Robotics & Automation
+
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes
+Disallow: /admin
+Disallow: /api/
+
+# Sitemaps
+Sitemap: https://hitroo.com/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

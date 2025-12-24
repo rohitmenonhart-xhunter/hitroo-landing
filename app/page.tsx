@@ -28,8 +28,29 @@ export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(false);
+  const [introChecked, setIntroChecked] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Check if intro should be shown (only on first visit per session)
+  useEffect(() => {
+    const hasSeenIntro = sessionStorage.getItem('hitroo-intro-seen');
+    if (!hasSeenIntro) {
+      setShowIntro(true);
+    }
+    setIntroChecked(true);
+  }, []);
+
+  // Mark intro as seen when it ends
+  const handleIntroEnd = () => {
+    sessionStorage.setItem('hitroo-intro-seen', 'true');
+    setShowIntro(false);
+  };
+
+  const handleSkipIntro = () => {
+    sessionStorage.setItem('hitroo-intro-seen', 'true');
+    setShowIntro(false);
+  };
 
   // AI Chat state
   const [userMessage, setUserMessage] = useState('');
@@ -383,7 +404,7 @@ export default function Home() {
                 autoPlay
                 muted
                 playsInline
-                onEnded={() => setShowIntro(false)}
+                onEnded={handleIntroEnd}
                 className="w-[300px] h-auto object-contain"
               >
                 <source src="/intro/Metal_Shine_Logo_Animation (online-video-cutter.com) (3).mp4" type="video/mp4" />
@@ -401,7 +422,7 @@ export default function Home() {
 
           {/* Skip button */}
           <button
-            onClick={() => setShowIntro(false)}
+            onClick={handleSkipIntro}
             className="absolute bottom-8 right-8 text-[10px] uppercase tracking-widest text-white/30 hover:text-white/60 transition-colors"
           >
             Skip

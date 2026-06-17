@@ -40,15 +40,20 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon/favicon.ico' },
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
       { url: '/favicon/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
-      { url: '/favicon/favicon.svg', type: 'image/svg+xml' },
     ],
     apple: [
-      { url: '/favicon/apple-touch-icon.png' },
+      { url: '/favicon/apple-icon-180x180.png', sizes: '180x180', type: 'image/png' },
     ],
   },
-  manifest: '/favicon/site.webmanifest',
+  manifest: '/favicon/manifest.json',
+  other: {
+    'msapplication-config': '/favicon/browserconfig.xml',
+    'msapplication-TileColor': '#ffffff',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -97,7 +102,7 @@ const jsonLd = {
   ],
   contactPoint: {
     '@type': 'ContactPoint',
-    email: 'Hello@hitroo.com',
+    email: 'info@hitroo.com',
     telephone: '+91-7550000805',
     contactType: 'customer service',
   },
@@ -119,46 +124,6 @@ const jsonLd = {
   ],
 };
 
-const productsJsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'ItemList',
-  itemListElement: [
-    {
-      '@type': 'SoftwareApplication',
-      position: 1,
-      name: 'Capsona',
-      description: 'Revolutionary voice-to-text AI assistant that adapts to your typing style',
-      applicationCategory: 'Productivity',
-      operatingSystem: 'All',
-      offers: {
-        '@type': 'Offer',
-        availability: 'https://schema.org/PreOrder',
-      },
-    },
-    {
-      '@type': 'SoftwareApplication',
-      position: 2,
-      name: 'Attyn',
-      description: 'AI-powered task management and productivity platform',
-      applicationCategory: 'Productivity',
-    },
-    {
-      '@type': 'SoftwareApplication',
-      position: 3,
-      name: 'Belecure',
-      description: 'AI-powered lighting design and visualization tool',
-      applicationCategory: 'Design',
-    },
-    {
-      '@type': 'SoftwareApplication',
-      position: 4,
-      name: 'Mockello',
-      description: 'Student-industry hiring and training platform',
-      applicationCategory: 'Education',
-    },
-  ],
-};
-
 export default function RootLayout({
   children,
 }: {
@@ -171,14 +136,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(productsJsonLd) }}
-        />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body style={{ fontFamily: 'Comfortaa, sans-serif' }}>{children}</body>
+      <body style={{ fontFamily: "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>{children}</body>
     </html>
   );
 }

@@ -46,13 +46,14 @@ export async function POST(request: NextRequest) {
         }
 
         const mailOptions = {
-            from: process.env.GMAIL_USER,
-            to: process.env.LEAD_EMAIL_RECIPIENT,
+            from: `HITROO Careers <${process.env.GMAIL_USER}>`,
+            to: process.env.LEAD_EMAIL_RECIPIENT || 'info@hitroo.com',
+            replyTo: email || undefined,
             subject: `New Job Application: ${positionTitle} - ${name}`,
             attachments,
             html: `
         <div style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto;">
-          <h2 style="color: #FF79C6;">New Job Application</h2>
+          <h2 style="color: #4285F4;">New Job Application</h2>
           <hr style="border: 1px solid #eee;" />
           
           <table style="width: 100%; border-collapse: collapse;">

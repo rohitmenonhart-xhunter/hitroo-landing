@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
+import { esc, acknowledgmentEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
     try {
@@ -140,6 +141,26 @@ Submitted: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
         };
 
         await transporter.sendMail(mailOptions);
+
+        // Send the applicant a branded acknowledgment (best-effort)
+        if (email) {
+            try {
+                await transporter.sendMail({
+                    from: `HITROO Careers <${process.env.GMAIL_USER}>`,
+                    to: email,
+                    subject: 'We\'ve received your application — HITROO',
+                    html: acknowledgmentEmail({
+                        heading: `Thanks${name ? `, ${esc(name)}` : ''} — your application<br/>is <span style="color:#34A853;">in</span>.`,
+                        intro: `We&rsquo;ve received your application${positionTitle ? ` for <strong style="color:#202124;">${esc(positionTitle)}</strong>` : ''}. Our team reviews every application within 7 days and we&rsquo;ll be in touch.`,
+                        recapLabel: 'Applied for',
+                        recapBody: esc(positionTitle || 'HITROO'),
+                    }),
+                    text: `Thanks${name ? `, ${name}` : ''} — we've received your application${positionTitle ? ` for ${positionTitle}` : ''}. Our team reviews every application within 7 days and we'll be in touch.\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nHITROO — Intelligence, Unbound · Chennai, Tamil Nadu, India`,
+                });
+            } catch (ackErr) {
+                console.error('Careers acknowledgment email failed (non-fatal):', ackErr);
+            }
+        }
 
         return NextResponse.json({ success: true });
     } catch (error) {

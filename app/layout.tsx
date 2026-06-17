@@ -2,24 +2,24 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 const SITE_URL = 'https://hitroo.com';
+const DESCRIPTION =
+  'HITROO is a Chennai-based technology studio building custom software, mobile & desktop apps, AI models, automation, and computer-vision systems — with ongoing support built in.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  themeColor: '#ffffff',
   title: {
-    default: 'HITROO - Intelligence, Unbound | AI, Robotics & Automation',
+    default: 'HITROO — Software, Apps & AI Studio in Chennai',
     template: '%s | HITROO',
   },
-  description: 'HITROO builds intelligent AI systems, robotics, and automation solutions. Home of Capsona - the revolutionary voice-to-text AI assistant. Industrial automation, machine learning, drone technology, and cutting-edge software development.',
+  description: DESCRIPTION,
   keywords: [
-    'HITROO', 'Capsona', 'AI assistant', 'voice to text', 'artificial intelligence',
-    'robotics', 'automation', 'machine learning', 'ML', 'deep learning',
-    'industrial automation', 'drone technology', 'UAV', 'UGV',
-    'AI startup', 'tech company India', 'intelligent systems',
-    'Attyn', 'Belecure', 'Mockello', 'AI marketing',
-    'embedded systems', 'STM32', 'autonomous robots',
-    'AI development', 'software development', 'app development',
-    'web development', 'DevOps', 'VLA robotics', 'vLLM',
-    'model training', 'AI model', 'cool AI', 'best AI assistant',
+    'HITROO', 'software development', 'custom software development', 'app development',
+    'mobile app development', 'desktop app development', 'AI development', 'AI model development',
+    'custom AI models', 'fine-tuned VLMs', 'AI automation', 'business automation',
+    'computer vision', 'machine vision', 'automated quality inspection', 'defect detection',
+    'software audit', 'AI modernization', 'AI-ready software', 'managed services',
+    'software company Chennai', 'software studio India', 'intelligent systems',
   ],
   authors: [{ name: 'HITROO', url: SITE_URL }],
   creator: 'HITROO',
@@ -43,11 +43,14 @@ export const metadata: Metadata = {
       { url: '/favicon.ico', sizes: 'any' },
       { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon/android-icon-48x48.png', sizes: '48x48', type: 'image/png' },
       { url: '/favicon/favicon-96x96.png', sizes: '96x96', type: 'image/png' },
+      { url: '/favicon/android-icon-192x192.png', sizes: '192x192', type: 'image/png' },
     ],
     apple: [
       { url: '/favicon/apple-icon-180x180.png', sizes: '180x180', type: 'image/png' },
     ],
+    shortcut: ['/favicon.ico'],
   },
   manifest: '/favicon/manifest.json',
   other: {
@@ -59,69 +62,74 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: SITE_URL,
     siteName: 'HITROO',
-    title: 'HITROO - Intelligence, Unbound | AI, Robotics & Automation',
-    description: 'Building the future of AI and robotics. Home of Capsona - revolutionary voice-to-text AI. Industrial automation, machine learning, drones, and intelligent software systems.',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'HITROO - Intelligence, Unbound',
-      },
-    ],
+    title: 'HITROO — Software, Apps & AI Studio in Chennai',
+    description: DESCRIPTION,
+    images: [{ url: '/og-image.png', width: 1200, height: 675, alt: 'HITROO — Intelligence, Unbound' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'HITROO - Intelligence, Unbound | AI & Robotics',
-    description: 'Building the future of AI. Home of Capsona - revolutionary voice-to-text AI assistant. Industrial automation, ML, robotics.',
+    title: 'HITROO — Software, Apps & AI Studio',
+    description: DESCRIPTION,
     images: ['/og-image.png'],
     creator: '@hitroo',
     site: '@hitroo',
   },
-  verification: {
-    google: 'your-google-verification-code',
-  },
   alternates: {
-    canonical: SITE_URL,
+    canonical: '/',
   },
   category: 'technology',
 };
 
-// JSON-LD Structured Data
-const jsonLd = {
+// JSON-LD — Organization + WebSite (helps Google rich results & AI/GEO understanding)
+const orgLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': `${SITE_URL}/#organization`,
   name: 'HITROO',
   url: SITE_URL,
-  logo: `${SITE_URL}/favicon/favicon-96x96.png`,
-  description: 'HITROO builds intelligent AI systems, robotics, and automation solutions.',
-  sameAs: [
-    'https://twitter.com/hitroo',
-    'https://linkedin.com/company/hitroo',
-    'https://github.com/hitroo',
-  ],
+  logo: `${SITE_URL}/new_logo/logo_whitebg.png`,
+  image: `${SITE_URL}/og-image.png`,
+  description: DESCRIPTION,
+  slogan: 'Intelligence, Unbound',
+  email: 'info@hitroo.com',
+  telephone: '+91-7550000805',
+  foundingDate: '2024',
+  founders: [{ '@type': 'Person', name: 'Rohit' }],
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Chennai',
+    addressRegion: 'Tamil Nadu',
+    addressCountry: 'IN',
+  },
   contactPoint: {
     '@type': 'ContactPoint',
     email: 'info@hitroo.com',
     telephone: '+91-7550000805',
     contactType: 'customer service',
+    areaServed: 'Worldwide',
+    availableLanguage: ['English'],
   },
-  foundingDate: '2024',
-  founders: [
-    {
-      '@type': 'Person',
-      name: 'Rohit',
-    },
+  sameAs: [
+    'https://twitter.com/hitroo',
+    'https://linkedin.com/company/hitroo',
+    'https://github.com/hitroo',
   ],
-  slogan: 'Intelligence, Unbound',
   knowsAbout: [
-    'Artificial Intelligence',
-    'Machine Learning',
-    'Robotics',
-    'Industrial Automation',
-    'Voice Recognition',
-    'Natural Language Processing',
+    'Software Development', 'Mobile App Development', 'Desktop App Development',
+    'Artificial Intelligence', 'AI Model Training', 'AI Automation',
+    'Computer Vision', 'Automated Quality Inspection', 'Software Modernization',
   ],
+};
+
+const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
+  url: SITE_URL,
+  name: 'HITROO',
+  description: DESCRIPTION,
+  publisher: { '@id': `${SITE_URL}/#organization` },
+  inLanguage: 'en',
 };
 
 export default function RootLayout({
@@ -132,10 +140,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }} />
       </head>
       <body style={{ fontFamily: "'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>{children}</body>
     </html>

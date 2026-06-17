@@ -1,12 +1,15 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: 'Careers at HITROO - Join Our AI & Robotics Team',
-    description: 'Join HITROO - careers in AI, machine learning, robotics, full stack development, hardware engineering. 3-month internship program with world-class mentorship and hardware access.',
-    keywords: ['HITROO careers', 'AI jobs', 'robotics jobs', 'ML engineer jobs', 'internship AI', 'tech internship India', 'full stack developer job', 'embedded systems job'],
+    title: 'Careers — Join HITROO',
+    description:
+        'Build the future of software and AI at HITROO. Roles in full-stack, frontend, backend, hardware (mechanical & electronics), and ML/AI — with a 3-month mentorship program and a path to full-time.',
+    keywords: ['HITROO careers', 'software jobs Chennai', 'AI jobs', 'ML engineer jobs', 'full stack developer job', 'frontend job', 'backend job', 'hardware engineer job', 'tech internship India'],
+    alternates: { canonical: '/careers' },
     openGraph: {
-        title: 'Careers at HITROO - Join Our AI & Robotics Team',
-        description: 'Join HITROO for careers in AI, robotics, ML, and software development. Internship program available.',
+        title: 'Careers — Join HITROO',
+        description: 'Roles in software, AI/ML, and hardware engineering. A 3-month mentorship program with a path to full-time.',
+        url: '/careers',
     },
 };
 

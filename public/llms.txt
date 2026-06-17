@@ -1,0 +1,30 @@
+# HITROO
+
+> HITROO is a Chennai-based technology studio that builds custom software, mobile & desktop apps, AI models, automation, and computer-vision systems for companies, businesses, and individuals — and stays with them after launch via the HITROO support app (24h first response, 48h typical resolution). Tagline: "Intelligence, Unbound."
+
+## Company
+- Based in Chennai, Tamil Nadu, India.
+- Contact: info@hitroo.com · +91 7550000805
+- We also build and ship our own in-house products and AI models, and actively research hard problems in software and AI.
+
+## Services
+- [Custom Software Development](https://hitroo.com/services/custom-software): Bespoke platforms, internal tools, APIs, dashboards, and data systems you own.
+- [Mobile App Development](https://hitroo.com/services/mobile-apps): Native and cross-platform iOS and Android apps.
+- [Desktop App Development](https://hitroo.com/services/desktop-apps): Native software for Windows, macOS, and Linux.
+- [AI Model Development & Training](https://hitroo.com/services/ai-models): Custom and fine-tuned models on your data, plus ready-to-use in-house models.
+- [AI Automation](https://hitroo.com/services/ai-automation): Autonomous agents and workflows that remove repetitive work.
+- [Vision Systems](https://hitroo.com/services/vision-systems): Computer vision and automated quality inspection (conveyor/production-line defect detection) powered by custom CV models and fine-tuned in-house VLMs.
+- [Audit & AI Modernization](https://hitroo.com/services/audit-modernization): Audit existing software, speed it up, and make legacy systems AI-ready.
+- [Managed & Custom Services](https://hitroo.com/services/managed-services): Custom-built and managed services with SLAs.
+
+## Key pages
+- [Home](https://hitroo.com/)
+- [Services](https://hitroo.com/services)
+- [Support — the HITROO app](https://hitroo.com/support)
+- [Research](https://hitroo.com/research)
+- [About](https://hitroo.com/about)
+- [Careers](https://hitroo.com/careers)
+- [Contact](https://hitroo.com/contact)
+
+## How we work
+Discover → Design → Build → Test & Secure (incl. security-threat testing) → Launch → ongoing Support via the HITROO app.

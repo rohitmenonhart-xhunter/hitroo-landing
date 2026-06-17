@@ -45,6 +45,16 @@ Custom Software Development · Mobile App Development · Desktop App Development
 - `/public/hero/tile-*.png`, `toggle/plane/orbs.png` — earlier generated chips, currently **unused** (some also copied to `/public/3d_assets/`; safe to delete).
 - **Favicons:** a full favicon package lives in `/public/favicon/` (16/32/96, apple-icon-180, android-icon-*, ms-icon-*, `manifest.json`, `browserconfig.xml`) plus a real `/public/favicon.ico` at root for the default browser request. Wired site-wide via `metadata.icons` + `manifest` in [app/layout.tsx](app/layout.tsx). (The package arrived misnamed as a `favicon.ico/` **folder** with root-relative paths — it was renamed to `favicon/` and its manifest/browserconfig paths re-prefixed to `/favicon/`.)
 
+## SEO / GEO
+- **Root metadata** ([app/layout.tsx](app/layout.tsx)): repositioned title/description/keywords (software · apps · AI · automation · vision · Chennai), OG + Twitter cards, `themeColor`, `alternates.canonical`. Removed the bogus `verification.google` placeholder — add the real Search Console code there when you have it.
+- **Structured data:** Organization + WebSite JSON-LD (with Chennai `PostalAddress`, contactPoint, sameAs, knowsAbout) for rich results + AI/GEO grounding.
+- **Per-page metadata:** each section `layout.tsx` sets unique title/description/canonical/OG. Dynamic services use [app/services/[slug]/layout.tsx](app/services/[slug]/layout.tsx) `generateMetadata` (per-service title/desc/canonical/OG) + `generateStaticParams` (prerendered).
+- **OG image:** `/public/og-image.png` (branded glass abstract, 1200×675).
+- **Sitemap** ([app/sitemap.ts](app/sitemap.ts)): static pages + all services + articles/news (read from `data/content.json`).
+- **robots.txt:** allows all + explicitly welcomes AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, …); points to sitemap; disallows /admin + /api.
+- **GEO:** `/public/llms.txt` (+ `/llm.txt` alias) — markdown summary of the company, services, and key pages for answer engines.
+- **Favicon in Google:** icons include 16/32/48/96/192 + apple-180 + `/favicon.ico`, all square and stable. Google caches favicons and recrawls on its own schedule — to speed it up, verify the site in Google Search Console and request indexing of the homepage; it can take days/weeks to appear.
+
 ## Open / next
 - `/articles/[id]` & `/news/[id]` are clean readers but could get the full editorial polish + a header image.
 - `/admin` still uses the old card UI (internal tool — low priority).

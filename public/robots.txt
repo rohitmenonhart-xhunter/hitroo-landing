@@ -1,15 +1,28 @@
-# HITROO - Intelligence, Unbound
-# AI, Robotics & Automation
+# HITROO — Intelligence, Unbound
+# Software, apps, AI, automation & computer vision — Chennai, India
 
 User-agent: *
 Allow: /
-
-# Disallow admin and API routes
 Disallow: /admin
 Disallow: /api/
 
-# Sitemaps
-Sitemap: https://hitroo.com/sitemap.xml
+# AI / answer engines are welcome (see /llms.txt)
+User-agent: GPTBot
+Allow: /
 
-# Crawl delay
-Crawl-delay: 1
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://hitroo.com/sitemap.xml

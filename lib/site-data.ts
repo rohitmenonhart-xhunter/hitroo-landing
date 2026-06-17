@@ -24,6 +24,7 @@ import {
   Search,
   ShieldCheck,
   LifeBuoy,
+  ScanLine,
 } from 'lucide-react';
 
 export const GOOGLE_COLORS = {
@@ -248,6 +249,41 @@ export const services: Service[] = [
     ],
     outcomes: ['Hours of manual work removed', 'Fewer errors', 'Scales without new headcount'],
     stack: ['LangChain', 'OpenAI', 'n8n', 'Temporal', 'Vector DBs'],
+  },
+  {
+    slug: 'vision-systems',
+    title: 'Vision Systems',
+    short: 'Computer vision and automated quality inspection for the real world.',
+    tagline: 'Quality, automated by sight',
+    icon: Eye,
+    color: GOOGLE_COLORS.blue,
+    image: '/img/vision.png',
+    solutionImage: '/img/sol-vision.png',
+    overview:
+      'We build computer-vision systems that see and judge the physical world — automated quality inspection, defect detection, and machine-vision pipelines powered by our custom and fine-tuned in-house models.',
+    problem:
+      'Manual quality checks are slow, inconsistent, and miss defects — and they can’t keep up with a moving production line. Off-the-shelf vision tools rarely understand your specific parts, defects, or environment.',
+    approach: [
+      { title: 'Capture & label', desc: 'We set up cameras and build a labeled dataset of your parts and defects.' },
+      { title: 'Train custom models', desc: 'Custom CV models and fine-tuned VLMs, in-house, tuned to your line.' },
+      { title: 'Deploy on the line', desc: 'Real-time inspection on the conveyor, with alerts and dashboards.' },
+    ],
+    features: [
+      { icon: Eye, title: 'Defect detection', description: 'Catch flaws people miss, every time.' },
+      { icon: ScanLine, title: 'Quality inspection', description: 'Automated pass/fail on the line.' },
+      { icon: BrainCircuit, title: 'Custom & VLM models', description: 'Fine-tuned in-house for your parts.' },
+      { icon: Gauge, title: 'Real-time', description: 'Inspect at full production speed.' },
+    ],
+    capabilities: [
+      'Automated quality inspection',
+      'Defect and anomaly detection',
+      'Conveyor-belt and production-line vision',
+      'Object detection, classification, and tracking',
+      'Custom CV models and fine-tuned VLMs (in-house)',
+      'Real-time alerts and dashboards',
+    ],
+    outcomes: ['Fewer defects shipped', 'Consistent, 24/7 inspection', 'Inspection that scales with the line'],
+    stack: ['PyTorch', 'OpenCV', 'YOLO', 'TensorRT', 'VLMs'],
   },
   {
     slug: 'audit-modernization',

@@ -2,12 +2,14 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
     title: 'About HITROO - Our Mission & Vision',
-    description: 'Learn about HITROO - an AI and robotics company building intelligent systems. Our mission, vision, capabilities, and the team behind Capsona, Attyn, Belecure, and Mockello.',
-    keywords: ['HITROO about', 'AI company', 'robotics startup', 'AI mission', 'tech company India', 'intelligent systems'],
+    description: 'Learn about HITROO — a Chennai-based technology studio building intelligent software, apps, and AI. Our mission, vision, capabilities, and team.',
+    keywords: ['HITROO about', 'software studio', 'AI company', 'Chennai technology', 'intelligent systems'],
     openGraph: {
         title: 'About HITROO - Our Mission & Vision',
-        description: 'Learn about HITROO - an AI and robotics company building intelligent systems.',
+        description: 'Learn about HITROO — a Chennai-based technology studio building intelligent software, apps, and AI.',
     },
 };
 
-export { default } from './page';
+export default function AboutLayout({ children }: { children: React.ReactNode }) {
+    return children;
+}

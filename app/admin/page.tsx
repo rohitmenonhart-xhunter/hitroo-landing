@@ -21,6 +21,8 @@ interface NewsItem {
     highlight: boolean;
 }
 
+const FIELD = 'w-full px-3 py-2.5 bg-[#f8f9fa] border border-[#e8eaed] rounded-lg text-sm text-[#202124] placeholder:text-[#80868b] focus:outline-none focus:border-[#4285F4] focus:bg-white focus:ring-4 focus:ring-[#4285F4]/10 transition-all';
+
 export default function AdminPage() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [password, setPassword] = useState('');
@@ -173,41 +175,45 @@ export default function AdminPage() {
     // Login screen
     if (!isAuthenticated) {
         return (
-            <div className="min-h-screen bg-black flex items-center justify-center p-6">
-                <div className="w-full max-w-sm">
+            <div className="min-h-screen bg-white flex items-center justify-center p-6 relative overflow-hidden">
+                <div className="absolute inset-0 z-0 pointer-events-none">
+                    <div className="absolute top-[20%] left-[20%] w-[22rem] h-[22rem] rounded-full bg-[#4285F4]/10 blur-[110px] animate-float-slow" />
+                    <div className="absolute bottom-[20%] right-[20%] w-[20rem] h-[20rem] rounded-full bg-[#34A853]/10 blur-[110px] animate-float-slow" style={{ animationDelay: '-6s' }} />
+                </div>
+                <div className="relative z-10 w-full max-w-sm">
                     <div className="text-center mb-8">
-                        <Link href="/" className="inline-flex items-center gap-2 mb-6">
-                            <Image src="/favicon/favicon-96x96.png" alt="HITROO" width={32} height={32} className="rounded-sm" />
-                            <span className="text-lg font-medium text-white">HITROO</span>
+                        <Link href="/" className="inline-flex items-center gap-2.5 mb-6">
+                            <Image src="/favicon/favicon-96x96.png" alt="HITROO" width={32} height={32} className="rounded-lg" />
+                            <span className="text-lg font-bold text-[#202124]">HITROO</span>
                         </Link>
-                        <h1 className="text-xl font-medium text-white">Admin Access</h1>
-                        <p className="text-xs text-white/40 mt-2">Enter password to continue</p>
+                        <h1 className="text-2xl font-bold text-[#202124]">Admin Access</h1>
+                        <p className="text-sm text-[#5f6368] mt-2">Enter password to continue</p>
                     </div>
 
-                    <form onSubmit={handleLogin} className="space-y-4">
+                    <form onSubmit={handleLogin} className="space-y-4 bg-white p-7 rounded-3xl card-soft">
                         <div className="relative">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/30" />
+                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#80868b]" />
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Password"
-                                className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50"
+                                className="w-full pl-12 pr-4 py-3 bg-[#f8f9fa] border border-[#e8eaed] rounded-xl text-sm text-[#202124] placeholder:text-[#80868b] focus:outline-none focus:border-[#4285F4] focus:bg-white focus:ring-4 focus:ring-[#4285F4]/10 transition-all"
                             />
                         </div>
                         {authError && (
-                            <p className="text-xs text-red-400 text-center">{authError}</p>
+                            <p className="text-sm text-[#EA4335] text-center">{authError}</p>
                         )}
                         <button
                             type="submit"
-                            className="w-full py-3 bg-[#FF79C6] text-black text-xs uppercase tracking-widest font-medium rounded-lg hover:bg-[#FF79C6]/90 transition-colors"
+                            className="btn-primary w-full py-3 text-sm font-medium rounded-xl"
                         >
                             Login
                         </button>
                     </form>
 
-                    <Link href="/" className="flex items-center justify-center gap-2 mt-6 text-xs text-white/30 hover:text-white/50 transition-colors">
-                        <ArrowLeft className="h-3 w-3" /> Back to Home
+                    <Link href="/" className="flex items-center justify-center gap-2 mt-6 text-sm text-[#80868b] hover:text-[#4285F4] transition-colors">
+                        <ArrowLeft className="h-4 w-4" /> Back to Home
                     </Link>
                 </div>
             </div>
@@ -216,22 +222,22 @@ export default function AdminPage() {
 
     // Admin dashboard
     return (
-        <div className="min-h-screen bg-black p-6">
+        <div className="min-h-screen bg-[#f8f9fa] p-6">
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center justify-between mb-8 pt-4">
                     <div className="flex items-center gap-4">
                         <Link href="/">
-                            <Image src="/favicon/favicon-96x96.png" alt="HITROO" width={28} height={28} className="rounded-sm" />
+                            <Image src="/favicon/favicon-96x96.png" alt="HITROO" width={32} height={32} className="rounded-lg" />
                         </Link>
                         <div>
-                            <h1 className="text-lg font-medium text-white">Content Manager</h1>
-                            <p className="text-[10px] text-white/40 uppercase tracking-widest">Admin Dashboard</p>
+                            <h1 className="text-xl font-bold text-[#202124]">Content Manager</h1>
+                            <p className="text-xs text-[#80868b] uppercase tracking-widest">Admin Dashboard</p>
                         </div>
                     </div>
                     <button
                         onClick={() => setIsAuthenticated(false)}
-                        className="text-[10px] text-white/40 hover:text-white transition-colors"
+                        className="text-sm font-medium text-[#5f6368] hover:text-[#EA4335] transition-colors"
                     >
                         Logout
                     </button>
@@ -239,59 +245,37 @@ export default function AdminPage() {
 
                 {loading ? (
                     <div className="flex items-center justify-center py-20">
-                        <Loader2 className="h-6 w-6 text-[#FF79C6] animate-spin" />
+                        <Loader2 className="h-6 w-6 text-[#4285F4] animate-spin" />
                     </div>
                 ) : (
                     <div className="grid md:grid-cols-2 gap-8">
                         {/* Articles Section */}
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 mb-4">
-                                <FileText className="h-4 w-4 text-[#FF79C6]" />
-                                <h2 className="text-sm font-medium text-white">Articles</h2>
+                                <FileText className="h-5 w-5 text-[#4285F4]" />
+                                <h2 className="text-base font-semibold text-[#202124]">Articles</h2>
                             </div>
 
                             {/* Add Article Form */}
-                            <form onSubmit={addArticle} className="p-4 border border-white/10 rounded-lg space-y-3">
-                                <input
-                                    type="text"
-                                    value={articleTitle}
-                                    onChange={(e) => setArticleTitle(e.target.value)}
-                                    placeholder="Article title"
-                                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50"
-                                />
-                                <textarea
-                                    value={articleBody}
-                                    onChange={(e) => setArticleBody(e.target.value)}
-                                    placeholder="Article content (supports multiple paragraphs)"
-                                    rows={4}
-                                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50 resize-none"
-                                />
+                            <form onSubmit={addArticle} className="p-5 bg-white rounded-2xl card-soft space-y-3">
+                                <input type="text" value={articleTitle} onChange={(e) => setArticleTitle(e.target.value)} placeholder="Article title" className={FIELD} />
+                                <textarea value={articleBody} onChange={(e) => setArticleBody(e.target.value)} placeholder="Article content (supports multiple paragraphs)" rows={4} className={`${FIELD} resize-none`} />
                                 <div className="flex gap-2">
-                                    <select
-                                        value={articleCategory}
-                                        onChange={(e) => setArticleCategory(e.target.value)}
-                                        className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white focus:outline-none focus:border-[#FF79C6]/50"
-                                    >
+                                    <select value={articleCategory} onChange={(e) => setArticleCategory(e.target.value)} className={FIELD}>
                                         <option value="Technology">Technology</option>
                                         <option value="Engineering">Engineering</option>
                                         <option value="Insights">Insights</option>
                                         <option value="Product">Product</option>
                                         <option value="Company">Company</option>
                                     </select>
-                                    <input
-                                        type="text"
-                                        value={articleDate}
-                                        onChange={(e) => setArticleDate(e.target.value)}
-                                        placeholder="Dec 2024"
-                                        className="w-24 px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50"
-                                    />
+                                    <input type="text" value={articleDate} onChange={(e) => setArticleDate(e.target.value)} placeholder="Dec 2024" className={`${FIELD} w-28`} />
                                 </div>
                                 <button
                                     type="submit"
                                     disabled={!articleTitle.trim() || addingArticle}
-                                    className="w-full py-2 bg-[#FF79C6] text-black text-xs uppercase tracking-widest rounded hover:bg-[#FF79C6]/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                                    className="btn-primary w-full py-2.5 text-sm font-medium rounded-lg disabled:opacity-40 disabled:shadow-none flex items-center justify-center gap-2"
                                 >
-                                    {addingArticle ? <Loader2 className="h-3 w-3 animate-spin" /> : <Plus className="h-3 w-3" />}
+                                    {addingArticle ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
                                     Add Article
                                 </button>
                             </form>
@@ -299,19 +283,16 @@ export default function AdminPage() {
                             {/* Articles List */}
                             <div className="space-y-2">
                                 {articles.length === 0 ? (
-                                    <p className="text-xs text-white/30 text-center py-4">No articles yet</p>
+                                    <p className="text-sm text-[#80868b] text-center py-4">No articles yet</p>
                                 ) : (
                                     articles.map((article) => (
-                                        <div key={article.id} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+                                        <div key={article.id} className="flex items-center justify-between p-4 bg-white rounded-xl border border-[#e8eaed]">
                                             <div>
-                                                <p className="text-xs font-medium text-white">{article.title}</p>
-                                                <p className="text-[10px] text-white/40">{article.category} • {article.date}</p>
+                                                <p className="text-sm font-medium text-[#202124]">{article.title}</p>
+                                                <p className="text-xs text-[#80868b]">{article.category} • {article.date}</p>
                                             </div>
-                                            <button
-                                                onClick={() => deleteItem('article', article.id)}
-                                                className="p-1.5 text-white/30 hover:text-red-400 transition-colors"
-                                            >
-                                                <Trash2 className="h-3 w-3" />
+                                            <button onClick={() => deleteItem('article', article.id)} className="p-2 text-[#80868b] hover:text-[#EA4335] transition-colors">
+                                                <Trash2 className="h-4 w-4" />
                                             </button>
                                         </div>
                                     ))
@@ -322,50 +303,27 @@ export default function AdminPage() {
                         {/* News Section */}
                         <div className="space-y-4">
                             <div className="flex items-center gap-2 mb-4">
-                                <Newspaper className="h-4 w-4 text-[#FF79C6]" />
-                                <h2 className="text-sm font-medium text-white">Latest News</h2>
+                                <Newspaper className="h-5 w-5 text-[#EA4335]" />
+                                <h2 className="text-base font-semibold text-[#202124]">Latest News</h2>
                             </div>
 
                             {/* Add News Form */}
-                            <form onSubmit={addNews} className="p-4 border border-white/10 rounded-lg space-y-3">
-                                <input
-                                    type="text"
-                                    value={newsTitle}
-                                    onChange={(e) => setNewsTitle(e.target.value)}
-                                    placeholder="News headline"
-                                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50"
-                                />
-                                <textarea
-                                    value={newsBody}
-                                    onChange={(e) => setNewsBody(e.target.value)}
-                                    placeholder="News content (optional)"
-                                    rows={3}
-                                    className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50 resize-none"
-                                />
+                            <form onSubmit={addNews} className="p-5 bg-white rounded-2xl card-soft space-y-3">
+                                <input type="text" value={newsTitle} onChange={(e) => setNewsTitle(e.target.value)} placeholder="News headline" className={FIELD} />
+                                <textarea value={newsBody} onChange={(e) => setNewsBody(e.target.value)} placeholder="News content (optional)" rows={3} className={`${FIELD} resize-none`} />
                                 <div className="flex gap-2">
-                                    <input
-                                        type="text"
-                                        value={newsDate}
-                                        onChange={(e) => setNewsDate(e.target.value)}
-                                        placeholder="Dec 2024"
-                                        className="flex-1 px-3 py-2 bg-white/5 border border-white/10 rounded text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50"
-                                    />
-                                    <label className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/10 rounded cursor-pointer">
-                                        <input
-                                            type="checkbox"
-                                            checked={newsHighlight}
-                                            onChange={(e) => setNewsHighlight(e.target.checked)}
-                                            className="accent-[#FF79C6]"
-                                        />
-                                        <span className="text-xs text-white/60">Highlight</span>
+                                    <input type="text" value={newsDate} onChange={(e) => setNewsDate(e.target.value)} placeholder="Dec 2024" className={`${FIELD} flex-1`} />
+                                    <label className="flex items-center gap-2 px-3 py-2.5 bg-[#f8f9fa] border border-[#e8eaed] rounded-lg cursor-pointer">
+                                        <input type="checkbox" checked={newsHighlight} onChange={(e) => setNewsHighlight(e.target.checked)} className="accent-[#4285F4]" />
+                                        <span className="text-sm text-[#5f6368]">Highlight</span>
                                     </label>
                                 </div>
                                 <button
                                     type="submit"
                                     disabled={!newsTitle.trim() || addingNews}
-                                    className="w-full py-2 bg-[#FF79C6] text-black text-xs uppercase tracking-widest rounded hover:bg-[#FF79C6]/90 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                                    className="btn-primary w-full py-2.5 text-sm font-medium rounded-lg disabled:opacity-40 disabled:shadow-none flex items-center justify-center gap-2"
                                 >
-                                    {addingNews ? <Loader2 className="h-3 w-3 animate-spin" /> : <Plus className="h-3 w-3" />}
+                                    {addingNews ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
                                     Add News
                                 </button>
                             </form>
@@ -373,22 +331,19 @@ export default function AdminPage() {
                             {/* News List */}
                             <div className="space-y-2">
                                 {news.length === 0 ? (
-                                    <p className="text-xs text-white/30 text-center py-4">No news yet</p>
+                                    <p className="text-sm text-[#80868b] text-center py-4">No news yet</p>
                                 ) : (
                                     news.map((item) => (
-                                        <div key={item.id} className={`flex items-center justify-between p-3 rounded-lg ${item.highlight ? 'bg-[#FF79C6]/10 border border-[#FF79C6]/30' : 'bg-white/5'}`}>
+                                        <div key={item.id} className={`flex items-center justify-between p-4 rounded-xl border ${item.highlight ? 'bg-[#4285F4]/5 border-[#4285F4]/30' : 'bg-white border-[#e8eaed]'}`}>
                                             <div className="flex items-center gap-2">
-                                                {item.highlight && <div className="w-2 h-2 rounded-full bg-[#FF79C6] animate-pulse" />}
+                                                {item.highlight && <div className="w-2 h-2 rounded-full bg-[#4285F4] animate-pulse" />}
                                                 <div>
-                                                    <p className={`text-xs font-medium ${item.highlight ? 'text-[#FF79C6]' : 'text-white'}`}>{item.title}</p>
-                                                    <p className="text-[10px] text-white/40">{item.date}</p>
+                                                    <p className={`text-sm font-medium ${item.highlight ? 'text-[#4285F4]' : 'text-[#202124]'}`}>{item.title}</p>
+                                                    <p className="text-xs text-[#80868b]">{item.date}</p>
                                                 </div>
                                             </div>
-                                            <button
-                                                onClick={() => deleteItem('news', item.id)}
-                                                className="p-1.5 text-white/30 hover:text-red-400 transition-colors"
-                                            >
-                                                <Trash2 className="h-3 w-3" />
+                                            <button onClick={() => deleteItem('news', item.id)} className="p-2 text-[#80868b] hover:text-[#EA4335] transition-colors">
+                                                <Trash2 className="h-4 w-4" />
                                             </button>
                                         </div>
                                     ))

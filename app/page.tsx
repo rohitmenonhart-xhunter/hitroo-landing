@@ -1,1281 +1,381 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { Button } from '@/components/ui/button';
-import {
-  ArrowRight,
-  Mic,
-  CheckSquare,
-  Lightbulb,
-  GraduationCap,
-  Megaphone,
-  ChevronDown,
-  Sparkles,
-  Keyboard,
-  MessageSquare,
-  Wand2,
-  Building2,
-  Users,
-  TrendingUp,
-  Loader2,
-  X,
-} from 'lucide-react';
+import { ArrowRight, Check, Clock } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import LaserFlow from '@/components/LaserFlow';
+import Nav from '@/components/site/Nav';
+import Footer from '@/components/site/Footer';
+import Reveal from '@/components/site/Reveal';
+import { services, COMPANY } from '@/lib/site-data';
 
 export default function Home() {
-  const [scrollY, setScrollY] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
-  const [showIntro, setShowIntro] = useState(false);
-  const [introChecked, setIntroChecked] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const process = [
+    { title: 'Discover', description: 'Your goals, constraints, and users.', color: '#4285F4' },
+    { title: 'Design', description: 'Architecture mapped before code.', color: '#EA4335' },
+    { title: 'Build', description: 'Production-grade, in iterations.', color: '#FBBC05' },
+    { title: 'Test & Secure', description: 'Full QA and threat testing.', color: '#34A853' },
+    { title: 'Launch', description: 'Reliable delivery, monitored.', color: '#4285F4' },
+    { title: 'Support', description: 'Ongoing, via the HITROO app.', color: '#EA4335' },
+  ];
 
-  // Check if intro should be shown (only on first visit per session)
-  useEffect(() => {
-    const hasSeenIntro = sessionStorage.getItem('hitroo-intro-seen');
-    if (!hasSeenIntro) {
-      setShowIntro(true);
-    }
-    setIntroChecked(true);
-  }, []);
+  const audience = [
+    { title: 'Companies', description: 'Enterprise platforms, modernization, and AI at scale.', color: '#4285F4' },
+    { title: 'Businesses', description: 'Custom tools and automation that remove daily friction.', color: '#EA4335' },
+    { title: 'Individuals', description: 'Founders turning an idea into real software.', color: '#34A853' },
+  ];
 
-  // Mark intro as seen when it ends
-  const handleIntroEnd = () => {
-    sessionStorage.setItem('hitroo-intro-seen', 'true');
-    setShowIntro(false);
-  };
+  const platforms = ['iOS', 'Android', 'Windows', 'macOS'];
 
-  const handleSkipIntro = () => {
-    sessionStorage.setItem('hitroo-intro-seen', 'true');
-    setShowIntro(false);
-  };
+  const why = [
+    { title: 'Research-driven', description: 'We solve hard problems others avoid.', color: '#4285F4' },
+    { title: 'Extreme quality', description: 'Crafted, reviewed, held to a high bar.', color: '#EA4335' },
+    { title: 'Security-first', description: 'Threat-tested before anything ships.', color: '#FBBC05' },
+    { title: 'Effortless support', description: 'Help in one app, 24h response.', color: '#34A853' },
+    { title: 'AI-first', description: 'Custom models and AI-ready modernization.', color: '#4285F4' },
+    { title: 'Built in Chennai', description: 'A dedicated team, end to end.', color: '#EA4335' },
+  ];
 
-  // AI Chat state
-  const [userMessage, setUserMessage] = useState('');
-  const [aiResponse, setAiResponse] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [showResponse, setShowResponse] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const aiPillars = [
+    { title: 'Custom AI models', desc: 'Built and trained on your data — plus ready-to-use in-house models.' },
+    { title: 'AI automation', desc: 'Agents and workflows that run the busywork for you.' },
+    { title: 'AI modernization', desc: 'Audit and AI-enable the software you already run.' },
+  ];
 
-  // Lead capture state (AI Chat)
-  const [showLeadPopup, setShowLeadPopup] = useState(false);
-  const [leadContext, setLeadContext] = useState('');
-  const [leadName, setLeadName] = useState('');
-  const [leadEmail, setLeadEmail] = useState('');
-  const [leadPhone, setLeadPhone] = useState('');
-  const [isSubmittingLead, setIsSubmittingLead] = useState(false);
-  const [leadSubmitted, setLeadSubmitted] = useState(false);
+  const security = [
+    { title: 'Security testing', desc: 'Tested against real threats.', color: '#EA4335' },
+    { title: 'Deep QA', desc: 'Every path verified before launch.', color: '#4285F4' },
+    { title: 'Extreme quality', desc: 'Held to a high engineering bar.', color: '#34A853' },
+    { title: 'Built to scale', desc: 'Reliable under real load.', color: '#FBBC05' },
+  ];
 
-  // Early Access popup state
-  const [showEarlyAccess, setShowEarlyAccess] = useState(false);
-  const [eaName, setEaName] = useState('');
-  const [eaEmail, setEaEmail] = useState('');
-  const [eaPhone, setEaPhone] = useState('');
-  const [eaReason, setEaReason] = useState('');
-  const [isSubmittingEa, setIsSubmittingEa] = useState(false);
-  const [eaSubmitted, setEaSubmitted] = useState(false);
-
-  // Dynamic content state
-  interface Article { id: string; title: string; category: string; date: string; }
-  interface NewsItem { id: string; title: string; date: string; highlight: boolean; }
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
-
-  // Fetch dynamic content
-  useEffect(() => {
-    fetch('/api/content')
-      .then(res => res.json())
-      .then(data => {
-        setArticles(data.articles || []);
-        setNewsItems(data.news || []);
-      })
-      .catch(() => { });
-  }, []);
-
-  const sendMessage = async () => {
-    if (!userMessage.trim() || isLoading) return;
-
-    setIsLoading(true);
-    setShowResponse(true);
-    setAiResponse('');
-
-    try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: userMessage }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setAiResponse(data.response);
-
-        // Check if user wants to create something
-        if (data.wantsToCreate && data.context) {
-          setLeadContext(data.context);
-          setTimeout(() => {
-            setShowLeadPopup(true);
-          }, 1500); // Show popup after AI response
-        }
-      } else {
-        setAiResponse('Something went wrong. Please try again.');
-      }
-    } catch {
-      setAiResponse('Unable to connect. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const submitLead = async () => {
-    if (!leadPhone.trim() && !leadEmail.trim()) return;
-
-    setIsSubmittingLead(true);
-    try {
-      const response = await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: leadName,
-          email: leadEmail,
-          phone: leadPhone,
-          context: leadContext,
-          leadType: 'ai_chat'
-        }),
-      });
-
-      if (response.ok) {
-        setLeadSubmitted(true);
-        setTimeout(() => {
-          setShowLeadPopup(false);
-          setLeadSubmitted(false);
-          setLeadName('');
-          setLeadEmail('');
-          setLeadPhone('');
-        }, 2000);
-      }
-    } catch {
-      // Silently fail
-    } finally {
-      setIsSubmittingLead(false);
-    }
-  };
-
-  const submitEarlyAccess = async () => {
-    if (!eaPhone.trim() && !eaEmail.trim()) return;
-
-    setIsSubmittingEa(true);
-    try {
-      const response = await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: eaName,
-          email: eaEmail,
-          phone: eaPhone,
-          context: eaReason,
-          leadType: 'early_access'
-        }),
-      });
-
-      if (response.ok) {
-        setEaSubmitted(true);
-        setTimeout(() => {
-          setShowEarlyAccess(false);
-          setEaSubmitted(false);
-          setEaName('');
-          setEaEmail('');
-          setEaPhone('');
-          setEaReason('');
-        }, 2000);
-      }
-    } catch {
-      // Silently fail
-    } finally {
-      setIsSubmittingEa(false);
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  };
-
-  const closeResponse = () => {
-    setShowResponse(false);
-    setAiResponse('');
-    setUserMessage('');
-    setIsExpanded(false);
-  };
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    const handleResize = () => {
-      const width = window.innerWidth;
-      setIsMobile(width < 768);
-      setIsTablet(width >= 768 && width < 1200);
-    };
-
-    // Initial check
-    handleResize();
-
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  const products = [
-    {
-      name: 'Capsona',
-      tagline: 'Voice-First Intelligence',
-      status: 'Flagship • Coming Soon',
-      image: '/productimage/capsona_usage.png',
-      description:
-        'Revolutionary voice utility software that transforms your speech into perfectly formatted, high-quality text. Simply speak, and watch your words come to life.',
-      features: [
-        {
-          icon: Mic,
-          title: 'Speak & Type',
-          description: 'High-quality voice-to-text that just works',
-        },
-        {
-          icon: Sparkles,
-          title: 'AI Intelligence',
-          description: 'Say "give a birthday wish for my friend" and get it instantly',
-        },
-        {
-          icon: Keyboard,
-          title: 'Tone Changing',
-          description: 'Transform your message tone with keyboard shortcuts',
-        },
-        {
-          icon: MessageSquare,
-          title: 'Auto Response',
-          description: 'Intelligent automated responses that save hours',
-        },
-      ],
-      accent: 'from-violet-500/10 to-purple-500/10',
-      borderAccent: 'hover:border-violet-500/30',
-      color: '#8B5CF6',
-    },
-    {
-      name: 'Attyn',
-      tagline: 'AI-Powered Task Management',
-      status: 'Under Development',
-      image: '/productimage/attyn_usage.png',
-      description:
-        'Smart task management that thinks ahead. Attyn uses AI to prioritize, organize, and help you accomplish more with less cognitive overhead.',
-      features: [
-        {
-          icon: CheckSquare,
-          title: 'Intelligent Prioritization',
-          description: 'AI-driven task ranking and scheduling',
-        },
-        {
-          icon: Wand2,
-          title: 'Smart Automation',
-          description: 'Automated workflows that adapt to your patterns',
-        },
-      ],
-      accent: 'from-blue-500/10 to-cyan-500/10',
-      borderAccent: 'hover:border-blue-500/30',
-      color: '#3B82F6',
-    },
-    {
-      name: 'Belecure',
-      tagline: 'Lighting Design, Reimagined',
-      status: 'Partnership with Lightscape',
-      image: '/productimage/belecure_usage.png',
-      description:
-        'The Canva for lighting design. Create stunning lighting simulations with floorplans, visualize your space, and bring your lighting vision to life.',
-      features: [
-        {
-          icon: Lightbulb,
-          title: 'Visual Simulation',
-          description: 'Real-time lighting visualization on floorplans',
-        },
-        {
-          icon: Wand2,
-          title: 'Drag & Drop Design',
-          description: 'Intuitive interface for professionals and beginners',
-        },
-      ],
-      accent: 'from-amber-500/10 to-yellow-500/10',
-      borderAccent: 'hover:border-amber-500/30',
-      color: '#F59E0B',
-    },
-    {
-      name: 'Mockello',
-      tagline: 'Bridging Education & Industry',
-      status: 'Building the Future of Hiring',
-      image: '/productimage/mockello_usage.png',
-      description:
-        'End-to-end platform connecting colleges, companies, and students. Train students on real-world skills, allocate opportunities fairly, and ensure every student gets their chance.',
-      features: [
-        {
-          icon: GraduationCap,
-          title: 'Student Training',
-          description: 'Comprehensive skill development programs',
-        },
-        {
-          icon: Building2,
-          title: 'Company Integration',
-          description: 'Direct pipeline to industry opportunities',
-        },
-        {
-          icon: Users,
-          title: 'Fair Allocation',
-          description: 'Every student gets an equal opportunity',
-        },
-      ],
-      accent: 'from-emerald-500/10 to-green-500/10',
-      borderAccent: 'hover:border-emerald-500/30',
-      color: '#10B981',
-    },
-    {
-      name: 'AI Marketing Agent',
-      tagline: 'Your Distribution Engine',
-      status: 'Expanding to Partners',
-      image: '/productimage/ai_marketer_usage.png',
-      description:
-        'Started with a vision of having our own distribution stream across all platforms. Now, we\'re bringing this powerful marketing automation to other companies as well.',
-      features: [
-        {
-          icon: Megaphone,
-          title: 'Multi-Platform',
-          description: 'Unified distribution across all channels',
-        },
-        {
-          icon: TrendingUp,
-          title: 'Growth Automation',
-          description: 'AI-powered marketing that scales',
-        },
-      ],
-      accent: 'from-rose-500/10 to-pink-500/10',
-      borderAccent: 'hover:border-rose-500/30',
-      color: '#F43F5E',
-    },
+  const research = [
+    { title: 'Applied research', desc: 'Software and AI, focused on real outcomes.', color: '#4285F4' },
+    { title: 'Hard problems', desc: 'The work other shops walk away from.', color: '#EA4335' },
+    { title: 'Into production', desc: 'Research that ships, not papers.', color: '#34A853' },
   ];
 
   return (
-    <>
-      {/* Intro Video Splash */}
-      {showIntro && (
-        <div className="fixed inset-0 z-[200] bg-black flex items-center justify-center">
-          {/* Vignette overlay */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle at center, transparent 0%, transparent 30%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.8) 100%)',
-            }}
-          />
+    <div className="min-h-screen bg-white">
+      <Nav />
 
-          {/* Video container - small centered with glow */}
-          <div className="relative flex items-center justify-center">
-            {/* Outer glow */}
-            <div
-              className="absolute rounded-xl"
-              style={{
-                width: '340px',
-                height: '340px',
-                background: 'radial-gradient(circle, rgba(255, 121, 198, 0.4) 0%, transparent 70%)',
-                filter: 'blur(30px)',
-              }}
-            />
-            {/* Video with border */}
-            <div
-              className="relative rounded-xl overflow-hidden"
-              style={{
-                border: '1px solid rgba(255, 121, 198, 0.4)',
-                boxShadow: '0 0 30px rgba(255, 121, 198, 0.3), 0 0 60px rgba(255, 121, 198, 0.15), inset 0 0 20px rgba(255, 121, 198, 0.05)',
-              }}
-            >
-              <video
-                ref={videoRef}
-                autoPlay
-                muted
-                playsInline
-                onEnded={handleIntroEnd}
-                className="w-[300px] h-auto object-contain"
-              >
-                <source src="/intro/Metal_Shine_Logo_Animation (online-video-cutter.com) (3).mp4" type="video/mp4" />
-              </video>
-            </div>
+      {/* ===================== HERO ===================== */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 bg-white">
+        <Image src="/hero/bg.png" alt="" fill priority className="object-cover object-center z-0" />
+        <div className="absolute inset-0 z-0 bg-gradient-to-b from-white/40 via-transparent to-white/70" />
+
+        <div className="relative z-10 w-full max-w-6xl mx-auto text-center pt-28 pb-16 flex flex-col items-center">
+          <div className="flex items-center gap-1.5 mb-8 animate-fade-in">
+            <span className="h-2 w-2 rounded-full bg-[#4285F4]" />
+            <span className="h-2 w-2 rounded-full bg-[#EA4335]" />
+            <span className="h-2 w-2 rounded-full bg-[#FBBC05]" />
+            <span className="h-2 w-2 rounded-full bg-[#34A853]" />
           </div>
-          {/* Glow effect */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle at center, rgba(255, 121, 198, 0.15) 0%, transparent 50%)',
-              filter: 'blur(40px)',
-            }}
-          />
-
-          {/* Skip button */}
-          <button
-            onClick={handleSkipIntro}
-            className="absolute bottom-8 right-8 text-[10px] uppercase tracking-widest text-white/30 hover:text-white/60 transition-colors"
-          >
-            Skip
-          </button>
-
-          {/* Fade out transition */}
-          <style jsx>{`
-            @keyframes fadeOut {
-              from { opacity: 1; }
-              to { opacity: 0; pointer-events: none; }
-            }
-          `}</style>
-        </div>
-      )}
-
-      {/* Main Content */}
-      <div className={`min-h-screen bg-black transition-opacity duration-700 ${showIntro ? 'opacity-0' : 'opacity-100'}`}>
-        <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-          <div
-            className={`max-w-6xl mx-auto px-6 py-5 flex items-center justify-between transition-all duration-300 ${scrollY > 50 ? 'bg-black/90 backdrop-blur-xl border-b border-white/5' : ''
-              }`}
-          >
-            <Link href="/" className="flex items-center gap-2">
-              <Image src="/favicon/favicon-96x96.png" alt="HITROO" width={28} height={28} className="rounded-sm" />
-              <span className="text-lg font-bold tracking-tight text-white">HITROO</span>
+          <h1 className="font-bold tracking-[-0.03em] text-[#202124] max-w-5xl animate-fade-in" style={{ fontSize: 'clamp(2.75rem, 9vw, 6.5rem)', lineHeight: 1.0 }}>
+            We build <span className="text-brand">intelligent</span> systems<span className="text-[#4285F4]">.</span>
+          </h1>
+          <p className="text-base md:text-lg text-[#5f6368] leading-relaxed mt-8 max-w-2xl animate-fade-in">
+            A technology studio building software, mobile and desktop apps,
+            AI models, and automation — plus our own products.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3 mt-9 animate-fade-in">
+            <Link href="/contact" className="inline-flex items-center gap-2 bg-[#202124] text-white text-sm font-medium px-7 py-3.5 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all">
+              Start a Project <ArrowRight className="h-4 w-4" />
             </Link>
-            <div className="hidden md:flex items-center gap-6">
-              <a
-                href="#products"
-                className="text-xs font-medium text-white/50 hover:text-[#FF79C6] transition-colors"
-              >
-                Products
-              </a>
-              <Link
-                href="/about"
-                className="text-xs font-medium text-white/50 hover:text-[#FF79C6] transition-colors"
-              >
-                About
-              </Link>
-              <Link
-                href="/services"
-                className="text-xs font-medium text-white/50 hover:text-[#FF79C6] transition-colors"
-              >
-                Services
-              </Link>
-              <Button
-                variant="default"
-                className="bg-[#FF79C6] text-black hover:bg-[#FF79C6]/90 text-xs h-9 px-4 font-semibold"
-                onClick={() => setShowEarlyAccess(true)}
-              >
-                Get Started
-              </Button>
+            <Link href="/services" className="text-sm font-semibold text-[#3c4043] hover:text-[#4285F4] px-4 py-3.5 transition-colors">
+              Explore Services
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== POSITIONING ===================== */}
+      <section className="px-6 py-32 md:py-44 border-t border-[#e8eaed]">
+        <Reveal className="max-w-5xl mx-auto text-center">
+          <span className="block h-1 w-12 rounded-full brand-bar-smooth mx-auto mb-10" />
+          <p className="text-3xl md:text-5xl lg:text-6xl font-semibold text-[#202124] leading-[1.12] tracking-[-0.025em]">
+            We build <span className="text-brand">intelligent software</span> for businesses
+            <span className="text-[#9aa0a6]"> — and stay with them long after launch.</span>
+          </p>
+        </Reveal>
+      </section>
+
+      {/* ===================== SERVICES (editorial list) ===================== */}
+      <section className="px-6 py-28 md:py-36 bg-[#fafafa] border-t border-[#e8eaed]">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="max-w-2xl mb-14">
+            <span className="eyebrow text-[#4285F4]">What we do</span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-[-0.03em] text-[#202124] mt-4 leading-[1.02]">
+              Software, apps,<br />and AI — end to end.
+            </h2>
+          </Reveal>
+
+          <div className="border-t border-[#e0e2e6]">
+            {services.map((s, i) => (
+              <Reveal key={s.slug} delay={i * 40} y={14}>
+                <Link href={`/services/${s.slug}`} className="group block border-b border-[#e0e2e6]" style={{ ['--c' as string]: s.color }}>
+                  <div className="py-7 md:py-8 flex items-center gap-5 md:gap-8">
+                    <span className="hidden sm:block text-sm font-semibold tabular-nums w-7 text-[#bdc1c6] transition-colors group-hover:text-[color:var(--c)]">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div className="flex-1 min-w-0 md:flex md:items-baseline md:justify-between md:gap-10">
+                      <h3 className="text-2xl md:text-3xl font-semibold tracking-[-0.02em] text-[#202124] transition-transform duration-300 group-hover:translate-x-1.5">
+                        {s.title}
+                      </h3>
+                      <p className="text-sm md:text-base text-[#5f6368] mt-1.5 md:mt-0 md:max-w-md md:text-right">{s.short}</p>
+                    </div>
+                    <ArrowRight className="hidden md:block h-5 w-5 shrink-0 text-[#bdc1c6] transition-all duration-300 group-hover:translate-x-1.5 group-hover:text-[color:var(--c)]" />
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== AI ===================== */}
+      <section className="px-6 py-28 md:py-36 border-t border-[#e8eaed] overflow-hidden">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <Reveal>
+            <span className="eyebrow text-[#4285F4]">The AI era</span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-[-0.03em] text-[#202124] mt-4 leading-[1.02]">
+              Build new AI — or make it <span className="text-brand">AI-ready</span>.
+            </h2>
+            <p className="text-lg text-[#5f6368] mt-6 leading-relaxed max-w-lg">
+              We develop and custom-train models on your data, deploy our in-house models, automate your
+              workflows, and upgrade legacy systems for the AI era.
+            </p>
+            <div className="mt-8 divide-y divide-[#e8eaed] border-t border-[#e8eaed]">
+              {aiPillars.map((c) => (
+                <div key={c.title} className="py-4">
+                  <h3 className="text-lg font-semibold text-[#202124]">{c.title}</h3>
+                  <p className="text-sm text-[#5f6368] mt-1">{c.desc}</p>
+                </div>
+              ))}
             </div>
-          </div>
-        </nav>
+            <Link href="/services/ai-models" className="inline-flex items-center gap-2 text-sm font-semibold text-[#4285F4] mt-8 hover:gap-3 transition-all">
+              Explore our AI work <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Reveal>
+          <Reveal delay={120} className="order-first lg:order-last">
+            <div className="relative aspect-[4/3] w-full rounded-[2.75rem] overflow-hidden">
+              <Image src="/img/ai.png" alt="Colorful abstract representing artificial intelligence" fill className="object-cover" sizes="(max-width:1024px) 90vw, 560px" />
+              <div className="absolute inset-0 pointer-events-none rounded-[2.75rem]" style={{ boxShadow: 'inset 0 0 80px 34px #ffffff' }} />
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
-        {/* Hero Section with LaserFlow */}
-        <section className="relative min-h-screen flex flex-col items-center bg-black overflow-hidden">
-          {/* LaserFlow Background */}
-          <div className="absolute inset-0 z-0 w-full h-full" style={{ minHeight: '100vh' }}>
-            <LaserFlow
-              color="#FF79C6"
-              wispDensity={1}
-              mouseTiltStrength={0.01}
-              horizontalBeamOffset={0.0}
-              verticalBeamOffset={isMobile ? 0.01 : isTablet ? -0.05 : -0.15}
-              flowSpeed={0.35}
-              verticalSizing={isMobile ? 9.0 : isTablet ? 3.0 : 2.0}
-              horizontalSizing={isMobile ? 1.5 : isTablet ? 1.0 : 0.5}
-              fogIntensity={0.5}
-              fogScale={0.3}
-              wispSpeed={15.0}
-              wispIntensity={5.0}
-              flowStrength={0.25}
-              decay={1.1}
-              falloffStart={1.2}
-              fogFallSpeed={0.6}
-              coreWidth={isMobile ? 2 : isTablet ? 1.5 : 1.0}
-            />
-          </div>
+      {/* ===================== HITROO APP / SUPPORT ===================== */}
+      <section id="support" className="px-6 py-28 md:py-36 scroll-mt-20 bg-[#fafafa] border-t border-[#e8eaed]">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
+          <Reveal>
+            <span className="eyebrow text-[#34A853]">Support, built in</span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-[-0.03em] text-[#202124] mt-4 leading-[1.02]">The HITROO app.</h2>
+            <p className="text-lg text-[#5f6368] mt-6 leading-relaxed max-w-lg">
+              No customer-care runaround. Raise a ticket the moment you need help and talk to the team
+              that built your software — from any device you use.
+            </p>
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-7 text-sm font-medium text-[#3c4043]">
+              {platforms.map((p) => (<span key={p}>{p}</span>))}
+            </div>
+            <div className="flex items-center gap-12 mt-10">
+              <div>
+                <div className="text-4xl md:text-5xl font-bold tracking-tight text-[#202124]">24<span className="text-[#34A853]">h</span></div>
+                <div className="text-xs uppercase tracking-[0.12em] text-[#80868b] mt-2">First response</div>
+              </div>
+              <div className="h-12 w-px bg-[#e8eaed]" />
+              <div>
+                <div className="text-4xl md:text-5xl font-bold tracking-tight text-[#202124]">48<span className="text-[#34A853]">h</span></div>
+                <div className="text-xs uppercase tracking-[0.12em] text-[#80868b] mt-2">Typical resolution</div>
+              </div>
+            </div>
+          </Reveal>
 
-          {/* Main Layout - Responsive */}
-          <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 min-h-screen flex flex-col justify-center">
-
-            {/* Top Section - Text Content (3-column at all sizes to keep text around beam) */}
-            <div className="flex items-center pt-20 sm:pt-16 lg:pt-16 pb-4">
-              <div className="w-full grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6 items-center">
-
-                {/* Left */}
-                <div className="text-right space-y-1 sm:space-y-2 animate-in fade-in slide-in-from-left-6 duration-1000 lg:-mt-12">
-                  <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl font-medium tracking-tight leading-tight text-white">
-                    What would
-                    <br />
-                    <span className="text-[#FF79C6]">you like</span>
-                  </h1>
+          {/* Phone product visual */}
+          <Reveal delay={120} className="relative flex justify-center">
+            <div className="absolute inset-0 -z-0 m-auto w-[22rem] h-[22rem] rounded-full bg-gradient-to-br from-[#4285F4]/12 via-[#FBBC05]/8 to-[#34A853]/12 blur-3xl" />
+            <div className="relative w-[280px] rounded-[2.75rem] bg-[#0d0d0f] p-2.5 shadow-[0_50px_90px_-30px_rgba(60,64,67,0.5)]">
+              <div className="rounded-[2.25rem] overflow-hidden bg-white">
+                <div className="flex items-center justify-between px-6 pt-4 pb-2 text-[11px] font-semibold text-[#202124]">
+                  <span>9:41</span>
+                  <span className="flex items-center gap-1"><span className="h-2 w-2 rounded-full bg-[#34A853]" /> Online</span>
                 </div>
-
-                {/* Center - Spacer for beam (visible at all sizes) */}
-                <div className="flex items-center justify-center">
-                  <div className="w-8 sm:w-16 lg:w-24 h-20 sm:h-24 lg:h-32" />
+                <div className="px-6 py-4 flex items-center gap-2.5 border-b border-[#f1f3f4]">
+                  <Image src="/new_logo/logo_transparent.png" alt="HITROO" width={26} height={26} />
+                  <span className="text-sm font-semibold text-[#202124]">Support</span>
                 </div>
-
-                {/* Right */}
-                <div className="text-left space-y-1 sm:space-y-2 animate-in fade-in slide-in-from-right-6 duration-1000 delay-200 lg:mt-12">
-                  <h1 className="text-base sm:text-lg md:text-xl lg:text-2xl font-medium tracking-tight leading-tight">
-                    <span className="text-[#FF79C6]">to create</span>
-                    <br />
-                    <span className="text-white">today?</span>
-                  </h1>
-                  <p className="text-[8px] sm:text-[10px] text-white/40 max-w-[100px] sm:max-w-xs leading-relaxed">
-                    Ask us anything.
-                  </p>
+                <div className="px-6 py-5 space-y-4">
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-[#80868b]">Ticket #2041</span>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#34A853]"><Check className="h-3 w-3" /> Resolved</span>
+                    </div>
+                    <p className="text-sm font-medium text-[#202124] mt-2">Add SSO to the admin dashboard</p>
+                    <p className="text-xs text-[#5f6368] mt-1.5">Picked up in 3h · shipped in 41h.</p>
+                  </div>
+                  <div className="h-px bg-[#f1f3f4]" />
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-semibold uppercase tracking-widest text-[#80868b]">Ticket #2042</span>
+                    <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#4285F4]"><Clock className="h-3 w-3" /> In progress</span>
+                  </div>
+                  <button className="w-full rounded-full bg-[#202124] text-white text-xs font-medium py-3 mt-1">New ticket</button>
                 </div>
               </div>
             </div>
+          </Reveal>
+        </div>
+      </section>
 
-            {/* Input Box - Responsive margins using JS breakpoints */}
-            <div
-              className="w-full max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-6 duration-1000 delay-500 relative"
-              style={{ marginTop: isMobile ? '2rem' : isTablet ? '3rem' : '9rem' }}
-            >
-              <div className="relative group">
-                {/* Animated pink border glow */}
-                <div className="absolute -inset-[1px] bg-gradient-to-r from-[#FF79C6]/0 via-[#FF79C6]/60 to-[#FF79C6]/0 rounded-lg opacity-100 animate-pulse"
-                  style={{
-                    animation: 'borderFlow 3s ease-in-out infinite',
-                    background: 'linear-gradient(90deg, transparent 0%, #FF79C6 50%, transparent 100%)',
-                    backgroundSize: '200% 100%'
-                  }}
-                />
-
-                {/* Solid black container */}
-                <div className="relative bg-black rounded-lg border border-[#FF79C6]/30 overflow-hidden">
-                  {/* Top pink accent line */}
-                  <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#FF79C6] to-transparent" />
-
-                  <div className="relative p-5">
-                    <textarea
-                      ref={textareaRef}
-                      placeholder="Ask anything about HITROO..."
-                      value={userMessage}
-                      onChange={(e) => setUserMessage(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                      className="w-full h-16 bg-transparent text-sm text-white placeholder:text-white/30 focus:outline-none resize-none"
-                      style={{ caretColor: '#FF79C6' }}
-                      disabled={isLoading}
-                    />
-
-                    {/* Bottom bar */}
-                    <div className="flex items-center justify-between pt-3 border-t border-[#FF79C6]/10">
-                      <div className="flex items-center gap-2">
-                        <button className="p-2 rounded-lg bg-[#FF79C6]/10 hover:bg-[#FF79C6]/20 transition-colors border border-[#FF79C6]/20">
-                          <Mic className="h-3.5 w-3.5 text-[#FF79C6]" />
-                        </button>
-                        <span className="text-[10px] text-white/30">voice</span>
-                      </div>
-                      <button
-                        onClick={sendMessage}
-                        disabled={isLoading || !userMessage.trim()}
-                        className="text-[10px] uppercase tracking-widest bg-[#FF79C6] text-black px-4 py-2 rounded hover:bg-[#FF79C6]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                      >
-                        {isLoading ? (
-                          <>
-                            <Loader2 className="h-3 w-3 animate-spin" />
-                            Thinking
-                          </>
-                        ) : (
-                          'Send'
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Bottom pink accent line */}
-                  <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#FF79C6]/50 to-transparent" />
-                </div>
+      {/* ===================== HOW WE WORK ===================== */}
+      <section className="px-6 py-28 md:py-36 border-t border-[#e8eaed] overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="max-w-2xl mb-14">
+            <span className="eyebrow text-[#FBBC05]">How we work</span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-[-0.03em] text-[#202124] mt-4 leading-[1.02]">From idea to ongoing support.</h2>
+          </Reveal>
+          <div className="grid lg:grid-cols-2 gap-14 items-center">
+            <Reveal>
+              <div className="relative aspect-[4/3] w-full rounded-[2.75rem] overflow-hidden">
+                <Image src="/img/craft.png" alt="Colorful abstract of software being engineered" fill className="object-cover" sizes="(max-width:1024px) 90vw, 560px" />
+                <div className="absolute inset-0 pointer-events-none rounded-[2.75rem]" style={{ boxShadow: 'inset 0 0 80px 34px #ffffff' }} />
               </div>
-
-              {/* AI Response Floating Bubble - Absolute positioned overlay */}
-              {showResponse && (
-                <div className="absolute left-0 right-0 top-full mt-3 z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="relative">
-                    {/* Glow effect */}
-                    <div className="absolute -inset-1 bg-[#FF79C6]/10 rounded-lg blur-lg" />
-
-                    {/* Response container */}
-                    <div className="relative bg-black/95 backdrop-blur-xl rounded-lg border border-[#FF79C6]/20 overflow-hidden">
-                      {/* Top accent */}
-                      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#FF79C6]/50 to-transparent" />
-
-                      <div className="px-4 py-3">
-                        <div className="flex items-center gap-3">
-                          {/* HITROO Logo */}
-                          <Image
-                            src="/favicon/favicon-96x96.png"
-                            alt="HITROO"
-                            width={20}
-                            height={20}
-                            className="rounded-sm flex-shrink-0"
-                          />
-
-                          {/* Response text */}
-                          <div className="flex-1 min-w-0">
-                            {isLoading ? (
-                              <div className="flex items-center gap-2">
-                                <div className="flex gap-1">
-                                  <span className="w-1.5 h-1.5 bg-[#FF79C6] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                  <span className="w-1.5 h-1.5 bg-[#FF79C6] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                  <span className="w-1.5 h-1.5 bg-[#FF79C6] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                                </div>
-                              </div>
-                            ) : (
-                              <p className={`text-xs text-white/80 leading-relaxed ${isExpanded ? '' : 'line-clamp-2'}`}>
-                                {aiResponse}
-                              </p>
-                            )}
-                          </div>
-
-                          {/* Expand/Collapse button */}
-                          {!isLoading && aiResponse && (
-                            <button
-                              onClick={() => setIsExpanded(!isExpanded)}
-                              className="p-1 rounded hover:bg-white/10 transition-colors flex-shrink-0"
-                              title={isExpanded ? 'Collapse' : 'Expand'}
-                            >
-                              <ChevronDown className={`h-3 w-3 text-white/40 hover:text-white transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
-                            </button>
-                          )}
-
-                          {/* Close button */}
-                          <button
-                            onClick={closeResponse}
-                            className="p-1 rounded hover:bg-white/10 transition-colors flex-shrink-0"
-                          >
-                            <X className="h-3 w-3 text-white/40 hover:text-white" />
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Bottom accent */}
-                      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#FF79C6]/30 to-transparent" />
-                    </div>
+            </Reveal>
+            <Reveal delay={120}>
+              <div className="grid grid-cols-2 gap-x-8 gap-y-10">
+                {process.map((step, i) => (
+                  <div key={step.title}>
+                    <span className="block w-9 h-1 rounded-full mb-4" style={{ backgroundColor: step.color }} />
+                    <span className="text-2xl font-bold text-[#202124]">{String(i + 1).padStart(2, '0')}</span>
+                    <h3 className="text-base font-semibold text-[#202124] mt-2">{step.title}</h3>
+                    <p className="text-sm text-[#5f6368] mt-1 leading-relaxed">{step.description}</p>
                   </div>
-                </div>
-              )}
-
-              {/* Suggestions - Minimal */}
-              <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
-                {['What is Capsona?', 'Tell me about HITROO', 'Your products', 'Get early access'].map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => {
-                      setUserMessage(s);
-                      textareaRef.current?.focus();
-                    }}
-                    className="px-3 py-1 rounded-full bg-white/[0.03] border border-white/5 text-[10px] text-white/30 hover:text-white/60 hover:border-white/10 transition-all hover:bg-white/[0.06]"
-                  >
-                    {s}
-                  </button>
                 ))}
               </div>
-            </div>
-
-            {/* Scroll */}
-            <div className="pb-6 animate-bounce flex justify-center">
-              <ChevronDown className="h-4 w-4 text-white/20" />
-            </div>
+            </Reveal>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* What's New - Minimal */}
-        <section className="py-16 px-6 border-t border-white/5 bg-black">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid lg:grid-cols-5 gap-8 items-center">
-              <div className="lg:col-span-2 space-y-4">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-[#FF79C6]">New</span>
-                <h2 className="text-xl font-semibold text-white">Capsona</h2>
-                <p className="text-xs text-white/40 leading-relaxed">
-                  Voice-first intelligence. Speak, and watch your words become perfectly formatted text.
-                </p>
-                <button className="text-[10px] uppercase tracking-widest text-[#FF79C6] hover:text-white transition-colors flex items-center gap-2 mt-2">
-                  Explore <ArrowRight className="h-3 w-3" />
-                </button>
-              </div>
-              <div className="lg:col-span-3 relative group">
-                <div className="absolute -inset-1 bg-[#FF79C6]/10 rounded-lg blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative overflow-hidden rounded-lg border border-white/5">
-                  <Image
-                    src="/productimage/capsona_usage.png"
-                    alt="Capsona"
-                    width={600}
-                    height={340}
-                    className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-all duration-500 group-hover:scale-[1.02]"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Stats - Minimal */}
-        <section className="py-20 px-6 border-t border-white/5 bg-black">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-wrap justify-center gap-16 md:gap-24">
-              <div className="text-center">
-                <div className="text-4xl md:text-5xl font-light text-white">100<span className="text-[#FF79C6]">+</span></div>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 mt-2">Projects</p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl md:text-5xl font-light text-white">5<span className="text-[#FF79C6]">+</span></div>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 mt-2">Products</p>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl md:text-5xl font-light text-white/50">∞</div>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-white/30 mt-2">Ambition</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Team - Minimal */}
-        <section className="py-20 px-6 border-t border-white/5 bg-black">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/30">Team</span>
-            </div>
-
-            <div className="flex justify-center">
-              <div className="group text-center">
-                <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#FF79C6]/20 to-transparent border border-white/5 flex items-center justify-center group-hover:border-[#FF79C6]/30 transition-colors">
-                  <span className="text-2xl font-light text-[#FF79C6]">R</span>
-                </div>
-                <h3 className="text-sm font-medium text-white">Rohit</h3>
-                <p className="text-[10px] uppercase tracking-[0.2em] text-[#FF79C6]/70 mt-1">Founder</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Flagship Product - Capsona */}
-        <section id="products" className="py-20 px-6 border-t border-white/5 bg-black">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#FF79C6]">Flagship</span>
-              <h2 className="text-2xl md:text-3xl font-medium text-white mt-2">Capsona</h2>
-              <p className="text-xs text-white/40 mt-2">Voice-First Intelligence</p>
-            </div>
-
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="relative group order-2 lg:order-1">
-                <div className="absolute -inset-2 bg-[#FF79C6]/10 rounded-lg blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative overflow-hidden rounded-lg border border-white/5">
-                  <Image
-                    src="/productimage/capsona_usage.png"
-                    alt="Capsona"
-                    width={600}
-                    height={400}
-                    className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-all duration-500"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-6 order-1 lg:order-2">
-                <p className="text-xs text-white/50 leading-relaxed">
-                  {products[0].description}
-                </p>
-
-                <div className="grid grid-cols-2 gap-3">
-                  {products[0].features.map((feature, index) => (
-                    <div key={index} className="p-3 border border-white/5 rounded-lg hover:border-white/10 transition-colors">
-                      <feature.icon className="h-4 w-4 mb-2 text-[#FF79C6]" />
-                      <h3 className="text-[11px] font-medium text-white">{feature.title}</h3>
-                      <p className="text-[10px] text-white/30 mt-1">{feature.description}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <button
-                  onClick={() => setShowEarlyAccess(true)}
-                  className="text-[10px] uppercase tracking-widest text-[#FF79C6] hover:text-white transition-colors flex items-center gap-2"
-                >
-                  Get Early Access <ArrowRight className="h-3 w-3" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Other Products - Minimal */}
-        <section className="py-20 px-6 border-t border-white/5 bg-black">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-16">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/30">Products</span>
-              <h2 className="text-xl md:text-2xl font-medium text-white mt-2">Building the Future</h2>
-            </div>
-
-            <div className="space-y-16">
-              {products.slice(1).map((product, index) => (
-                <div
-                  key={index}
-                  className={`grid lg:grid-cols-5 gap-8 items-center ${index % 2 === 1 ? '' : ''}`}
-                >
-                  <div className={`lg:col-span-3 relative group ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
-                    <div className="absolute -inset-1 bg-[#FF79C6]/10 rounded-lg blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    <div className="relative overflow-hidden rounded-lg border border-white/5">
-                      <Image
-                        src={product.image}
-                        alt={product.name}
-                        width={600}
-                        height={380}
-                        className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-all duration-500"
-                      />
-                      <span className="absolute top-3 left-3 text-[8px] uppercase tracking-widest text-[#FF79C6]/70 bg-black/50 px-2 py-1 rounded backdrop-blur-sm">
-                        {product.status}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className={`lg:col-span-2 space-y-4 ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-                    <div>
-                      <h3 className="text-lg font-medium text-white">{product.name}</h3>
-                      <p className="text-[10px] uppercase tracking-[0.2em] text-[#FF79C6]/70 mt-1">{product.tagline}</p>
-                    </div>
-                    <p className="text-xs text-white/40 leading-relaxed">{product.description}</p>
-                    <div className="space-y-2 pt-2">
-                      {product.features.slice(0, 2).map((feature, fIndex) => (
-                        <div key={fIndex} className="flex items-center gap-2">
-                          <feature.icon className="h-3 w-3 text-[#FF79C6]/50" />
-                          <span className="text-[10px] text-white/50">{feature.title}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+      {/* ===================== QUALITY & SECURITY ===================== */}
+      <section className="px-6 py-28 md:py-36 bg-[#fafafa] border-t border-[#e8eaed] overflow-hidden">
+        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+          <Reveal>
+            <span className="eyebrow text-[#EA4335]">Quality & Security</span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-[-0.03em] text-[#202124] mt-4 leading-[1.02]">Nothing ships<br />until it&apos;s solid.</h2>
+            <p className="text-lg text-[#5f6368] mt-6 leading-relaxed max-w-lg">
+              We hold our software to an extreme quality bar and run dedicated security-threat testing on
+              everything we build — so what you launch is fast, reliable, and safe.
+            </p>
+            <div className="mt-8 grid sm:grid-cols-2 gap-x-8 gap-y-6">
+              {security.map((c) => (
+                <div key={c.title}>
+                  <span className="block w-8 h-1 rounded-full mb-3" style={{ backgroundColor: c.color }} />
+                  <h3 className="text-base font-semibold text-[#202124]">{c.title}</h3>
+                  <p className="text-sm text-[#5f6368] mt-1">{c.desc}</p>
                 </div>
               ))}
             </div>
-          </div>
-        </section>
+          </Reveal>
+          <Reveal delay={120} className="order-first lg:order-last">
+            <div className="relative aspect-[4/3] w-full rounded-[2.75rem] overflow-hidden">
+              <Image src="/img/secure.png" alt="Colorful abstract of security and quality" fill className="object-cover" sizes="(max-width:1024px) 90vw, 560px" />
+              <div className="absolute inset-0 pointer-events-none rounded-[2.75rem]" style={{ boxShadow: 'inset 0 0 80px 34px #fafafa' }} />
+            </div>
+          </Reveal>
+        </div>
+      </section>
 
-        {/* Philosophy - Minimal */}
-        <section className="py-20 px-6 border-t border-white/5 bg-black">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="text-[10px] uppercase tracking-[0.2em] text-white/30">Philosophy</span>
-            <h2 className="text-lg font-medium text-white mt-3 mb-8">Engineering That Matters</h2>
-
-            <div className="grid grid-cols-2 gap-3">
-              {[
-                'Engineering before aesthetics',
-                'Reality before hype',
-                'Systems before features',
-                'Long-term impact',
-              ].map((principle, index) => (
-                <div key={index} className="p-4 border border-white/5 rounded-lg hover:border-white/10 transition-colors">
-                  <p className="text-[11px] text-white/60">{principle}</p>
+      {/* ===================== RESEARCH ===================== */}
+      <section id="research" className="px-6 py-28 md:py-36 scroll-mt-20 border-t border-[#e8eaed] overflow-hidden">
+        <div className="max-w-5xl mx-auto text-center">
+          <Reveal>
+            <span className="eyebrow text-[#34A853]">Research</span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-[-0.03em] text-[#202124] mt-4 leading-[1.02]">We research the hard problems.</h2>
+            <p className="text-lg text-[#5f6368] mt-6 leading-relaxed max-w-2xl mx-auto">
+              We actively research in software and AI, and turn that work into solutions for the hard
+              problems businesses actually face — not just the easy ones.
+            </p>
+          </Reveal>
+          <Reveal delay={120}>
+            <div className="relative aspect-[16/9] w-full max-w-3xl mx-auto mt-12 rounded-[2.75rem] overflow-hidden">
+              <Image src="/img/research.png" alt="Colorful abstract of research and discovery" fill className="object-cover" sizes="(max-width:1024px) 90vw, 760px" />
+              <div className="absolute inset-0 pointer-events-none rounded-[2.75rem]" style={{ boxShadow: 'inset 0 0 90px 38px #ffffff' }} />
+            </div>
+          </Reveal>
+          <Reveal delay={160}>
+            <div className="grid sm:grid-cols-3 gap-x-10 gap-y-10 mt-12 text-left">
+              {research.map((c) => (
+                <div key={c.title}>
+                  <span className="block w-8 h-1 rounded-full mb-3" style={{ backgroundColor: c.color }} />
+                  <h3 className="text-lg font-semibold text-[#202124]">{c.title}</h3>
+                  <p className="text-sm text-[#5f6368] mt-1.5 leading-relaxed">{c.desc}</p>
                 </div>
               ))}
             </div>
+          </Reveal>
+        </div>
+      </section>
 
-            <Link href="/about">
-              <button className="text-[10px] uppercase tracking-widest text-[#FF79C6] hover:text-white transition-colors flex items-center gap-2 mx-auto mt-8">
-                Learn More <ArrowRight className="h-3 w-3" />
-              </button>
+      {/* ===================== WHO WE SERVE ===================== */}
+      <section className="px-6 py-28 md:py-36 bg-[#fafafa] border-t border-[#e8eaed]">
+        <div className="max-w-6xl mx-auto">
+          <Reveal>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-[-0.03em] text-[#202124] leading-[1.02] max-w-3xl">
+              For companies, businesses<span className="text-[#4285F4]">,</span> and individuals.
+            </h2>
+          </Reveal>
+          <Reveal delay={120}>
+            <div className="grid sm:grid-cols-3 gap-x-10 gap-y-12 mt-16 border-t border-[#e0e2e6] pt-12">
+              {audience.map((a) => (
+                <div key={a.title}>
+                  <span className="block w-9 h-1 rounded-full mb-4" style={{ backgroundColor: a.color }} />
+                  <h3 className="text-xl font-semibold text-[#202124]">{a.title}</h3>
+                  <p className="text-sm text-[#5f6368] mt-2 leading-relaxed">{a.description}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ===================== WHY HITROO ===================== */}
+      <section className="px-6 py-28 md:py-36 border-t border-[#e8eaed]">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="max-w-2xl mb-14">
+            <span className="eyebrow text-[#EA4335]">Why HITROO</span>
+            <h2 className="text-4xl md:text-6xl font-bold tracking-[-0.03em] text-[#202124] mt-4 leading-[1.02]">A partner, not<br />just a vendor.</h2>
+          </Reveal>
+          <Reveal delay={120}>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12 border-t border-[#e8eaed] pt-12">
+              {why.map((w) => (
+                <div key={w.title}>
+                  <span className="block w-8 h-1 rounded-full mb-3" style={{ backgroundColor: w.color }} />
+                  <h3 className="text-xl font-semibold text-[#202124]">{w.title}</h3>
+                  <p className="text-sm text-[#5f6368] mt-2 leading-relaxed">{w.description}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ===================== CTA ===================== */}
+      <section className="px-6 py-36 md:py-44 bg-[#fafafa] border-t border-[#e8eaed] text-center">
+        <Reveal className="max-w-3xl mx-auto">
+          <h2 className="text-5xl md:text-7xl font-bold tracking-[-0.03em] text-[#202124] leading-[1.0]">
+            Let&apos;s build something <span className="text-brand">intelligent</span>.
+          </h2>
+          <p className="text-lg text-[#5f6368] mt-7">Start a project, modernize what you have, or get support — we&apos;re in {COMPANY.location}.</p>
+          <div className="flex items-center justify-center gap-4 mt-10">
+            <Link href="/contact" className="inline-flex items-center gap-2 bg-[#202124] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all">
+              Start a Project <ArrowRight className="h-4 w-4" />
             </Link>
+            <a href="#support" className="text-sm font-semibold text-[#5f6368] hover:text-[#4285F4] transition-colors">Get support</a>
           </div>
-        </section>
+        </Reveal>
+      </section>
 
-        {/* Articles Section */}
-        <section className="py-20 px-6 border-t border-white/5 bg-black">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/30">Resources</span>
-              <h2 className="text-xl font-medium text-white mt-2">Articles</h2>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {articles.length > 0 ? articles.slice(0, 3).map((article) => (
-                <Link key={article.id} href={`/articles/${article.id}`}>
-                  <div className="group p-5 border border-white/5 rounded-lg hover:border-[#FF79C6]/30 transition-all cursor-pointer h-full">
-                    <span className="text-[8px] uppercase tracking-widest text-[#FF79C6]/70">{article.category}</span>
-                    <h3 className="text-sm font-medium text-white mt-2 group-hover:text-[#FF79C6] transition-colors">{article.title}</h3>
-                    <p className="text-[10px] text-white/30 mt-3">{article.date}</p>
-                  </div>
-                </Link>
-              )) : (
-                <div className="col-span-3 text-center py-8">
-                  <p className="text-xs text-white/30">No articles yet. Check back soon!</p>
-                </div>
-              )}
-            </div>
-
-            <div className="text-center mt-8">
-              <button className="text-[10px] uppercase tracking-widest text-white/50 hover:text-[#FF79C6] transition-colors">
-                View All Articles
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* Latest News Section */}
-        <section className="py-20 px-6 border-t border-white/5 bg-black">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-12">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#FF79C6]">Updates</span>
-              <h2 className="text-xl font-medium text-white mt-2">Latest News</h2>
-            </div>
-
-            <div className="space-y-4">
-              {newsItems.length > 0 ? newsItems.slice(0, 4).map((news) => (
-                <Link key={news.id} href={`/news/${news.id}`}>
-                  <div className={`flex items-center justify-between p-4 rounded-lg border transition-all cursor-pointer ${news.highlight ? 'border-[#FF79C6]/30 bg-[#FF79C6]/5' : 'border-white/5 hover:border-white/10'}`}>
-                    <div className="flex items-center gap-4">
-                      {news.highlight && <div className="w-2 h-2 rounded-full bg-[#FF79C6] animate-pulse" />}
-                      <h3 className={`text-xs font-medium ${news.highlight ? 'text-[#FF79C6]' : 'text-white/80'}`}>{news.title}</h3>
-                    </div>
-                    <span className="text-[10px] text-white/30">{news.date}</span>
-                  </div>
-                </Link>
-              )) : (
-                <div className="text-center py-8">
-                  <p className="text-xs text-white/30">No news yet. Check back soon!</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA - Minimal */}
-        <section className="py-24 px-6 border-t border-white/5 bg-black">
-          <div className="max-w-2xl mx-auto text-center space-y-6">
-            <h2 className="text-xl font-medium text-white">Ready to build the future?</h2>
-            <p className="text-xs text-white/40">Join us in making intelligent systems accessible.</p>
-            <div className="flex items-center justify-center gap-4 pt-4">
-              <button
-                onClick={() => setShowEarlyAccess(true)}
-                className="text-[10px] uppercase tracking-widest bg-[#FF79C6] text-black px-5 py-2.5 rounded hover:bg-[#FF79C6]/90 transition-colors"
-              >
-                Get Early Access
-              </button>
-              <Link href="/about">
-                <span className="text-[10px] uppercase tracking-widest text-white/50 hover:text-white transition-colors">
-                  Learn More
-                </span>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Footer */}
-        <footer className="py-12 px-6 border-t border-white/5 bg-black">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-4 gap-8 mb-10">
-              {/* Brand */}
-              <div className="md:col-span-1">
-                <Link href="/" className="flex items-center gap-2 mb-4">
-                  <Image src="/favicon/favicon-96x96.png" alt="HITROO" width={24} height={24} className="rounded-sm" />
-                  <span className="text-sm font-medium text-white">HITROO</span>
-                </Link>
-                <p className="text-[10px] text-white/40 leading-relaxed">
-                  Intelligence, Unbound.
-                </p>
-              </div>
-
-              {/* Products */}
-              <div>
-                <h4 className="text-[10px] uppercase tracking-widest text-white/50 mb-4">Products</h4>
-                <div className="space-y-2">
-                  {['Capsona', 'Attyn', 'Belecure', 'Mockello', 'AI Marketing'].map((item) => (
-                    <a key={item} href="#products" className="block text-xs text-white/40 hover:text-[#FF79C6] transition-colors">{item}</a>
-                  ))}
-                </div>
-              </div>
-
-              {/* Company */}
-              <div>
-                <h4 className="text-[10px] uppercase tracking-widest text-white/50 mb-4">Company</h4>
-                <div className="space-y-2">
-                  <Link href="/about" className="block text-xs text-white/40 hover:text-[#FF79C6] transition-colors">About</Link>
-                  <a href="#" className="block text-xs text-white/40 hover:text-[#FF79C6] transition-colors">Articles</a>
-                  <a href="#" className="block text-xs text-white/40 hover:text-[#FF79C6] transition-colors">News</a>
-                  <Link href="/careers" className="block text-xs text-white/40 hover:text-[#FF79C6] transition-colors">Careers</Link>
-                </div>
-              </div>
-
-              {/* Contact */}
-              <div>
-                <h4 className="text-[10px] uppercase tracking-widest text-white/50 mb-4">Contact</h4>
-                <div className="space-y-3">
-                  <a href="mailto:Hello@hitroo.com" className="flex items-center gap-2 text-xs text-white/40 hover:text-[#FF79C6] transition-colors">
-                    <span>Hello@hitroo.com</span>
-                  </a>
-                  <a href="tel:+917550000805" className="flex items-center gap-2 text-xs text-white/40 hover:text-[#FF79C6] transition-colors">
-                    <span>+91 7550000805</span>
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom bar */}
-            <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
-              <p className="text-[10px] text-white/20">© {new Date().getFullYear()} HITROO. All rights reserved.</p>
-              <div className="flex items-center gap-6">
-                <a href="#" className="text-[10px] text-white/20 hover:text-white/50 transition-colors">Privacy</a>
-                <a href="#" className="text-[10px] text-white/20 hover:text-white/50 transition-colors">Terms</a>
-              </div>
-            </div>
-          </div>
-        </footer>
-
-        {/* Lead Capture Popup */}
-        {showLeadPopup && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            {/* Backdrop */}
-            <div
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-              onClick={() => !isSubmittingLead && setShowLeadPopup(false)}
-            />
-
-            {/* Modal */}
-            <div className="relative w-full max-w-md animate-in fade-in zoom-in-95 duration-200">
-              {/* Glow */}
-              <div className="absolute -inset-1 bg-[#FF79C6]/20 rounded-2xl blur-xl" />
-
-              <div className="relative bg-black border border-[#FF79C6]/30 rounded-2xl overflow-hidden">
-                {/* Top accent */}
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF79C6] to-transparent" />
-
-                <div className="p-6">
-                  {leadSubmitted ? (
-                    <div className="text-center py-8">
-                      <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[#FF79C6]/20 flex items-center justify-center">
-                        <Sparkles className="h-6 w-6 text-[#FF79C6]" />
-                      </div>
-                      <h3 className="text-lg font-medium text-white">We will reach out soon</h3>
-                      <p className="text-xs text-white/40 mt-2">Our team will contact you shortly.</p>
-                    </div>
-                  ) : (
-                    <>
-                      {/* Header */}
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-3">
-                          <Image
-                            src="/favicon/favicon-96x96.png"
-                            alt="HITROO"
-                            width={24}
-                            height={24}
-                            className="rounded-sm"
-                          />
-                          <div>
-                            <h3 className="text-sm font-medium text-white">Let us help you build it</h3>
-                            <p className="text-[10px] text-white/40">Share your number, we will call you back</p>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => setShowLeadPopup(false)}
-                          className="p-1 rounded hover:bg-white/10 transition-colors"
-                        >
-                          <X className="h-4 w-4 text-white/40 hover:text-white" />
-                        </button>
-                      </div>
-
-                      {/* Context */}
-                      <div className="mb-4 p-3 rounded-lg bg-white/5 border border-white/10">
-                        <p className="text-[10px] uppercase tracking-widest text-[#FF79C6]/70 mb-1">Your requirement</p>
-                        <p className="text-xs text-white/70 line-clamp-2">{leadContext}</p>
-                      </div>
-
-                      {/* Name Input */}
-                      <div className="mb-3">
-                        <input
-                          type="text"
-                          value={leadName}
-                          onChange={(e) => setLeadName(e.target.value)}
-                          placeholder="Your name"
-                          className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50 transition-colors"
-                          style={{ caretColor: '#FF79C6' }}
-                        />
-                      </div>
-
-                      {/* Email Input */}
-                      <div className="mb-3">
-                        <input
-                          type="email"
-                          value={leadEmail}
-                          onChange={(e) => setLeadEmail(e.target.value)}
-                          placeholder="Email address"
-                          className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50 transition-colors"
-                          style={{ caretColor: '#FF79C6' }}
-                        />
-                      </div>
-
-                      {/* Phone Input */}
-                      <div className="mb-4">
-                        <input
-                          type="tel"
-                          value={leadPhone}
-                          onChange={(e) => setLeadPhone(e.target.value)}
-                          placeholder="Phone number (optional)"
-                          className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50 transition-colors"
-                          style={{ caretColor: '#FF79C6' }}
-                        />
-                      </div>
-
-                      {/* Submit */}
-                      <button
-                        onClick={submitLead}
-                        disabled={(!leadPhone.trim() && !leadEmail.trim()) || isSubmittingLead}
-                        className="w-full py-3 bg-[#FF79C6] text-black text-xs uppercase tracking-widest font-medium rounded-lg hover:bg-[#FF79C6]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                      >
-                        {isSubmittingLead ? (
-                          <>
-                            <Loader2 className="h-3 w-3 animate-spin" />
-                            Submitting
-                          </>
-                        ) : (
-                          'Get a Callback'
-                        )}
-                      </button>
-
-                      <p className="text-[10px] text-white/30 text-center mt-4">
-                        Or reach us at Hello@hitroo.com
-                      </p>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Early Access Popup */}
-        {showEarlyAccess && (
-          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-            {/* Backdrop */}
-            <div
-              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-              onClick={() => !isSubmittingEa && setShowEarlyAccess(false)}
-            />
-
-            {/* Modal */}
-            <div className="relative w-full max-w-md animate-in fade-in zoom-in-95 duration-200">
-              {/* Glow */}
-              <div className="absolute -inset-1 bg-[#FF79C6]/20 rounded-2xl blur-xl" />
-
-              <div className="relative bg-black border border-[#FF79C6]/30 rounded-2xl overflow-hidden">
-                {/* Top accent */}
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#FF79C6] to-transparent" />
-
-                <div className="p-6">
-                  {eaSubmitted ? (
-                    <div className="text-center py-8">
-                      <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[#FF79C6]/20 flex items-center justify-center">
-                        <Sparkles className="h-6 w-6 text-[#FF79C6]" />
-                      </div>
-                      <h3 className="text-lg font-medium text-white">You are on the list!</h3>
-                      <p className="text-xs text-white/40 mt-2">We will notify you when early access opens.</p>
-                    </div>
-                  ) : (
-                    <>
-                      {/* Header */}
-                      <div className="flex items-center justify-between mb-6">
-                        <div className="flex items-center gap-3">
-                          <Image
-                            src="/favicon/favicon-96x96.png"
-                            alt="HITROO"
-                            width={24}
-                            height={24}
-                            className="rounded-sm"
-                          />
-                          <div>
-                            <h3 className="text-sm font-medium text-white">Get Early Access</h3>
-                            <p className="text-[10px] text-white/40">Be first to experience HITROO</p>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => setShowEarlyAccess(false)}
-                          className="p-1 rounded hover:bg-white/10 transition-colors"
-                        >
-                          <X className="h-4 w-4 text-white/40 hover:text-white" />
-                        </button>
-                      </div>
-
-                      {/* Name Input */}
-                      <div className="mb-3">
-                        <input
-                          type="text"
-                          value={eaName}
-                          onChange={(e) => setEaName(e.target.value)}
-                          placeholder="Your name"
-                          className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50 transition-colors"
-                          style={{ caretColor: '#FF79C6' }}
-                        />
-                      </div>
-
-                      {/* Email Input */}
-                      <div className="mb-3">
-                        <input
-                          type="email"
-                          value={eaEmail}
-                          onChange={(e) => setEaEmail(e.target.value)}
-                          placeholder="Email address"
-                          className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50 transition-colors"
-                          style={{ caretColor: '#FF79C6' }}
-                        />
-                      </div>
-
-                      {/* Phone Input */}
-                      <div className="mb-3">
-                        <input
-                          type="tel"
-                          value={eaPhone}
-                          onChange={(e) => setEaPhone(e.target.value)}
-                          placeholder="Phone number (optional)"
-                          className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50 transition-colors"
-                          style={{ caretColor: '#FF79C6' }}
-                        />
-                      </div>
-
-                      {/* Reason Input */}
-                      <div className="mb-4">
-                        <textarea
-                          value={eaReason}
-                          onChange={(e) => setEaReason(e.target.value)}
-                          placeholder="Why are you interested in early access?"
-                          rows={3}
-                          className="w-full px-4 py-2.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-[#FF79C6]/50 transition-colors resize-none"
-                          style={{ caretColor: '#FF79C6' }}
-                        />
-                      </div>
-
-                      {/* Submit */}
-                      <button
-                        onClick={submitEarlyAccess}
-                        disabled={(!eaPhone.trim() && !eaEmail.trim()) || isSubmittingEa}
-                        className="w-full py-3 bg-[#FF79C6] text-black text-xs uppercase tracking-widest font-medium rounded-lg hover:bg-[#FF79C6]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                      >
-                        {isSubmittingEa ? (
-                          <>
-                            <Loader2 className="h-3 w-3 animate-spin" />
-                            Submitting
-                          </>
-                        ) : (
-                          'Join Early Access'
-                        )}
-                      </button>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </>
+      <Footer />
+    </div>
   );
 }
-

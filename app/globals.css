@@ -2,89 +2,120 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Comfortaa Font */
+/* ============================================
+   SF Pro Display — Apple system display font
+   ============================================ */
 @font-face {
-  font-family: 'Comfortaa';
-  src: url('/fonts/Comfortaa/Comfortaa-VariableFont_wght.ttf') format('truetype');
-  font-weight: 300 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Comfortaa';
-  src: url('/fonts/Comfortaa/static/Comfortaa-Light.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Comfortaa';
-  src: url('/fonts/Comfortaa/static/Comfortaa-Regular.ttf') format('truetype');
+  font-family: 'SF Pro Display';
+  src: url('/fonts/sf-pro-display/SFPRODISPLAYREGULAR.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Comfortaa';
-  src: url('/fonts/Comfortaa/static/Comfortaa-Medium.ttf') format('truetype');
+  font-family: 'SF Pro Display';
+  src: url('/fonts/sf-pro-display/SFPRODISPLAYMEDIUM.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
+/* No dedicated normal SemiBold file — map 600 to Medium for graceful weight */
 @font-face {
-  font-family: 'Comfortaa';
-  src: url('/fonts/Comfortaa/static/Comfortaa-SemiBold.ttf') format('truetype');
+  font-family: 'SF Pro Display';
+  src: url('/fonts/sf-pro-display/SFPRODISPLAYMEDIUM.otf') format('opentype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Comfortaa';
-  src: url('/fonts/Comfortaa/static/Comfortaa-Bold.ttf') format('truetype');
+  font-family: 'SF Pro Display';
+  src: url('/fonts/sf-pro-display/SFPRODISPLAYBOLD.otf') format('opentype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
+/* Heavier weights only ship as italics in this pack — used for accents */
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/sf-pro-display/SFPRODISPLAYLIGHTITALIC.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/sf-pro-display/SFPRODISPLAYSEMIBOLDITALIC.otf') format('opentype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/sf-pro-display/SFPRODISPLAYHEAVYITALIC.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'SF Pro Display';
+  src: url('/fonts/sf-pro-display/SFPRODISPLAYBLACKITALIC.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ============================================
+   Theme — White primary + Google brand colors
+   ============================================ */
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
-  --hitroo-pink: #FF79C6;
+  /* Google brand palette */
+  --g-blue: #4285F4;
+  --g-red: #EA4335;
+  --g-yellow: #FBBC05;
+  --g-green: #34A853;
+
+  /* Ink + surfaces */
+  --ink: #202124;
+  --ink-soft: #5f6368;
+  --ink-faint: #80868b;
+  --line: #e8eaed;
+  --surface: #f8f9fa;
 }
 
 @layer base {
   :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 330 100% 73%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 330 100% 73%;
-    --accent-foreground: 0 0% 0%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 330 100% 73%;
-    --chart-1: 330 100% 73%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --radius: 0.5rem;
+    --background: 0 0% 100%;
+    --foreground: 220 9% 13%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 9% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 9% 13%;
+    --primary: 217 89% 61%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 210 17% 98%;
+    --secondary-foreground: 220 9% 13%;
+    --muted: 210 17% 96%;
+    --muted-foreground: 214 5% 39%;
+    --accent: 217 89% 61%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 4 81% 56%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 216 12% 92%;
+    --input: 216 12% 92%;
+    --ring: 217 89% 61%;
+    --chart-1: 217 89% 61%;
+    --chart-2: 4 81% 56%;
+    --chart-3: 45 97% 50%;
+    --chart-4: 145 53% 43%;
+    --chart-5: 217 89% 61%;
+    --radius: 0.75rem;
   }
 }
 
@@ -98,69 +129,103 @@
   }
 
   body {
-    @apply bg-black text-white;
-    font-family: 'Comfortaa', sans-serif;
+    @apply bg-white text-[#202124];
+    font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    letter-spacing: -0.011em;
   }
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #000;
+  background: #fff;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 121, 198, 0.3);
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 121, 198, 0.5);
+  background: linear-gradient(180deg, var(--g-blue), var(--g-green));
+  border-radius: 99px;
+  border: 3px solid #fff;
 }
 
 /* Selection color */
 ::selection {
-  background: rgba(255, 121, 198, 0.3);
+  background: rgba(66, 133, 244, 0.18);
+  color: var(--ink);
+}
+
+/* ============================================
+   Brand helpers
+   ============================================ */
+
+/* Multi-color Google text gradient */
+.text-brand {
+  background: linear-gradient(90deg, #4285F4 0%, #EA4335 38%, #FBBC05 62%, #34A853 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Four-color block bar */
+.brand-bar {
+  background: linear-gradient(90deg, #4285F4 0%, #4285F4 25%, #EA4335 25%, #EA4335 50%, #FBBC05 50%, #FBBC05 75%, #34A853 75%, #34A853 100%);
+}
+
+/* Smooth four-color bar */
+.brand-bar-smooth {
+  background: linear-gradient(90deg, #4285F4, #EA4335, #FBBC05, #34A853);
+}
+
+/* Soft elevated card */
+.card-soft {
+  background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(60, 64, 67, 0.06), 0 1px 3px rgba(60, 64, 67, 0.04);
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+
+.card-soft:hover {
+  box-shadow: 0 6px 20px rgba(60, 64, 67, 0.12);
+  transform: translateY(-2px);
+}
+
+/* Frosted nav / surfaces on light bg */
+.glass {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--line);
+}
+
+/* Pill button (primary, Google blue) */
+.btn-primary {
+  background: var(--g-blue);
   color: #fff;
+  box-shadow: 0 1px 2px rgba(66, 133, 244, 0.3), 0 2px 6px rgba(66, 133, 244, 0.25);
+  transition: box-shadow 0.2s ease, transform 0.15s ease, background 0.2s ease;
 }
 
-/* Glow effects */
-.glow-pink {
-  box-shadow: 0 0 20px rgba(255, 121, 198, 0.3);
+.btn-primary:hover {
+  background: #3b7df4;
+  box-shadow: 0 4px 14px rgba(66, 133, 244, 0.4);
+  transform: translateY(-1px);
 }
 
-.text-glow {
-  text-shadow: 0 0 20px rgba(255, 121, 198, 0.5);
-}
-
-/* Smooth transitions for all interactive elements */
+/* Smooth transitions for interactive elements */
 a,
 button {
-  transition: all 0.2s ease;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
 }
 
-/* Glass effect */
-.glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-/* Gradient text helper */
-.gradient-text {
-  background: linear-gradient(135deg, #FF79C6, #BD93F9);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Animate in utilities */
+/* ============================================
+   Animations
+   ============================================ */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -177,29 +242,28 @@ button {
   animation: fadeIn 0.6s ease-out forwards;
 }
 
-/* Pulse glow animation */
-@keyframes pulseGlow {
-
-  0%,
-  100% {
-    box-shadow: 0 0 20px rgba(255, 121, 198, 0.3);
+/* Floating gradient orbs in hero */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
   }
-
-  50% {
-    box-shadow: 0 0 40px rgba(255, 121, 198, 0.5);
+  33% {
+    transform: translate(30px, -40px) scale(1.08);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.96);
   }
 }
 
-.pulse-glow {
-  animation: pulseGlow 2s ease-in-out infinite;
+.animate-float-slow {
+  animation: float-slow 18s ease-in-out infinite;
 }
 
-/* Border flow animation */
+/* Sheen sweep for the AI input border */
 @keyframes borderFlow {
   0% {
     background-position: -200% 0;
   }
-
   100% {
     background-position: 200% 0;
   }
@@ -207,4 +271,166 @@ button {
 
 .border-flow {
   animation: borderFlow 3s linear infinite;
+}
+
+/* Gentle bob for scroll cue */
+@keyframes bobble {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+.animate-bobble {
+  animation: bobble 2s ease-in-out infinite;
+}
+
+/* ============================================
+   Layout helpers
+   ============================================ */
+
+/* Section eyebrow label */
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-faint);
+}
+
+/* Subtle dotted background for hero sections */
+.bg-dots {
+  background-image: radial-gradient(circle, rgba(60, 64, 67, 0.06) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Faint grid background */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(60, 64, 67, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(60, 64, 67, 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Icon chip */
+.icon-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+}
+
+/* Staggered fade-in for grids */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.rise-in {
+  opacity: 0;
+  animation: riseIn 0.6s ease-out forwards;
+}
+
+/* ============================================
+   Hero — kinetic display type
+   ============================================ */
+
+/* Animated four-color gradient text that drifts */
+.text-kinetic {
+  background: linear-gradient(110deg, #4285F4, #EA4335, #FBBC05, #34A853, #4285F4);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: kineticShift 8s ease-in-out infinite;
+}
+
+@keyframes kineticShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Outlined / stroked display text */
+.text-stroke {
+  color: transparent;
+  -webkit-text-stroke: 2px #202124;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 768px) {
+  .text-stroke { -webkit-text-stroke: 3px #202124; }
+}
+
+/* Cursor spotlight layer (positioned via --mx/--my custom props) */
+.spotlight {
+  background: radial-gradient(
+    520px circle at var(--mx, 50%) var(--my, 30%),
+    rgba(66, 133, 244, 0.12),
+    rgba(52, 168, 83, 0.06) 35%,
+    transparent 60%
+  );
+  transition: background 0.15s ease-out;
+}
+
+/* Infinite marquee */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Floating tilt cards in hero */
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
+  50% { transform: translateY(-12px) rotate(var(--rot, 0deg)); }
+}
+
+.float-card {
+  animation: floatCard 7s ease-in-out infinite;
+}
+
+/* Conic spinning ring accent */
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+
+.spin-slow {
+  animation: spinSlow 18s linear infinite;
+}
+
+/* Image whose edges fade/blur into the page background */
+.img-fade {
+  -webkit-mask-image: radial-gradient(ellipse 76% 76% at 50% 50%, #000 52%, transparent 100%);
+  mask-image: radial-gradient(ellipse 76% 76% at 50% 50%, #000 52%, transparent 100%);
+}
+
+/* Softer linear fade variant (top/bottom heavier) */
+.img-fade-soft {
+  -webkit-mask-image: radial-gradient(ellipse 85% 80% at 50% 50%, #000 60%, transparent 100%);
+  mask-image: radial-gradient(ellipse 85% 80% at 50% 50%, #000 60%, transparent 100%);
+}
+
+/* Rotating-word swap (hero centerpiece) */
+@keyframes wordIn {
+  0% { opacity: 0; transform: translateY(0.45em); filter: blur(8px); }
+  100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+.animate-word {
+  display: inline-block;
+  animation: wordIn 0.55s cubic-bezier(0.22, 0.7, 0.2, 1) both;
+}
+
+/* Slow drifting aurora backdrop */
+@keyframes aurora {
+  0%, 100% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+  50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.15); }
+}
+
+.animate-aurora {
+  animation: aurora 24s ease-in-out infinite;
 }

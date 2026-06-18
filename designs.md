@@ -21,9 +21,10 @@ The user hates boxes. **Do not** use bordered/shadowed cards, chip-backgrounds b
 
 ## Imagery
 - Use **real, vivid, multi-color images** (generated with the Higgsfield CLI — see core memory `higgsfield-and-visual-verify`). Never monochrome/single-color. Style: glossy translucent 3D glass, Google palette + more, soft light gradient background, "no text".
-- Budget: generate at `gpt_image_2 --resolution 1k --quality medium`, `--aspect_ratio 4:3`, minimum count, `--wait --json` → download to `/public/img`.
-- **Edges must fade into the page.** Apply `.img-fade` (radial mask to transparent) so images merge with the background — never a hard rectangle. Place colorful images on **light** sections (their light bg blends; on dark they'd glow oddly).
-- Keep images meaningful to the section (ai → brain, craft → assembling blocks, secure → shield, research → molecules).
+- **Professional, not childish.** Always prompt for "premium, sophisticated, refined, cinematic studio render, NOT toy-like, NOT childish". Avoid literal/uncanny imagery (e.g. a realistic human eye) — favour clean abstract or industrial-product scenes. Keep images meaningful to the section.
+- Budget: `gpt_image_2 --resolution 1k --aspect_ratio 4:3 --wait --json` → download to `/public/img`. Use `--quality medium` for volume, `--quality high` for hero/marquee visuals.
+- **Edge treatment (current canonical):** wrap the image in `rounded-[2.75rem] overflow-hidden` and overlay an inset feather that matches the section bg — `<div className="absolute inset-0 rounded-[2.75rem]" style={{ boxShadow: 'inset 0 0 80px 34px <section-bg>' }} />` (use `#ffffff` on white sections, `#fafafa` on grey). This keeps high rounded corners AND blends the edges into the page. (`.img-fade` radial-mask exists but erases corners — prefer the feather.)
+- Place colorful images on **light** sections. Service pages carry two images: `image` (hero) + `solutionImage` (in the "approach" section), both from `lib/site-data.ts`.
 
 ## Icons
 - **Minimize.** Prefer numerals, color dots/ticks, and images over icon clusters. Lucide only where it genuinely aids scanning (e.g. inside the phone-app mock, CTA arrows). Bare colored icons, never in a chip-box.

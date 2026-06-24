@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   manifest: '/favicon/manifest.json',
   other: {
     'msapplication-config': '/favicon/browserconfig.xml',
-    'msapplication-TileColor': '#ffffff',
+    'msapplication-TileColor': '#0a0a0a',
   },
   openGraph: {
     type: 'website',

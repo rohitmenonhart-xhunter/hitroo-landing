@@ -41,15 +41,15 @@ export async function POST(request: NextRequest) {
             replyTo: email || undefined,
             subject,
             html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#202124;">
-          <h2 style="color:#4285F4;margin-bottom:4px;">${esc(subject)}</h2>
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#0a0a0a;">
+          <h2 style="color:#0a0a0a;margin-bottom:4px;">${esc(subject)}</h2>
           <hr style="border:none;border-top:1px solid #eee;" />
           ${name ? `<p><strong>Name:</strong> ${esc(name)}</p>` : ''}
           ${email ? `<p><strong>Email:</strong> <a href="mailto:${esc(email)}">${esc(email)}</a></p>` : ''}
           ${phone ? `<p><strong>Phone:</strong> <a href="tel:${esc(phone)}">${esc(phone)}</a></p>` : ''}
           <p style="margin-top:16px;"><strong>Message</strong></p>
-          <div style="background:#f8f9fa;padding:15px;border-radius:12px;margin:8px 0;white-space:pre-wrap;">${esc(context || 'No details provided')}</div>
-          <p style="color:#80868b;font-size:12px;margin-top:16px;">Sent from the HITROO website · ${timestamp}</p>
+          <div style="background:#fafafa;padding:15px;border-radius:12px;margin:8px 0;white-space:pre-wrap;">${esc(context || 'No details provided')}</div>
+          <p style="color:#6b6b6b;font-size:12px;margin-top:16px;">Sent from the HITROO website · ${timestamp}</p>
         </div>`,
             text: `${subject}\n\n${name ? `Name: ${name}\n` : ''}${email ? `Email: ${email}\n` : ''}${phone ? `Phone: ${phone}\n` : ''}\nMessage:\n${context || 'No details provided'}\n\nSent from the HITROO website · ${timestamp}`,
         });
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
                     to: email,
                     subject: 'We\'ve received your message — HITROO',
                     html: acknowledgmentEmail({
-                        heading: `Thanks${name ? `, ${esc(name)}` : ''} — your message<br/>is <span style="color:#4285F4;">in</span>.`,
+                        heading: `Thanks${name ? `, ${esc(name)}` : ''} — your message<br/>is <span style="color:#0a0a0a;">in</span>.`,
                         intro: 'A member of the HITROO team will get back to you within a day. Here&rsquo;s a copy of what you sent us.',
                         recapLabel: 'Your message',
                         recapBody: esc(context || 'No details provided'),

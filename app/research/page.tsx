@@ -8,16 +8,16 @@ import Footer from '@/components/site/Footer';
 import Reveal from '@/components/site/Reveal';
 
 const focus = [
-  { title: 'Applied AI', desc: 'Models, fine-tuning, and inference that hold up in production.', color: '#4285F4' },
-  { title: 'Systems & performance', desc: 'Making hard, slow, or fragile software fast and reliable.', color: '#EA4335' },
-  { title: 'Automation', desc: 'Agents and workflows that take real work off people.', color: '#FBBC05' },
-  { title: 'Modernization', desc: 'Bringing legacy software into the AI era safely.', color: '#34A853' },
+  { title: 'Applied AI', desc: 'Models, fine-tuning, and inference that hold up in production.', color: '#0a0a0a' },
+  { title: 'Systems & performance', desc: 'Making hard, slow, or fragile software fast and reliable.', color: '#0a0a0a' },
+  { title: 'Automation', desc: 'Agents and workflows that take real work off people.', color: '#0a0a0a' },
+  { title: 'Modernization', desc: 'Bringing legacy software into the AI era safely.', color: '#0a0a0a' },
 ];
 
 const approach = [
-  { title: 'Real problems', desc: 'We research what businesses actually struggle with.', color: '#4285F4' },
-  { title: 'Hard problems', desc: 'The work other shops walk away from.', color: '#EA4335' },
-  { title: 'Into production', desc: 'Research that ships as product — not papers.', color: '#34A853' },
+  { title: 'Real problems', desc: 'We research what businesses actually struggle with.', color: '#0a0a0a' },
+  { title: 'Hard problems', desc: 'The work other shops walk away from.', color: '#0a0a0a' },
+  { title: 'Into production', desc: 'Research that ships as product — not papers.', color: '#0a0a0a' },
 ];
 
 export default function ResearchPage() {
@@ -29,15 +29,15 @@ export default function ResearchPage() {
       <section className="px-6 pt-36 md:pt-44 pb-20 overflow-hidden">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <Reveal>
-            <span className="eyebrow text-[#34A853]">Research</span>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-[-0.03em] text-[#202124] mt-4 leading-[1.0]">
+            <span className="eyebrow text-[#0a0a0a]">Research</span>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-[-0.03em] text-[#0a0a0a] mt-4 leading-[1.0]">
               We research the <span className="text-brand">hard</span> problems.
             </h1>
-            <p className="text-lg text-[#5f6368] mt-6 leading-relaxed max-w-md">
+            <p className="text-lg text-[#4a4a4a] mt-6 leading-relaxed max-w-md">
               We actively research in software and AI, and turn that work into solutions for the problems
               businesses actually face — not just the easy ones.
             </p>
-            <Link href="/contact" className="inline-flex items-center gap-2 bg-[#202124] text-white text-sm font-medium px-7 py-3.5 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all mt-8">
+            <Link href="/contact" className="inline-flex items-center gap-2 bg-[#0a0a0a] text-white text-sm font-medium px-7 py-3.5 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all mt-8">
               Bring us a hard one <ArrowRight className="h-4 w-4" />
             </Link>
           </Reveal>
@@ -51,19 +51,19 @@ export default function ResearchPage() {
       </section>
 
       {/* Focus areas */}
-      <section className="px-6 py-24 md:py-32 bg-[#fafafa] border-t border-[#e8eaed]">
+      <section className="px-6 py-24 md:py-32 bg-[#fafafa] border-t border-[#e5e5e5]">
         <div className="max-w-6xl mx-auto">
           <Reveal className="max-w-2xl mb-14">
-            <span className="eyebrow text-[#4285F4]">Focus areas</span>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-[-0.03em] text-[#202124] mt-3 leading-[1.02]">Where we go deep.</h2>
+            <span className="eyebrow text-[#0a0a0a]">Focus areas</span>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-[-0.03em] text-[#0a0a0a] mt-3 leading-[1.02]">Where we go deep.</h2>
           </Reveal>
           <Reveal delay={100}>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12 border-t border-[#e0e2e6] pt-12">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12 border-t border-[#e5e5e5] pt-12">
               {focus.map((c) => (
                 <div key={c.title}>
                   <span className="block w-8 h-1 rounded-full mb-4" style={{ backgroundColor: c.color }} />
-                  <h3 className="text-lg font-semibold text-[#202124]">{c.title}</h3>
-                  <p className="text-sm text-[#5f6368] mt-1.5 leading-relaxed">{c.desc}</p>
+                  <h3 className="text-lg font-semibold text-[#0a0a0a]">{c.title}</h3>
+                  <p className="text-sm text-[#4a4a4a] mt-1.5 leading-relaxed">{c.desc}</p>
                 </div>
               ))}
             </div>
@@ -72,19 +72,19 @@ export default function ResearchPage() {
       </section>
 
       {/* Approach */}
-      <section className="px-6 py-24 md:py-32 border-t border-[#e8eaed]">
+      <section className="px-6 py-24 md:py-32 border-t border-[#e5e5e5]">
         <div className="max-w-6xl mx-auto">
           <Reveal className="max-w-2xl mb-14">
-            <span className="eyebrow text-[#EA4335]">Our approach</span>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-[-0.03em] text-[#202124] mt-3 leading-[1.02]">Research that ships.</h2>
+            <span className="eyebrow text-[#0a0a0a]">Our approach</span>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-[-0.03em] text-[#0a0a0a] mt-3 leading-[1.02]">Research that ships.</h2>
           </Reveal>
           <Reveal delay={100}>
-            <div className="grid sm:grid-cols-3 gap-x-10 gap-y-12 border-t border-[#e8eaed] pt-12">
+            <div className="grid sm:grid-cols-3 gap-x-10 gap-y-12 border-t border-[#e5e5e5] pt-12">
               {approach.map((c) => (
                 <div key={c.title}>
                   <span className="block w-8 h-1 rounded-full mb-4" style={{ backgroundColor: c.color }} />
-                  <h3 className="text-xl font-semibold text-[#202124]">{c.title}</h3>
-                  <p className="text-sm text-[#5f6368] mt-2 leading-relaxed">{c.desc}</p>
+                  <h3 className="text-xl font-semibold text-[#0a0a0a]">{c.title}</h3>
+                  <p className="text-sm text-[#4a4a4a] mt-2 leading-relaxed">{c.desc}</p>
                 </div>
               ))}
             </div>
@@ -93,10 +93,10 @@ export default function ResearchPage() {
       </section>
 
       {/* CTA */}
-      <section className="px-6 py-32 md:py-40 bg-[#fafafa] border-t border-[#e8eaed] text-center">
+      <section className="px-6 py-32 md:py-40 bg-[#fafafa] border-t border-[#e5e5e5] text-center">
         <Reveal className="max-w-3xl mx-auto">
-          <h2 className="text-4xl md:text-6xl font-bold tracking-[-0.03em] text-[#202124] leading-[1.0]">Got a problem worth solving?</h2>
-          <Link href="/contact" className="inline-flex items-center gap-2 bg-[#202124] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all mt-9">Talk to us <ArrowRight className="h-4 w-4" /></Link>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-[-0.03em] text-[#0a0a0a] leading-[1.0]">Got a problem worth solving?</h2>
+          <Link href="/contact" className="inline-flex items-center gap-2 bg-[#0a0a0a] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all mt-9">Talk to us <ArrowRight className="h-4 w-4" /></Link>
         </Reveal>
       </section>
 

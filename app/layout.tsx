@@ -87,7 +87,7 @@ const orgLd = {
   '@id': `${SITE_URL}/#organization`,
   name: 'HITROO',
   url: SITE_URL,
-  logo: `${SITE_URL}/new_logo/logo_whitebg.png`,
+  logo: `${SITE_URL}/new_logo/new_logo.png`,
   image: `${SITE_URL}/og-image.png`,
   description: DESCRIPTION,
   slogan: 'Intelligence, Unbound',

@@ -9,8 +9,8 @@ import Footer from '@/components/site/Footer';
 import Reveal from '@/components/site/Reveal';
 import { services, COMPANY } from '@/lib/site-data';
 
-const FIELD = 'w-full px-4 py-3 bg-white border border-[#dadce0] rounded-xl text-sm text-[#202124] placeholder:text-[#80868b] focus:outline-none focus:border-[#4285F4] focus:ring-4 focus:ring-[#4285F4]/10 transition-all';
-const LABEL = 'block text-xs font-semibold uppercase tracking-widest text-[#5f6368] mb-2';
+const FIELD = 'w-full px-4 py-3 bg-white border border-[#dcdcdc] rounded-xl text-sm text-[#0a0a0a] placeholder:text-[#6b6b6b] focus:outline-none focus:border-[#0a0a0a] focus:ring-4 focus:ring-[#0a0a0a]/10 transition-all';
+const LABEL = 'block text-xs font-semibold uppercase tracking-widest text-[#4a4a4a] mb-2';
 
 export default function ContactPage() {
   const [name, setName] = useState('');
@@ -56,16 +56,16 @@ export default function ContactPage() {
       <section className="px-6 pt-36 md:pt-44 pb-16 overflow-hidden">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <Reveal>
-            <span className="eyebrow text-[#4285F4]">Contact</span>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-[-0.03em] text-[#202124] mt-4 leading-[1.0]">
+            <span className="eyebrow text-[#0a0a0a]">Contact</span>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-[-0.03em] text-[#0a0a0a] mt-4 leading-[1.0]">
               Let&apos;s build it <span className="text-brand">together</span>.
             </h1>
-            <p className="text-lg text-[#5f6368] mt-6 leading-relaxed max-w-md">
+            <p className="text-lg text-[#4a4a4a] mt-6 leading-relaxed max-w-md">
               Tell us about your project. We usually respond within a day — from {COMPANY.location}.
             </p>
             <div className="mt-8 space-y-2">
-              <a href={`mailto:${COMPANY.email}`} className="block text-lg font-semibold text-[#202124] hover:text-[#4285F4] transition-colors">{COMPANY.email}</a>
-              <a href={COMPANY.phoneHref} className="block text-lg font-semibold text-[#202124] hover:text-[#4285F4] transition-colors">{COMPANY.phone}</a>
+              <a href={`mailto:${COMPANY.email}`} className="block text-lg font-semibold text-[#0a0a0a] hover:text-[#0a0a0a] transition-colors">{COMPANY.email}</a>
+              <a href={COMPANY.phoneHref} className="block text-lg font-semibold text-[#0a0a0a] hover:text-[#0a0a0a] transition-colors">{COMPANY.phone}</a>
             </div>
           </Reveal>
           <Reveal delay={120} className="order-first lg:order-last">
@@ -78,19 +78,19 @@ export default function ContactPage() {
       </section>
 
       {/* Form */}
-      <section className="px-6 py-20 md:py-28 bg-[#fafafa] border-t border-[#e8eaed]">
+      <section className="px-6 py-20 md:py-28 bg-[#fafafa] border-t border-[#e5e5e5]">
         <div className="max-w-2xl mx-auto">
           {submitted ? (
             <Reveal className="text-center py-16">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[#34A853]/10 flex items-center justify-center">
-                <Check className="h-8 w-8 text-[#34A853]" />
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[#0a0a0a]/10 flex items-center justify-center">
+                <Check className="h-8 w-8 text-[#0a0a0a]" />
               </div>
-              <h2 className="text-3xl font-bold text-[#202124] mb-2">Message sent.</h2>
-              <p className="text-base text-[#5f6368]">Thank you for reaching out — our team will get back to you shortly.</p>
+              <h2 className="text-3xl font-bold text-[#0a0a0a] mb-2">Message sent.</h2>
+              <p className="text-base text-[#4a4a4a]">Thank you for reaching out — our team will get back to you shortly.</p>
             </Reveal>
           ) : (
             <Reveal>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.03em] text-[#202124] mb-10">Start a conversation.</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.03em] text-[#0a0a0a] mb-10">Start a conversation.</h2>
               <form onSubmit={submit} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
@@ -120,11 +120,11 @@ export default function ContactPage() {
                   <label className={LABEL}>Project details</label>
                   <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={5} className={`${FIELD} resize-none`} placeholder="Tell us what you'd like to build..." />
                 </div>
-                <button type="submit" disabled={(!email.trim() && !phone.trim()) || submitting} className="inline-flex items-center justify-center gap-2 bg-[#202124] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:translate-y-0">
+                <button type="submit" disabled={(!email.trim() && !phone.trim()) || submitting} className="inline-flex items-center justify-center gap-2 bg-[#0a0a0a] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:translate-y-0">
                   {submitting ? (<><Loader2 className="h-4 w-4 animate-spin" />Sending</>) : (<>Send message <ArrowRight className="h-4 w-4" /></>)}
                 </button>
-                {error && <p className="text-sm text-[#EA4335]">{error}</p>}
-                <p className="text-xs text-[#80868b]">Provide an email or phone number so we can reach you back.</p>
+                {error && <p className="text-sm text-[#0a0a0a]">{error}</p>}
+                <p className="text-xs text-[#6b6b6b]">Provide an email or phone number so we can reach you back.</p>
               </form>
             </Reveal>
           )}
@@ -132,10 +132,10 @@ export default function ContactPage() {
       </section>
 
       {/* Careers nudge */}
-      <section className="px-6 py-20 border-t border-[#e8eaed] text-center">
+      <section className="px-6 py-20 border-t border-[#e5e5e5] text-center">
         <Reveal className="max-w-2xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-bold tracking-[-0.02em] text-[#202124]">Looking to join us instead?</h2>
-          <Link href="/careers" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#4285F4] mt-4 hover:gap-2.5 transition-all">View open roles <ArrowRight className="h-4 w-4" /></Link>
+          <h2 className="text-2xl md:text-3xl font-bold tracking-[-0.02em] text-[#0a0a0a]">Looking to join us instead?</h2>
+          <Link href="/careers" className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0a0a0a] mt-4 hover:gap-2.5 transition-all">View open roles <ArrowRight className="h-4 w-4" /></Link>
         </Reveal>
       </section>
 

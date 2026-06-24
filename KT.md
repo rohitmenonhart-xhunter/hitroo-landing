@@ -26,18 +26,18 @@ A Chennai-based technology studio. It builds **custom software, mobile apps, des
 `app/services/layout.tsx`, `app/about/layout.tsx`, `app/careers/layout.tsx` originally did `export { default } from './page'` — which makes the **layout render the page and swallow `{children}`**, so every `/services/*` route showed the hub. Fixed: layouts now export a proper `({children}) => children` component (metadata stays). If a nested route ever renders its parent's page, check the layout for this.
 
 ## Shared components & motion
-`components/site/Nav.tsx`, `Footer.tsx`, and `Reveal.tsx` (scroll-reveal: fade+rise on view). Logo `/public/new_logo/logo_transparent.png` everywhere; no intro video.
+`components/site/Nav.tsx`, `Footer.tsx`, and `Reveal.tsx` (scroll-reveal: fade+rise on view). Logo `/public/new_logo/new_logo.png` (white "H" on a black tile, shown with `rounded-lg`) everywhere; `new_logo_transparent.png` is the transparent white-H variant for dark backgrounds; no intro video.
 
 ## The 7 services (`lib/site-data.ts`)
 Custom Software Development · Mobile App Development · Desktop App Development · AI Model Development & Training · AI Automation · Audit & AI Modernization · Managed & Custom Services. Each has `slug, title, short, tagline, icon, color, overview, capabilities[], features[], stack[]`.
 
 ## Key decisions made
-- **Theme:** white + Google's four colors + SF Pro (replaced old black/pink + Comfortaa). See [designs.md](designs.md).
+- **Theme:** **monochrome black & white** — white primary, near-black `#0a0a0a` secondary, **no hue anywhere** + SF Pro. (Full revamp from the earlier white + Google-four-colors theme.) Tokens live in `app/globals.css` (greyscale ink ramp + mono `.text-brand`/`.brand-bar`/`.btn-primary`); `lib/site-data.ts` `GOOGLE_COLORS` all resolve to `#0a0a0a`; all imagery is desaturated site-wide via a global `img { filter: grayscale(1) }` rule; `og-image.png` was physically converted to greyscale. See [designs.md](designs.md).
 - **No boxes** — editorial layout with hairlines, big type, big numerals, bare icons.
 - **Products removed entirely** — Capsona/Attyn/Belecure/Mockello/AI-Marketing and all `/products` pages deleted; products stripped from nav, footer, sitemap, JSON-LD, `site-data`.
 - **Support app named "HITROO"** (not "Retro" — that was a typo).
 - **Intro/splash video removed.**
-- **New logo** `/public/new_logo/logo_transparent.png` used in Nav, Footer, app mock.
+- **New logo** `/public/new_logo/new_logo.png` (white "H" on black tile) used in Nav, Footer, app mock; transparent white-H variant `new_logo_transparent.png` for dark backgrounds.
 
 ## Assets
 - `/public/hero/bg.png` — hero background (wavy lines).

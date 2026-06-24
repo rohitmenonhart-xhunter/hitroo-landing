@@ -27,11 +27,13 @@ import {
   ScanLine,
 } from 'lucide-react';
 
+// Monochrome theme: every accent resolves to near-black. The colour keys are
+// retained only as stable names so per-service `color` references keep working.
 export const GOOGLE_COLORS = {
-  blue: '#4285F4',
-  red: '#EA4335',
-  yellow: '#FBBC05',
-  green: '#34A853',
+  blue: '#0a0a0a',
+  red: '#0a0a0a',
+  yellow: '#0a0a0a',
+  green: '#0a0a0a',
 } as const;
 
 export interface Feature {

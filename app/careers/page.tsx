@@ -9,16 +9,16 @@ import Footer from '@/components/site/Footer';
 import Reveal from '@/components/site/Reveal';
 
 const POSITIONS = [
-  { id: 'fullstack', title: 'Full Stack Developer', description: 'End-to-end web & mobile with modern frameworks', color: '#4285F4' },
-  { id: 'frontend', title: 'Frontend Developer', description: 'Beautiful, responsive, performant interfaces', color: '#EA4335' },
-  { id: 'backend', title: 'Backend Developer', description: 'Scalable APIs, databases, and infrastructure', color: '#FBBC05' },
-  { id: 'hardware-mech', title: 'Hardware — Mechanical', description: 'Chassis design, 3D modeling, mechanical systems', color: '#34A853' },
-  { id: 'hardware-elec', title: 'Hardware — Electronics', description: 'STM-level embedded systems, PCB design, firmware', color: '#4285F4' },
-  { id: 'ml-ai', title: 'ML / AI Engineer', description: 'Model training, testing, fine-tuning, deployment', color: '#EA4335' },
+  { id: 'fullstack', title: 'Full Stack Developer', description: 'End-to-end web & mobile with modern frameworks', color: '#0a0a0a' },
+  { id: 'frontend', title: 'Frontend Developer', description: 'Beautiful, responsive, performant interfaces', color: '#0a0a0a' },
+  { id: 'backend', title: 'Backend Developer', description: 'Scalable APIs, databases, and infrastructure', color: '#0a0a0a' },
+  { id: 'hardware-mech', title: 'Hardware — Mechanical', description: 'Chassis design, 3D modeling, mechanical systems', color: '#0a0a0a' },
+  { id: 'hardware-elec', title: 'Hardware — Electronics', description: 'STM-level embedded systems, PCB design, firmware', color: '#0a0a0a' },
+  { id: 'ml-ai', title: 'ML / AI Engineer', description: 'Model training, testing, fine-tuning, deployment', color: '#0a0a0a' },
 ];
 
-const FIELD = 'w-full px-4 py-3 bg-white border border-[#dadce0] rounded-xl text-sm text-[#202124] placeholder:text-[#80868b] focus:outline-none focus:border-[#4285F4] focus:ring-4 focus:ring-[#4285F4]/10 transition-all';
-const LABEL = 'block text-xs font-semibold uppercase tracking-widest text-[#5f6368] mb-2';
+const FIELD = 'w-full px-4 py-3 bg-white border border-[#dcdcdc] rounded-xl text-sm text-[#0a0a0a] placeholder:text-[#6b6b6b] focus:outline-none focus:border-[#0a0a0a] focus:ring-4 focus:ring-[#0a0a0a]/10 transition-all';
+const LABEL = 'block text-xs font-semibold uppercase tracking-widest text-[#4a4a4a] mb-2';
 
 export default function CareersPage() {
   const [selectedPosition, setSelectedPosition] = useState('');
@@ -66,11 +66,11 @@ export default function CareersPage() {
       <section className="px-6 pt-36 md:pt-44 pb-20 overflow-hidden">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <Reveal>
-            <span className="eyebrow text-[#4285F4]">Careers</span>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-[-0.03em] text-[#202124] mt-4 leading-[1.0]">
+            <span className="eyebrow text-[#0a0a0a]">Careers</span>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-[-0.03em] text-[#0a0a0a] mt-4 leading-[1.0]">
               Join the <span className="text-brand">revolution</span>.
             </h1>
-            <p className="text-lg text-[#5f6368] mt-6 leading-relaxed max-w-md">
+            <p className="text-lg text-[#4a4a4a] mt-6 leading-relaxed max-w-md">
               We&apos;re looking for builders who want to craft something extraordinary — not just take a job.
             </p>
           </Reveal>
@@ -84,23 +84,23 @@ export default function CareersPage() {
       </section>
 
       {/* Program */}
-      <section className="px-6 py-24 md:py-32 bg-[#fafafa] border-t border-[#e8eaed]">
+      <section className="px-6 py-24 md:py-32 bg-[#fafafa] border-t border-[#e5e5e5]">
         <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-16">
           <Reveal>
-            <span className="eyebrow text-[#34A853]">The program</span>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.03em] text-[#202124] mt-3 leading-[1.05]">Internship to full-time.</h2>
-            <p className="text-base text-[#5f6368] mt-5 leading-relaxed">
+            <span className="eyebrow text-[#0a0a0a]">The program</span>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.03em] text-[#0a0a0a] mt-3 leading-[1.05]">Internship to full-time.</h2>
+            <p className="text-base text-[#4a4a4a] mt-5 leading-relaxed">
               Every role starts with a 3-month probation. Learn world-class skills, work on real projects, and
               earn a full-time role if your expertise aligns. Even if it doesn&apos;t, you leave with serious experience.
             </p>
-            <p className="text-sm text-[#80868b] mt-4">85% remote · communication via Gather and Slack · occasional in-person sessions.</p>
+            <p className="text-sm text-[#6b6b6b] mt-4">85% remote · communication via Gather and Slack · occasional in-person sessions.</p>
           </Reveal>
           <Reveal delay={100}>
-            <div className="divide-y divide-[#e0e2e6] border-t border-[#e0e2e6]">
+            <div className="divide-y divide-[#e5e5e5] border-t border-[#e5e5e5]">
               {['Hands-on experience with real projects', 'Access to world-class hardware and ML models — free', 'Structured mentorship: from stone to statue', 'A path to a full-time role'].map((b, i) => (
                 <div key={b} className="py-4 flex items-start gap-3">
-                  <span className="h-2 w-2 rounded-full mt-2 shrink-0" style={{ backgroundColor: ['#4285F4', '#EA4335', '#FBBC05', '#34A853'][i] }} />
-                  <span className="text-base text-[#3c4043]">{b}</span>
+                  <span className="h-2 w-2 rounded-full mt-2 shrink-0" style={{ backgroundColor: ['#0a0a0a', '#0a0a0a', '#0a0a0a', '#0a0a0a'][i] }} />
+                  <span className="text-base text-[#2a2a2a]">{b}</span>
                 </div>
               ))}
             </div>
@@ -109,25 +109,25 @@ export default function CareersPage() {
       </section>
 
       {/* Positions (hairline list, selectable) */}
-      <section className="px-6 py-24 md:py-32 border-t border-[#e8eaed]">
+      <section className="px-6 py-24 md:py-32 border-t border-[#e5e5e5]">
         <div className="max-w-5xl mx-auto">
           <Reveal className="mb-12">
-            <span className="eyebrow text-[#EA4335]">Open positions</span>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-[-0.03em] text-[#202124] mt-3 leading-[1.02]">Pick your role.</h2>
+            <span className="eyebrow text-[#0a0a0a]">Open positions</span>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-[-0.03em] text-[#0a0a0a] mt-3 leading-[1.02]">Pick your role.</h2>
           </Reveal>
-          <div className="border-t border-[#e0e2e6]">
+          <div className="border-t border-[#e5e5e5]">
             {POSITIONS.map((p, i) => {
               const isSel = selectedPosition === p.id;
               return (
                 <Reveal key={p.id} delay={i * 30} y={12}>
-                  <button onClick={() => setSelectedPosition(p.id)} className="group w-full text-left border-b border-[#e0e2e6]">
+                  <button onClick={() => setSelectedPosition(p.id)} className="group w-full text-left border-b border-[#e5e5e5]">
                     <div className="py-6 flex items-center gap-5">
-                      <span className="h-3 w-3 rounded-full shrink-0 transition-all" style={{ backgroundColor: isSel ? p.color : '#dadce0' }} />
+                      <span className="h-3 w-3 rounded-full shrink-0 transition-all" style={{ backgroundColor: isSel ? p.color : '#dcdcdc' }} />
                       <div className="flex-1 min-w-0 md:flex md:items-baseline md:justify-between md:gap-8">
-                        <h3 className={`text-xl md:text-2xl font-semibold tracking-[-0.02em] transition-colors ${isSel ? 'text-[#202124]' : 'text-[#3c4043] group-hover:text-[#202124]'}`}>{p.title}</h3>
-                        <p className="text-sm text-[#5f6368] mt-1 md:mt-0 md:text-right md:max-w-sm">{p.description}</p>
+                        <h3 className={`text-xl md:text-2xl font-semibold tracking-[-0.02em] transition-colors ${isSel ? 'text-[#0a0a0a]' : 'text-[#2a2a2a] group-hover:text-[#0a0a0a]'}`}>{p.title}</h3>
+                        <p className="text-sm text-[#4a4a4a] mt-1 md:mt-0 md:text-right md:max-w-sm">{p.description}</p>
                       </div>
-                      {isSel ? <Check className="h-5 w-5 shrink-0" style={{ color: p.color }} /> : <ArrowRight className="h-5 w-5 shrink-0 text-[#bdc1c6] group-hover:translate-x-1 transition-transform" />}
+                      {isSel ? <Check className="h-5 w-5 shrink-0" style={{ color: p.color }} /> : <ArrowRight className="h-5 w-5 shrink-0 text-[#b0b0b0] group-hover:translate-x-1 transition-transform" />}
                     </div>
                   </button>
                 </Reveal>
@@ -139,18 +139,18 @@ export default function CareersPage() {
 
       {/* Application */}
       {submitted ? (
-        <section className="px-6 py-28 bg-[#fafafa] border-t border-[#e8eaed]">
+        <section className="px-6 py-28 bg-[#fafafa] border-t border-[#e5e5e5]">
           <div className="max-w-md mx-auto text-center">
-            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[#34A853]/10 flex items-center justify-center"><Check className="h-8 w-8 text-[#34A853]" /></div>
-            <h2 className="text-3xl font-bold text-[#202124] mb-2">Application submitted.</h2>
-            <p className="text-base text-[#5f6368]">Thanks for your interest in HITROO. We&apos;ll review and get back to you soon.</p>
+            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-[#0a0a0a]/10 flex items-center justify-center"><Check className="h-8 w-8 text-[#0a0a0a]" /></div>
+            <h2 className="text-3xl font-bold text-[#0a0a0a] mb-2">Application submitted.</h2>
+            <p className="text-base text-[#4a4a4a]">Thanks for your interest in HITROO. We&apos;ll review and get back to you soon.</p>
           </div>
         </section>
       ) : (
-        <section className="px-6 py-24 md:py-32 bg-[#fafafa] border-t border-[#e8eaed]">
+        <section className="px-6 py-24 md:py-32 bg-[#fafafa] border-t border-[#e5e5e5]">
           <div className="max-w-2xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.03em] text-[#202124] mb-2">Apply now.</h2>
-            <p className="text-sm text-[#5f6368] mb-10">{selectedPosition ? `Applying for: ${POSITIONS.find((p) => p.id === selectedPosition)?.title}` : 'Select a position above to continue.'}</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.03em] text-[#0a0a0a] mb-2">Apply now.</h2>
+            <p className="text-sm text-[#4a4a4a] mb-10">{selectedPosition ? `Applying for: ${POSITIONS.find((p) => p.id === selectedPosition)?.title}` : 'Select a position above to continue.'}</p>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-5">
                 <div><label className={LABEL}>Name *</label><input type="text" name="name" value={formData.name} onChange={handleInputChange} required className={FIELD} placeholder="Your full name" /></div>
@@ -163,9 +163,9 @@ export default function CareersPage() {
               <div><label className={LABEL}>Portfolio / GitHub</label><input type="url" name="portfolio" value={formData.portfolio} onChange={handleInputChange} className={FIELD} placeholder="github.com/you" /></div>
               <div>
                 <label className={LABEL}>Resume (PDF) *</label>
-                <label className={`flex items-center justify-center gap-3 p-6 border-2 border-dashed rounded-xl cursor-pointer transition-all ${resume ? 'border-[#34A853]/50 bg-[#34A853]/5' : 'border-[#dadce0] hover:border-[#4285F4]/50'}`}>
+                <label className={`flex items-center justify-center gap-3 p-6 border-2 border-dashed rounded-xl cursor-pointer transition-all ${resume ? 'border-[#0a0a0a]/50 bg-[#0a0a0a]/5' : 'border-[#dcdcdc] hover:border-[#0a0a0a]/50'}`}>
                   <input type="file" accept=".pdf" onChange={handleFileChange} className="hidden" />
-                  {resume ? (<><Check className="h-4 w-4 text-[#34A853]" /><span className="text-sm text-[#34A853] font-medium">{resume.name}</span></>) : (<><Upload className="h-4 w-4 text-[#80868b]" /><span className="text-sm text-[#5f6368]">Click to upload PDF resume</span></>)}
+                  {resume ? (<><Check className="h-4 w-4 text-[#0a0a0a]" /><span className="text-sm text-[#0a0a0a] font-medium">{resume.name}</span></>) : (<><Upload className="h-4 w-4 text-[#6b6b6b]" /><span className="text-sm text-[#4a4a4a]">Click to upload PDF resume</span></>)}
                 </label>
               </div>
               <div><label className={LABEL}>Why HITROO? *</label><textarea name="whyHitroo" value={formData.whyHitroo} onChange={handleInputChange} required rows={3} className={`${FIELD} resize-none`} placeholder="What excites you about HITROO?" /></div>
@@ -184,10 +184,10 @@ export default function CareersPage() {
                   </select>
                 </div>
               </div>
-              <button type="submit" disabled={!selectedPosition || !formData.name || !formData.email || !formData.phone || !resume || isSubmitting} className="inline-flex items-center justify-center gap-2 bg-[#202124] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:translate-y-0">
+              <button type="submit" disabled={!selectedPosition || !formData.name || !formData.email || !formData.phone || !resume || isSubmitting} className="inline-flex items-center justify-center gap-2 bg-[#0a0a0a] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:translate-y-0">
                 {isSubmitting ? (<><Loader2 className="h-4 w-4 animate-spin" />Submitting</>) : (<>Submit application <ArrowRight className="h-4 w-4" /></>)}
               </button>
-              <p className="text-xs text-[#80868b]">By submitting, you agree to our internship terms. Applications are processed within 7 days.</p>
+              <p className="text-xs text-[#6b6b6b]">By submitting, you agree to our internship terms. Applications are processed within 7 days.</p>
             </form>
           </div>
         </section>

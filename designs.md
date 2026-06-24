@@ -5,10 +5,12 @@ The single source of truth for how the HITROO website looks and feels. Follow th
 ## North star
 Design like the best in the world — **Apple / Google / Stripe / Linear** caliber. Calm, confident, editorial, premium. When in doubt: more whitespace, bigger type, fewer elements.
 
-## Theme
-- **Light, white-primary.** Page background `#ffffff`; alternating sections use `#fafafa` for rhythm.
-- **Brand = Google's four colors**, used as *accents only* (icons, tiny dots, gradient words, top-ticks): blue `#4285F4`, red `#EA4335`, yellow `#FBBC05`, green `#34A853`.
-- **Ink:** `#202124` headings, `#3c4043` body-strong, `#5f6368` body, `#80868b` muted, hairlines `#e8eaed` / `#e0e2e6`.
+## Theme — Monochrome (black & white)
+- **White-primary, near-black secondary. NO hue anywhere** — the entire site is black, white, and greys only. Do not introduce any colored value.
+- Page background `#ffffff`; alternating sections use `#fafafa` (and occasionally `#f5f5f5`) for rhythm.
+- **Accent = near-black `#0a0a0a`**, used for icons, tiny dots, gradient words, top-ticks, and CTAs. Where a *four-tone* motif is wanted (segmented `.brand-bar`, four-dot clusters, the email top bar), use the greyscale ramp `#0a0a0a → #2a2a2a → #5a5a5a → #8a8a8a` so the four-part identity survives without color.
+- **Ink ramp (greyscale):** `#0a0a0a` headings & strong text, `#2a2a2a` body-strong, `#4a4a4a` body, `#6b6b6b` muted, hairlines `#e5e5e5`. Surfaces `#fafafa` / `#f5f5f5`.
+- The legacy CSS vars `--g-blue` / `--g-red` / `--g-yellow` / `--g-green` still exist but now all resolve to greys — kept only so older references don't break. `.text-brand` / `.text-kinetic` are now subtle **greyscale** gradients (silver sheen), not color.
 - **Type:** SF Pro Display (self-hosted, `/public/fonts/sf-pro-display`). Headings `font-bold tracking-[-0.03em]`, tight `leading-[1.0–1.02]`, fluid sizing via `clamp()`. Section headers ~`text-4xl md:text-6xl`.
 
 ## The #1 rule: NO BOXES
@@ -20,7 +22,7 @@ The user hates boxes. **Do not** use bordered/shadowed cards, chip-backgrounds b
 - Editorial list rows: index + big title (left) + description (right) + arrow, hover slides + colors via `--c` var.
 
 ## Imagery
-- Use **real, vivid, multi-color images** (generated with the Higgsfield CLI — see core memory `higgsfield-and-visual-verify`). Never monochrome/single-color. Style: glossy translucent 3D glass, Google palette + more, soft light gradient background, "no text".
+- **All imagery renders in greyscale.** A global rule in `globals.css` — `img:not(.keep-color) { filter: grayscale(1) contrast(1.02); }` — desaturates every image site-wide, so the existing glass-3D renders appear black & white automatically (no need to regenerate them). New images may be generated in color but will be desaturated on the page; prefer compositions that read well in B&W — strong tonal contrast, clear silhouettes, full range from near-black to white. Style: glossy translucent 3D glass, soft light gradient background, "no text". (Add `.keep-color` to an `<img>` only in the rare case an image must stay colored — avoid it; the theme is strictly monochrome.)
 - **Professional, not childish.** Always prompt for "premium, sophisticated, refined, cinematic studio render, NOT toy-like, NOT childish". Avoid literal/uncanny imagery (e.g. a realistic human eye) — favour clean abstract or industrial-product scenes. Keep images meaningful to the section.
 - Budget: `gpt_image_2 --resolution 1k --aspect_ratio 4:3 --wait --json` → download to `/public/img`. Use `--quality medium` for volume, `--quality high` for hero/marquee visuals.
 - **Edge treatment (current canonical):** wrap the image in `rounded-[2.75rem] overflow-hidden` and overlay an inset feather that matches the section bg — `<div className="absolute inset-0 rounded-[2.75rem]" style={{ boxShadow: 'inset 0 0 80px 34px <section-bg>' }} />` (use `#ffffff` on white sections, `#fafafa` on grey). This keeps high rounded corners AND blends the edges into the page. (`.img-fade` radial-mask exists but erases corners — prefer the feather.)
@@ -32,10 +34,10 @@ The user hates boxes. **Do not** use bordered/shadowed cards, chip-backgrounds b
 ## Motion
 - **Scroll reveal** via `components/site/Reveal.tsx` (IntersectionObserver, fade + rise, fires once). Wrap section headers, images, and item grids; stagger with `delay`.
 - Subtle hover: title `translate-x`, arrow slide, link `gap` grow. Hero text uses `.animate-fade-in`.
-- Helpers in `globals.css`: `.text-brand` (4-color gradient text), `.brand-bar-smooth`, `.eyebrow`, `.img-fade` / `.img-fade-soft`, `.animate-fade-in`, `float-slow`.
+- Helpers in `globals.css`: `.text-brand` (greyscale gradient text — silver sheen), `.brand-bar-smooth` (greyscale bar), `.eyebrow`, `.img-fade` / `.img-fade-soft`, `.animate-fade-in`, `float-slow`.
 
 ## Brand assets
-- Logo: `/public/new_logo/logo_transparent.png` (colorful Google-palette "H" + `</>`). Use in Nav, Footer, and the app mock. No intro/splash video.
+- Logo: a **monochrome "H" mark**. `/public/new_logo/new_logo.png` = white "H" on a solid **black tile** — use this on light surfaces with `rounded-lg` (Nav, Footer, app mock) so the white H stays visible. `/public/new_logo/new_logo_transparent.png` = white "H" on transparent — use only on dark backgrounds. No intro/splash video.
 - Hero background: `/public/hero/bg.png` (subtle wavy lines), hero-only, `object-cover` + white wash gradient.
 
 ## Shared components
@@ -44,7 +46,7 @@ The user hates boxes. **Do not** use bordered/shadowed cards, chip-backgrounds b
 - `components/site/Reveal.tsx` — scroll-reveal wrapper.
 
 ## CTAs
-- Primary: solid `#202124` pill (`Start a Project`) with soft shadow + hover lift. Secondary: plain text link that colors to blue on hover. Avoid blue-filled buttons except the nav "Start a Project".
+- Primary: solid near-black `#0a0a0a` pill (`Start a Project`) via `.btn-primary`, soft shadow + hover lift (hover darkens to `#2a2a2a`). Secondary: plain text link that darkens to `#0a0a0a` on hover. No colored/filled buttons — everything is black on white.
 
 ## Layout rhythm
 Generous vertical padding (`py-28 md:py-36`, hero/CTA larger). `max-w-6xl` content, `max-w-2xl/5xl` for headings/intros. Two-column image+text sections alternate the image side for rhythm.

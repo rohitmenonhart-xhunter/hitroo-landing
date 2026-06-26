@@ -8,7 +8,7 @@ import Footer from '@/components/site/Footer';
 import Reveal from '@/components/site/Reveal';
 import { COMPANY } from '@/lib/site-data';
 
-const ACCENTS = ['#0a0a0a', '#0a0a0a', '#0a0a0a', '#0a0a0a', '#0a0a0a', '#0a0a0a'];
+const ACCENTS = ['#4285F4', '#EA4335', '#FBBC05', '#34A853', '#4285F4', '#EA4335'];
 
 export default function About() {
   const capabilities = [
@@ -28,11 +28,11 @@ export default function About() {
       <section className="px-6 pt-36 md:pt-44 pb-20 overflow-hidden">
         <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
           <Reveal>
-            <span className="eyebrow text-[#0a0a0a]">About</span>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-[-0.03em] text-[#0a0a0a] mt-4 leading-[1.0]">
+            <span className="eyebrow text-[#4285F4]">About</span>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-[-0.03em] text-[#202124] mt-4 leading-[1.0]">
               Engineering the <span className="text-brand">future</span>.
             </h1>
-            <p className="text-lg text-[#4a4a4a] mt-6 leading-relaxed max-w-lg">
+            <p className="text-lg text-[#5f6368] mt-6 leading-relaxed max-w-lg">
               HITROO builds intelligent machines and software systems that integrate seamlessly with the real
               world — owned end to end, from the first diagram to production traffic. We&apos;re based in {COMPANY.location}.
             </p>
@@ -47,37 +47,37 @@ export default function About() {
       </section>
 
       {/* Vision / Mission as big statements */}
-      <section className="px-6 py-24 md:py-32 bg-[#fafafa] border-t border-[#e5e5e5]">
+      <section className="px-6 py-24 md:py-32 bg-[#fafafa] border-t border-[#e8eaed]">
         <div className="max-w-5xl mx-auto space-y-16">
           <Reveal>
-            <span className="eyebrow text-[#0a0a0a]">Vision</span>
-            <p className="text-3xl md:text-5xl font-semibold tracking-[-0.025em] text-[#0a0a0a] mt-4 leading-[1.12]">
+            <span className="eyebrow text-[#4285F4]">Vision</span>
+            <p className="text-3xl md:text-5xl font-semibold tracking-[-0.025em] text-[#202124] mt-4 leading-[1.12]">
               A future where intelligence is <span className="text-brand">universal</span> — distributed, adaptable, and deployable everywhere.
             </p>
           </Reveal>
           <Reveal>
-            <span className="eyebrow text-[#0a0a0a]">Mission</span>
-            <p className="text-3xl md:text-5xl font-semibold tracking-[-0.025em] text-[#0a0a0a] mt-4 leading-[1.12]">
-              Design, engineer, and deploy high-performance software and AI — <span className="text-[#8a8a8a]">without the cost and complexity that locks others out.</span>
+            <span className="eyebrow text-[#EA4335]">Mission</span>
+            <p className="text-3xl md:text-5xl font-semibold tracking-[-0.025em] text-[#202124] mt-4 leading-[1.12]">
+              Design, engineer, and deploy high-performance software and AI — <span className="text-[#9aa0a6]">without the cost and complexity that locks others out.</span>
             </p>
           </Reveal>
         </div>
       </section>
 
       {/* Capabilities */}
-      <section className="px-6 py-24 md:py-32 border-t border-[#e5e5e5]">
+      <section className="px-6 py-24 md:py-32 border-t border-[#e8eaed]">
         <div className="max-w-6xl mx-auto">
           <Reveal className="max-w-2xl mb-14">
-            <span className="eyebrow text-[#6b6b6b]">Capabilities</span>
-            <h2 className="text-3xl md:text-5xl font-bold tracking-[-0.03em] text-[#0a0a0a] mt-3 leading-[1.02]">Full-spectrum engineering.</h2>
+            <span className="eyebrow text-[#80868b]">Capabilities</span>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-[-0.03em] text-[#202124] mt-3 leading-[1.02]">Full-spectrum engineering.</h2>
           </Reveal>
           <Reveal delay={100}>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12 border-t border-[#e5e5e5] pt-12">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12 border-t border-[#e8eaed] pt-12">
               {capabilities.map((c, i) => (
                 <div key={c.title}>
                   <span className="block w-8 h-1 rounded-full mb-4" style={{ backgroundColor: ACCENTS[i] }} />
-                  <h3 className="text-xl font-semibold text-[#0a0a0a]">{c.title}</h3>
-                  <p className="text-sm text-[#4a4a4a] mt-2 leading-relaxed">{c.desc}</p>
+                  <h3 className="text-xl font-semibold text-[#202124]">{c.title}</h3>
+                  <p className="text-sm text-[#5f6368] mt-2 leading-relaxed">{c.desc}</p>
                 </div>
               ))}
             </div>
@@ -86,11 +86,11 @@ export default function About() {
       </section>
 
       {/* Story */}
-      <section className="px-6 py-24 md:py-32 bg-[#fafafa] border-t border-[#e5e5e5]">
+      <section className="px-6 py-24 md:py-32 bg-[#fafafa] border-t border-[#e8eaed]">
         <Reveal className="max-w-4xl mx-auto text-center">
-          <span className="eyebrow text-[#0a0a0a]">Story</span>
-          <h2 className="text-3xl md:text-5xl font-bold tracking-[-0.03em] text-[#0a0a0a] mt-3 leading-[1.05]">Born from frustration.</h2>
-          <p className="text-lg text-[#4a4a4a] mt-6 leading-relaxed max-w-2xl mx-auto">
+          <span className="eyebrow text-[#34A853]">Story</span>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-[-0.03em] text-[#202124] mt-3 leading-[1.05]">Born from frustration.</h2>
+          <p className="text-lg text-[#5f6368] mt-6 leading-relaxed max-w-2xl mx-auto">
             Advanced technology was becoming inaccessible — too costly, too complex, too closed. HITROO was
             created to challenge that: powerful, modern software and AI that any business can actually use.
           </p>
@@ -98,12 +98,12 @@ export default function About() {
       </section>
 
       {/* CTA */}
-      <section className="px-6 py-32 md:py-40 border-t border-[#e5e5e5] text-center">
+      <section className="px-6 py-32 md:py-40 border-t border-[#e8eaed] text-center">
         <Reveal className="max-w-3xl mx-auto">
-          <h2 className="text-4xl md:text-6xl font-bold tracking-[-0.03em] text-[#0a0a0a] leading-[1.0]">Build with us.</h2>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-[-0.03em] text-[#202124] leading-[1.0]">Build with us.</h2>
           <div className="flex items-center justify-center gap-4 mt-9">
-            <Link href="/contact" className="inline-flex items-center gap-2 bg-[#0a0a0a] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all">Get in Touch <ArrowRight className="h-4 w-4" /></Link>
-            <Link href="/services" className="text-sm font-semibold text-[#4a4a4a] hover:text-[#0a0a0a] transition-colors">View services</Link>
+            <Link href="/contact" className="inline-flex items-center gap-2 bg-[#202124] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all">Get in Touch <ArrowRight className="h-4 w-4" /></Link>
+            <Link href="/services" className="text-sm font-semibold text-[#5f6368] hover:text-[#4285F4] transition-colors">View services</Link>
           </div>
         </Reveal>
       </section>

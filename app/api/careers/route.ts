@@ -54,11 +54,11 @@ export async function POST(request: NextRequest) {
             attachments,
             html: `
         <div style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto;">
-          <h2 style="color: #0a0a0a;">New Job Application</h2>
+          <h2 style="color: #4285F4;">New Job Application</h2>
           <hr style="border: 1px solid #eee;" />
           
           <table style="width: 100%; border-collapse: collapse;">
-            <tr style="background: #fafafa;">
+            <tr style="background: #f9f9f9;">
               <td style="padding: 10px; font-weight: bold; width: 150px;">Position</td>
               <td style="padding: 10px;">${positionTitle} (${position})</td>
             </tr>
@@ -66,7 +66,7 @@ export async function POST(request: NextRequest) {
               <td style="padding: 10px; font-weight: bold;">Name</td>
               <td style="padding: 10px;">${name}</td>
             </tr>
-            <tr style="background: #fafafa;">
+            <tr style="background: #f9f9f9;">
               <td style="padding: 10px; font-weight: bold;">Email</td>
               <td style="padding: 10px;"><a href="mailto:${email}">${email}</a></td>
             </tr>
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
               <td style="padding: 10px;"><a href="tel:${phone}">${phone}</a></td>
             </tr>
             ${linkedin ? `
-            <tr style="background: #fafafa;">
+            <tr style="background: #f9f9f9;">
               <td style="padding: 10px; font-weight: bold;">LinkedIn</td>
               <td style="padding: 10px;"><a href="${linkedin}">${linkedin}</a></td>
             </tr>
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
               <td style="padding: 10px;"><a href="${portfolio}">${portfolio}</a></td>
             </tr>
             ` : ''}
-            <tr style="background: #fafafa;">
+            <tr style="background: #f9f9f9;">
               <td style="padding: 10px; font-weight: bold;">Experience</td>
               <td style="padding: 10px;">${experience || 'Not specified'}</td>
             </tr>
@@ -150,8 +150,8 @@ Submitted: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
                     to: email,
                     subject: 'We\'ve received your application — HITROO',
                     html: acknowledgmentEmail({
-                        heading: `Thanks${name ? `, ${esc(name)}` : ''} — your application<br/>is <span style="color:#0a0a0a;">in</span>.`,
-                        intro: `We&rsquo;ve received your application${positionTitle ? ` for <strong style="color:#0a0a0a;">${esc(positionTitle)}</strong>` : ''}. Our team reviews every application within 7 days and we&rsquo;ll be in touch.`,
+                        heading: `Thanks${name ? `, ${esc(name)}` : ''} — your application<br/>is <span style="color:#34A853;">in</span>.`,
+                        intro: `We&rsquo;ve received your application${positionTitle ? ` for <strong style="color:#202124;">${esc(positionTitle)}</strong>` : ''}. Our team reviews every application within 7 days and we&rsquo;ll be in touch.`,
                         recapLabel: 'Applied for',
                         recapBody: esc(positionTitle || 'HITROO'),
                     }),

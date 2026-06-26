@@ -37,8 +37,8 @@ export default function Nav() {
       <div className={`transition-all duration-300 ${scrolled || open ? 'glass' : 'bg-transparent'}`}>
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5">
-            <Image src="/new_logo/new_logo.png" alt="HITROO" width={32} height={32} className="rounded-lg" />
-            <span className="text-lg font-bold tracking-tight text-[#0a0a0a]">HITROO</span>
+            <Image src="/new_logo/logo_transparent.png" alt="HITROO" width={32} height={32} />
+            <span className="text-lg font-bold tracking-tight text-[#202124]">HITROO</span>
           </Link>
 
           {/* Desktop links */}
@@ -47,7 +47,7 @@ export default function Nav() {
               <Link
                 key={l.href}
                 href={l.href}
-                className={`text-sm font-medium transition-colors ${isActive(l.href) ? 'text-[#0a0a0a]' : 'text-[#4a4a4a] hover:text-[#0a0a0a]'}`}
+                className={`text-sm font-medium transition-colors ${isActive(l.href) ? 'text-[#4285F4]' : 'text-[#5f6368] hover:text-[#4285F4]'}`}
               >
                 {l.label}
               </Link>
@@ -60,7 +60,7 @@ export default function Nav() {
           {/* Mobile toggle */}
           <button
             onClick={() => setOpen((v) => !v)}
-            className="md:hidden p-2 -mr-2 text-[#0a0a0a]"
+            className="md:hidden p-2 -mr-2 text-[#202124]"
             aria-label="Toggle menu"
           >
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -69,13 +69,13 @@ export default function Nav() {
 
         {/* Mobile menu */}
         {open && (
-          <div className="md:hidden border-t border-[#e5e5e5]">
+          <div className="md:hidden border-t border-[#e8eaed]">
             <div className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-1">
               {LINKS.map((l) => (
                 <Link
                   key={l.href}
                   href={l.href}
-                  className={`py-3 text-base font-medium border-b border-[#f1f1f1] ${isActive(l.href) ? 'text-[#0a0a0a]' : 'text-[#2a2a2a]'}`}
+                  className={`py-3 text-base font-medium border-b border-[#f1f3f4] ${isActive(l.href) ? 'text-[#4285F4]' : 'text-[#3c4043]'}`}
                 >
                   {l.label}
                 </Link>

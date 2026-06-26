@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   manifest: '/favicon/manifest.json',
   other: {
     'msapplication-config': '/favicon/browserconfig.xml',
-    'msapplication-TileColor': '#0a0a0a',
+    'msapplication-TileColor': '#ffffff',
   },
   openGraph: {
     type: 'website',
@@ -87,7 +87,7 @@ const orgLd = {
   '@id': `${SITE_URL}/#organization`,
   name: 'HITROO',
   url: SITE_URL,
-  logo: `${SITE_URL}/new_logo/new_logo.png`,
+  logo: `${SITE_URL}/new_logo/logo_whitebg.png`,
   image: `${SITE_URL}/og-image.png`,
   description: DESCRIPTION,
   slogan: 'Intelligence, Unbound',

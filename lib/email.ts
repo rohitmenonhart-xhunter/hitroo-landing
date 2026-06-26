@@ -22,55 +22,55 @@ interface AckOptions {
  */
 export function acknowledgmentEmail({ heading, intro, recapLabel, recapBody }: AckOptions) {
   return `
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f5f5;margin:0;padding:0;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f5f7;margin:0;padding:0;">
     <tr>
       <td align="center" style="padding:40px 16px;">
-        <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;max-width:560px;background:#ffffff;border:1px solid #ededed;border-radius:24px;overflow:hidden;">
+        <table role="presentation" cellpadding="0" cellspacing="0" style="width:100%;max-width:560px;background:#ffffff;border:1px solid #ececf0;border-radius:24px;overflow:hidden;">
           <tr>
             <td style="font-size:0;line-height:0;padding:0;">
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-                <td width="25%" height="6" style="background:#0a0a0a;font-size:0;line-height:0;">&nbsp;</td>
-                <td width="25%" height="6" style="background:#2a2a2a;font-size:0;line-height:0;">&nbsp;</td>
-                <td width="25%" height="6" style="background:#5a5a5a;font-size:0;line-height:0;">&nbsp;</td>
-                <td width="25%" height="6" style="background:#8a8a8a;font-size:0;line-height:0;">&nbsp;</td>
+                <td width="25%" height="6" style="background:#4285F4;font-size:0;line-height:0;">&nbsp;</td>
+                <td width="25%" height="6" style="background:#EA4335;font-size:0;line-height:0;">&nbsp;</td>
+                <td width="25%" height="6" style="background:#FBBC05;font-size:0;line-height:0;">&nbsp;</td>
+                <td width="25%" height="6" style="background:#34A853;font-size:0;line-height:0;">&nbsp;</td>
               </tr></table>
             </td>
           </tr>
           <tr>
             <td style="padding:42px 42px 38px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
-              <div style="font-size:18px;font-weight:700;letter-spacing:-0.01em;color:#0a0a0a;margin:0 0 30px;">HITROO</div>
+              <div style="font-size:18px;font-weight:700;letter-spacing:-0.01em;color:#202124;margin:0 0 30px;">HITROO</div>
 
-              <h1 style="margin:0 0 14px;font-size:28px;line-height:1.15;font-weight:700;letter-spacing:-0.02em;color:#0a0a0a;">${heading}</h1>
-              <p style="margin:0 0 26px;font-size:15px;line-height:1.65;color:#4a4a4a;">${intro}</p>
+              <h1 style="margin:0 0 14px;font-size:28px;line-height:1.15;font-weight:700;letter-spacing:-0.02em;color:#202124;">${heading}</h1>
+              <p style="margin:0 0 26px;font-size:15px;line-height:1.65;color:#5f6368;">${intro}</p>
 
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f7f7f7;border-radius:16px;margin:0 0 30px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f7f8fa;border-radius:16px;margin:0 0 30px;">
                 <tr><td style="padding:18px 20px;">
-                  <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#8a8a8a;font-weight:600;margin:0 0 8px;">${recapLabel}</div>
-                  <div style="font-size:14px;line-height:1.6;color:#2a2a2a;white-space:pre-wrap;">${recapBody}</div>
+                  <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#9aa0a6;font-weight:600;margin:0 0 8px;">${recapLabel}</div>
+                  <div style="font-size:14px;line-height:1.6;color:#3c4043;white-space:pre-wrap;">${recapBody}</div>
                 </td></tr>
               </table>
 
               <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 32px;"><tr>
-                <td align="center" bgcolor="#0a0a0a" style="border-radius:999px;">
+                <td align="center" bgcolor="#202124" style="border-radius:999px;">
                   <a href="${SITE}" style="display:inline-block;padding:14px 30px;font-size:14px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:999px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">Explore HITROO &rarr;</a>
                 </td>
               </tr></table>
 
-              <p style="margin:0;font-size:14px;line-height:1.6;color:#4a4a4a;">
-                Need us sooner? <a href="mailto:info@hitroo.com" style="color:#0a0a0a;text-decoration:none;font-weight:600;">info@hitroo.com</a>
-                &nbsp;&middot;&nbsp; <a href="tel:+917550000805" style="color:#0a0a0a;text-decoration:none;font-weight:600;">+91&nbsp;7550000805</a>
+              <p style="margin:0;font-size:14px;line-height:1.6;color:#5f6368;">
+                Need us sooner? <a href="mailto:info@hitroo.com" style="color:#4285F4;text-decoration:none;font-weight:600;">info@hitroo.com</a>
+                &nbsp;&middot;&nbsp; <a href="tel:+917550000805" style="color:#4285F4;text-decoration:none;font-weight:600;">+91&nbsp;7550000805</a>
               </p>
 
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0 0;"><tr>
-                <td style="border-top:1px solid #ededed;padding-top:20px;">
+                <td style="border-top:1px solid #ececf0;padding-top:20px;">
                   <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 10px;"><tr>
-                    <td width="11" style="font-size:0;"><div style="width:7px;height:7px;border-radius:9px;background:#0a0a0a;"></div></td>
-                    <td width="11" style="font-size:0;"><div style="width:7px;height:7px;border-radius:9px;background:#2a2a2a;"></div></td>
-                    <td width="11" style="font-size:0;"><div style="width:7px;height:7px;border-radius:9px;background:#5a5a5a;"></div></td>
-                    <td width="11" style="font-size:0;"><div style="width:7px;height:7px;border-radius:9px;background:#8a8a8a;"></div></td>
+                    <td width="11" style="font-size:0;"><div style="width:7px;height:7px;border-radius:9px;background:#4285F4;"></div></td>
+                    <td width="11" style="font-size:0;"><div style="width:7px;height:7px;border-radius:9px;background:#EA4335;"></div></td>
+                    <td width="11" style="font-size:0;"><div style="width:7px;height:7px;border-radius:9px;background:#FBBC05;"></div></td>
+                    <td width="11" style="font-size:0;"><div style="width:7px;height:7px;border-radius:9px;background:#34A853;"></div></td>
                   </tr></table>
-                  <p style="margin:0;font-size:13px;line-height:1.6;color:#8a8a8a;">
-                    <strong style="color:#0a0a0a;">HITROO</strong> &mdash; Intelligence, Unbound<br/>
+                  <p style="margin:0;font-size:13px;line-height:1.6;color:#9aa0a6;">
+                    <strong style="color:#202124;">HITROO</strong> &mdash; Intelligence, Unbound<br/>
                     Chennai, Tamil Nadu, India
                   </p>
                 </td>
@@ -78,7 +78,7 @@ export function acknowledgmentEmail({ heading, intro, recapLabel, recapBody }: A
             </td>
           </tr>
         </table>
-        <p style="margin:18px 0 0;font-size:12px;color:#b0b0b0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">You received this because you contacted HITROO.</p>
+        <p style="margin:18px 0 0;font-size:12px;color:#b0b4ba;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">You received this because you contacted HITROO.</p>
       </td>
     </tr>
   </table>`;

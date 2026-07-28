@@ -45,12 +45,30 @@ export const leadPayloadSchema = z
 
 export type LeadPayload = z.infer<typeof leadPayloadSchema>;
 
-export type AutomationSignal = 'honeypot' | 'missing-timing' | 'too-fast';
+export type AutomationSignal =
+  | 'honeypot'
+  | 'missing-timing'
+  | 'too-fast'
+  | 'phone-only-message';
+
+function getPhoneDigits(value: string) {
+  if (!value || !/^[+\d().\s-]+$/.test(value)) return null;
+
+  const digits = value.replace(/\D/g, '');
+  return digits.length >= 7 && digits.length <= 15 ? digits : null;
+}
 
 export function getAutomationSignal(data: LeadPayload): AutomationSignal | null {
   if (data.website) return 'honeypot';
   if (data.formDurationMs === undefined) return 'missing-timing';
   if (data.formDurationMs < MIN_FORM_COMPLETION_MS) return 'too-fast';
+
+  const phoneDigits = getPhoneDigits(data.phone);
+  const messageDigits = getPhoneDigits(data.message || data.context);
+  if (phoneDigits && messageDigits && phoneDigits !== messageDigits) {
+    return 'phone-only-message';
+  }
+
   return null;
 }
 

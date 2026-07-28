@@ -71,6 +71,41 @@ test('identifies the honeypot, missing timing, and implausibly fast submissions'
   );
 });
 
+test('discards submissions containing a second bare phone number as the message', () => {
+  const parsed = leadPayloadSchema.parse({
+    ...validPayload,
+    name: 'Sample Visitor',
+    phone: '5386024367',
+    message: '7071832801',
+  });
+
+  assert.equal(getAutomationSignal(parsed), 'phone-only-message');
+});
+
+test('allows phone numbers in legitimate prose and repeated contact details', () => {
+  assert.equal(
+    getAutomationSignal(
+      leadPayloadSchema.parse({
+        ...validPayload,
+        phone: '+91 75500 00805',
+        message: 'Please call our office on +91 75500 00806 after 3 PM.',
+      })
+    ),
+    null
+  );
+
+  assert.equal(
+    getAutomationSignal(
+      leadPayloadSchema.parse({
+        ...validPayload,
+        phone: '+91 75500 00805',
+        message: '+91 75500 00805',
+      })
+    ),
+    null
+  );
+});
+
 test('enables Turnstile only when both deployment keys are present', () => {
   assert.deepEqual(getTurnstileConfiguration({}), { state: 'disabled' });
   assert.deepEqual(

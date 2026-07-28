@@ -6,8 +6,11 @@ The site's public, bot-abusable server endpoints are protected in layers:
    a 60-second window before the server function runs.
 2. The API accepts only same-origin JSON requests up to 16 KiB and validates
    field types, lengths, email syntax, and international phone formatting.
-3. A visually hidden honeypot and a minimum form-completion signal silently
-   discard common automated submissions without sending either email.
+3. A visually hidden honeypot, a minimum form-completion signal, and a narrow
+   content check for the observed second-phone-number spam pattern silently
+   discard common automated submissions without sending either email. The
+   discard reason is recorded in server logs without logging the submitted
+   contact details.
 4. Cloudflare Turnstile can be enabled for server-verified bot detection.
    Tokens are checked for the `contact` action, expire after Cloudflare's
    validity window, and cannot be reused.

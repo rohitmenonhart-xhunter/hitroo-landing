@@ -4,3 +4,49 @@ publish = ".next"
 
 [[plugins]]
 package = "@netlify/plugin-nextjs"
+
+# Netlify applies this at the edge before invoking the Next.js lead function.
+# Five attempts per minute leaves room for human retries while containing bursts.
+[[redirects]]
+from = "/api/lead"
+to = "/api/lead"
+status = 200
+force = true
+
+  [redirects.rate_limit]
+  window_limit = 5
+  window_size = 60
+  aggregate_by = ["ip", "domain"]
+
+[[redirects]]
+from = "/api/careers"
+to = "/api/careers"
+status = 200
+force = true
+
+  [redirects.rate_limit]
+  window_limit = 3
+  window_size = 60
+  aggregate_by = ["ip", "domain"]
+
+[[redirects]]
+from = "/api/chat"
+to = "/api/chat"
+status = 200
+force = true
+
+  [redirects.rate_limit]
+  window_limit = 10
+  window_size = 60
+  aggregate_by = ["ip", "domain"]
+
+[[redirects]]
+from = "/api/content"
+to = "/api/content"
+status = 200
+force = true
+
+  [redirects.rate_limit]
+  window_limit = 15
+  window_size = 60
+  aggregate_by = ["ip", "domain"]

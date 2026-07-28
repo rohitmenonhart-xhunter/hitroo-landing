@@ -1,4 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import {
+    isSameOrigin,
+    PayloadTooLargeError,
+    readLimitedJson,
+} from '@/lib/request-security';
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY || '';
 
@@ -49,13 +55,31 @@ function detectIntent(message: string): boolean {
 
 export async function POST(request: NextRequest) {
     try {
-        const { message } = await request.json();
+        if (!request.headers.get('content-type')?.includes('application/json')) {
+            return NextResponse.json({ error: 'Content-Type must be application/json' }, { status: 415 });
+        }
+        if (!isSameOrigin(request)) {
+            return NextResponse.json({ error: 'Cross-origin submissions are not allowed' }, { status: 403 });
+        }
 
-        if (!message || typeof message !== 'string') {
+        let rawData: unknown;
+        try {
+            rawData = await readLimitedJson(request, 2 * 1024);
+        } catch (error) {
             return NextResponse.json(
-                { error: 'Message is required' },
-                { status: 400 }
+                { error: error instanceof PayloadTooLargeError ? 'Message is too large' : 'Invalid JSON body' },
+                { status: error instanceof PayloadTooLargeError ? 413 : 400 }
             );
+        }
+
+        const parsed = z.object({ message: z.string().trim().min(1).max(500) }).strict().safeParse(rawData);
+        if (!parsed.success) {
+            return NextResponse.json({ error: 'Message must be between 1 and 500 characters' }, { status: 400 });
+        }
+        const { message } = parsed.data;
+
+        if (!GROQ_API_KEY) {
+            return NextResponse.json({ error: 'AI service is not configured' }, { status: 503 });
         }
 
         // Detect if user wants to create something or contact us
@@ -77,6 +101,7 @@ export async function POST(request: NextRequest) {
                 max_completion_tokens: 100,
                 top_p: 1,
             }),
+            signal: AbortSignal.timeout(10_000),
         });
 
         if (!response.ok) {

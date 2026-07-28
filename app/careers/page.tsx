@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Loader2, Upload, Check, ArrowRight } from 'lucide-react';
 import Nav from '@/components/site/Nav';
 import Footer from '@/components/site/Footer';
 import Reveal from '@/components/site/Reveal';
+import Turnstile from '@/components/site/Turnstile';
 
 const POSITIONS = [
   { id: 'fullstack', title: 'Full Stack Developer', description: 'End-to-end web & mobile with modern frameworks', color: '#4285F4' },
@@ -19,6 +20,7 @@ const POSITIONS = [
 
 const FIELD = 'w-full px-4 py-3 bg-white border border-[#dadce0] rounded-xl text-sm text-[#202124] placeholder:text-[#80868b] focus:outline-none focus:border-[#4285F4] focus:ring-4 focus:ring-[#4285F4]/10 transition-all';
 const LABEL = 'block text-xs font-semibold uppercase tracking-widest text-[#5f6368] mb-2';
+const MAX_RESUME_BYTES = 5 * 1024 * 1024;
 
 export default function CareersPage() {
   const [selectedPosition, setSelectedPosition] = useState('');
@@ -26,19 +28,58 @@ export default function CareersPage() {
   const [resume, setResume] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+  const [website, setWebsite] = useState('');
+  const [turnstileSiteKey, setTurnstileSiteKey] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [turnstileResetSignal, setTurnstileResetSignal] = useState(0);
+  const [checkingVerification, setCheckingVerification] = useState(true);
+  const formStartedAt = useRef(Date.now());
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch('/api/lead/config', { cache: 'no-store' })
+      .then(async (response) => {
+        if (!response.ok) throw new Error();
+        return response.json() as Promise<{ turnstileSiteKey?: string | null }>;
+      })
+      .then((configuration) => {
+        if (!cancelled) setTurnstileSiteKey(configuration.turnstileSiteKey || '');
+      })
+      .catch(() => {
+        if (!cancelled) setError('Verification could not load. Please refresh or email info@hitroo.com.');
+      })
+      .finally(() => {
+        if (!cancelled) setCheckingVerification(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && file.type === 'application/pdf') setResume(file);
+    if (file && file.type === 'application/pdf' && file.size <= MAX_RESUME_BYTES) {
+      setResume(file);
+      setError('');
+    } else {
+      setResume(null);
+      setError('Please choose a PDF resume no larger than 5 MB.');
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedPosition || !formData.name || !formData.email) return;
+    if (turnstileSiteKey && !turnstileToken) {
+      setError('Please complete the verification and try again.');
+      return;
+    }
     setIsSubmitting(true);
+    setError('');
     try {
       let resumeData = '';
       if (resume) {
@@ -48,11 +89,26 @@ export default function CareersPage() {
       const response = await fetch('/api/careers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, position: selectedPosition, positionTitle: POSITIONS.find((p) => p.id === selectedPosition)?.title, resumeName: resume?.name, resumeData }),
+        body: JSON.stringify({
+          ...formData,
+          position: selectedPosition,
+          resumeName: resume?.name,
+          resumeData,
+          website,
+          formDurationMs: Date.now() - formStartedAt.current,
+          turnstileToken,
+        }),
       });
-      if (response.ok) setSubmitted(true);
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        const data = await response.json().catch(() => ({}));
+        setError(data.error || 'Could not submit. Please email info@hitroo.com.');
+        if (turnstileSiteKey) setTurnstileResetSignal((signal) => signal + 1);
+      }
     } catch {
-      // silent
+      setError('Could not connect. Please email info@hitroo.com.');
+      if (turnstileSiteKey) setTurnstileResetSignal((signal) => signal + 1);
     } finally {
       setIsSubmitting(false);
     }
@@ -152,6 +208,10 @@ export default function CareersPage() {
             <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.03em] text-[#202124] mb-2">Apply now.</h2>
             <p className="text-sm text-[#5f6368] mb-10">{selectedPosition ? `Applying for: ${POSITIONS.find((p) => p.id === selectedPosition)?.title}` : 'Select a position above to continue.'}</p>
             <form onSubmit={handleSubmit} className="space-y-6">
+              <div aria-hidden="true" className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden">
+                <label htmlFor="careers-website">Leave this field empty</label>
+                <input id="careers-website" name="website" type="text" value={website} onChange={(e) => setWebsite(e.target.value)} tabIndex={-1} autoComplete="off" data-1p-ignore="true" />
+              </div>
               <div className="grid md:grid-cols-2 gap-5">
                 <div><label className={LABEL}>Name *</label><input type="text" name="name" value={formData.name} onChange={handleInputChange} required className={FIELD} placeholder="Your full name" /></div>
                 <div><label className={LABEL}>Email *</label><input type="email" name="email" value={formData.email} onChange={handleInputChange} required className={FIELD} placeholder="you@email.com" /></div>
@@ -164,7 +224,7 @@ export default function CareersPage() {
               <div>
                 <label className={LABEL}>Resume (PDF) *</label>
                 <label className={`flex items-center justify-center gap-3 p-6 border-2 border-dashed rounded-xl cursor-pointer transition-all ${resume ? 'border-[#34A853]/50 bg-[#34A853]/5' : 'border-[#dadce0] hover:border-[#4285F4]/50'}`}>
-                  <input type="file" accept=".pdf" onChange={handleFileChange} className="hidden" />
+                  <input type="file" accept="application/pdf,.pdf" onChange={handleFileChange} className="hidden" />
                   {resume ? (<><Check className="h-4 w-4 text-[#34A853]" /><span className="text-sm text-[#34A853] font-medium">{resume.name}</span></>) : (<><Upload className="h-4 w-4 text-[#80868b]" /><span className="text-sm text-[#5f6368]">Click to upload PDF resume</span></>)}
                 </label>
               </div>
@@ -184,9 +244,19 @@ export default function CareersPage() {
                   </select>
                 </div>
               </div>
-              <button type="submit" disabled={!selectedPosition || !formData.name || !formData.email || !formData.phone || !resume || isSubmitting} className="inline-flex items-center justify-center gap-2 bg-[#202124] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:translate-y-0">
+              {turnstileSiteKey && (
+                <Turnstile
+                  siteKey={turnstileSiteKey}
+                  action="careers"
+                  resetSignal={turnstileResetSignal}
+                  onToken={setTurnstileToken}
+                  onError={() => setError('Verification expired or could not load. Please try again.')}
+                />
+              )}
+              <button type="submit" disabled={checkingVerification || !selectedPosition || !formData.name || !formData.email || !formData.phone || !resume || Boolean(turnstileSiteKey && !turnstileToken) || isSubmitting} className="inline-flex items-center justify-center gap-2 bg-[#202124] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:translate-y-0">
                 {isSubmitting ? (<><Loader2 className="h-4 w-4 animate-spin" />Submitting</>) : (<>Submit application <ArrowRight className="h-4 w-4" /></>)}
               </button>
+              {error && <p role="alert" aria-live="polite" className="text-sm text-[#EA4335]">{error}</p>}
               <p className="text-xs text-[#80868b]">By submitting, you agree to our internship terms. Applications are processed within 7 days.</p>
             </form>
           </div>

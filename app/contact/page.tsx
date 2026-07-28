@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Loader2, Check, ArrowRight } from 'lucide-react';
 import Nav from '@/components/site/Nav';
 import Footer from '@/components/site/Footer';
 import Reveal from '@/components/site/Reveal';
+import Turnstile from '@/components/site/Turnstile';
 import { services, COMPANY } from '@/lib/site-data';
 
 const FIELD = 'w-full px-4 py-3 bg-white border border-[#dadce0] rounded-xl text-sm text-[#202124] placeholder:text-[#80868b] focus:outline-none focus:border-[#4285F4] focus:ring-4 focus:ring-[#4285F4]/10 transition-all';
@@ -21,18 +22,64 @@ export default function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [website, setWebsite] = useState('');
+  const [turnstileSiteKey, setTurnstileSiteKey] = useState('');
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [turnstileResetSignal, setTurnstileResetSignal] = useState(0);
+  const [checkingVerification, setCheckingVerification] = useState(true);
+  const formStartedAt = useRef(Date.now());
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch('/api/lead/config', { cache: 'no-store' })
+      .then(async (response) => {
+        if (!response.ok) throw new Error('Verification configuration failed to load');
+        return response.json() as Promise<{ turnstileSiteKey?: string | null }>;
+      })
+      .then((configuration) => {
+        if (!cancelled) setTurnstileSiteKey(configuration.turnstileSiteKey || '');
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setError(
+            'Verification could not load. Please refresh this page or email us at info@hitroo.com.'
+          );
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setCheckingVerification(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim() && !phone.trim()) return;
+    if (turnstileSiteKey && !turnstileToken) {
+      setError('Please complete the verification and try again.');
+      return;
+    }
     setSubmitting(true);
     setError('');
     try {
-      const context = `${interest ? `Interested in: ${interest}\n` : ''}${message}`.trim();
       const res = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, phone, context, leadType: 'contact' }),
+        body: JSON.stringify({
+          name,
+          email,
+          phone,
+          interest,
+          message,
+          leadType: 'contact',
+          website,
+          formDurationMs: Date.now() - formStartedAt.current,
+          turnstileToken,
+        }),
       });
       if (res.ok) {
         setSubmitted(true);
@@ -40,9 +87,15 @@ export default function ContactPage() {
       } else {
         const data = await res.json().catch(() => ({}));
         setError(data.error || 'Something went wrong. Please email us at info@hitroo.com.');
+        if (turnstileSiteKey) {
+          setTurnstileResetSignal((signal) => signal + 1);
+        }
       }
     } catch {
       setError('Could not connect. Please email us at info@hitroo.com.');
+      if (turnstileSiteKey) {
+        setTurnstileResetSignal((signal) => signal + 1);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -92,24 +145,40 @@ export default function ContactPage() {
             <Reveal>
               <h2 className="text-3xl md:text-4xl font-bold tracking-[-0.03em] text-[#202124] mb-10">Start a conversation.</h2>
               <form onSubmit={submit} className="space-y-6">
+                <div
+                  aria-hidden="true"
+                  className="absolute left-[-10000px] top-auto h-px w-px overflow-hidden"
+                >
+                  <label htmlFor="contact-website">Leave this field empty</label>
+                  <input
+                    id="contact-website"
+                    name="website"
+                    type="text"
+                    value={website}
+                    onChange={(e) => setWebsite(e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    data-1p-ignore="true"
+                  />
+                </div>
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label className={LABEL}>Name</label>
-                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} className={FIELD} placeholder="Your name" />
+                    <label htmlFor="contact-name" className={LABEL}>Name</label>
+                    <input id="contact-name" name="name" type="text" value={name} onChange={(e) => setName(e.target.value)} className={FIELD} placeholder="Your name" autoComplete="name" maxLength={100} />
                   </div>
                   <div>
-                    <label className={LABEL}>Email</label>
-                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={FIELD} placeholder="you@email.com" />
+                    <label htmlFor="contact-email" className={LABEL}>Email</label>
+                    <input id="contact-email" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={FIELD} placeholder="you@email.com" autoComplete="email" maxLength={254} />
                   </div>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label className={LABEL}>Phone</label>
-                    <input type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className={FIELD} placeholder="+91 XXXXX XXXXX" />
+                    <label htmlFor="contact-phone" className={LABEL}>Phone</label>
+                    <input id="contact-phone" name="phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} className={FIELD} placeholder="+91 XXXXX XXXXX" autoComplete="tel" maxLength={30} />
                   </div>
                   <div>
-                    <label className={LABEL}>I&apos;m interested in</label>
-                    <select value={interest} onChange={(e) => setInterest(e.target.value)} className={FIELD}>
+                    <label htmlFor="contact-interest" className={LABEL}>I&apos;m interested in</label>
+                    <select id="contact-interest" name="interest" value={interest} onChange={(e) => setInterest(e.target.value)} className={FIELD}>
                       <option value="">Select a service...</option>
                       {services.map((s) => (<option key={s.slug} value={s.title}>{s.title}</option>))}
                       <option value="Something else">Something else</option>
@@ -117,13 +186,23 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <div>
-                  <label className={LABEL}>Project details</label>
-                  <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={5} className={`${FIELD} resize-none`} placeholder="Tell us what you'd like to build..." />
+                  <label htmlFor="contact-message" className={LABEL}>Project details</label>
+                  <textarea id="contact-message" name="message" value={message} onChange={(e) => setMessage(e.target.value)} rows={5} className={`${FIELD} resize-none`} placeholder="Tell us what you'd like to build..." maxLength={4000} />
                 </div>
-                <button type="submit" disabled={(!email.trim() && !phone.trim()) || submitting} className="inline-flex items-center justify-center gap-2 bg-[#202124] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:translate-y-0">
+                {turnstileSiteKey && (
+                  <Turnstile
+                    siteKey={turnstileSiteKey}
+                    resetSignal={turnstileResetSignal}
+                    onToken={setTurnstileToken}
+                    onError={() =>
+                      setError('Verification expired or could not load. Please try again.')
+                    }
+                  />
+                )}
+                <button type="submit" disabled={checkingVerification || (!email.trim() && !phone.trim()) || Boolean(turnstileSiteKey && !turnstileToken) || submitting} className="inline-flex items-center justify-center gap-2 bg-[#202124] text-white text-sm font-medium px-8 py-4 rounded-full shadow-[0_8px_24px_rgba(32,33,36,0.25)] hover:bg-black hover:-translate-y-0.5 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:translate-y-0">
                   {submitting ? (<><Loader2 className="h-4 w-4 animate-spin" />Sending</>) : (<>Send message <ArrowRight className="h-4 w-4" /></>)}
                 </button>
-                {error && <p className="text-sm text-[#EA4335]">{error}</p>}
+                {error && <p role="alert" aria-live="polite" className="text-sm text-[#EA4335]">{error}</p>}
                 <p className="text-xs text-[#80868b]">Provide an email or phone number so we can reach you back.</p>
               </form>
             </Reveal>

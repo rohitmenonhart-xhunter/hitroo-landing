@@ -1,0 +1,4 @@
+interface:
+  display_name: "ContextJoin"
+  short_description: "Sync isolated project context across agent sessions"
+  default_prompt: "Use $project-context-ledger to load this project's verified brief, coordinate with active sessions, and record only durable outcomes."

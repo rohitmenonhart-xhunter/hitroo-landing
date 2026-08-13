@@ -1,0 +1,8 @@
+
+[mcp_servers.contextjoin]
+command = "contextjoin-mcp"
+args = []
+required = false
+default_tools_approval_mode = "writes"
+startup_timeout_sec = 20
+tool_timeout_sec = 30

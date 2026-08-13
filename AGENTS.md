@@ -1,6 +1,6 @@
-# CLAUDE.md
+# AGENTS.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Codex (Codex.ai/code) when working with code in this repository.
 
 ## Overview
 
@@ -28,9 +28,6 @@ Required for API routes to function (set in Netlify env / `.env`, never committe
 - `ADMIN_PASSWORD` — gates content mutations in [app/api/content/route.ts](app/api/content/route.ts)
 - `GMAIL_USER`, `GMAIL_APP_PASSWORD` — Gmail SMTP (via `nodemailer`) for lead/careers emails
 - `LEAD_EMAIL_RECIPIENT` — inbox that receives lead and job-application emails
-- `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` — optional Cloudflare Turnstile
-  pair for the contact form; set both or neither (see
-  [docs/contact-form-protection.md](docs/contact-form-protection.md))
 
 ## Architecture
 
@@ -52,13 +49,8 @@ The [/admin](app/admin/page.tsx) page is the editor UI; article/news detail page
 
 ### API routes (`app/api/*/route.ts`)
 - `chat` — proxies to Groq; `detectIntent()` keyword-matches the message to decide whether to surface a lead-capture prompt. System prompt with HITROO product context is inline in the route.
-- `lead` — validates, rate-limits, and bot-checks contact submissions before
-  sending a lead/early-access email via Gmail SMTP. Requires phone OR email.
-- `careers` — validates, rate-limits, and Turnstile-checks applications; accepts
-  a verified PDF resume up to 5 MB as a `nodemailer` attachment.
-- `chat` — same-origin, bounded, rate-limited Groq proxy.
-- `content` — cached public reads; bounded, same-origin, rate-limited admin
-  mutations with constant-time password comparison.
+- `lead` — sends a lead/early-access email via Gmail SMTP. Requires phone OR email.
+- `careers` — job application email; accepts a base64-encoded PDF resume as a `nodemailer` attachment.
 - `content` — see content system above.
 
 ### UI conventions

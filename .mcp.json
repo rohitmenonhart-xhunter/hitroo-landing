@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "contextjoin": {
+      "command": "contextjoin-mcp",
+      "args": []
+    }
+  }
+}

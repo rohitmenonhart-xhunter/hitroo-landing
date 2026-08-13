@@ -1,0 +1,11 @@
+schemaVersion: 1
+projectId: prj_001c3148-66eb-4eaa-b76b-7c8f21595d92
+name: hitroo-landing
+description: ""
+createdAt: 2026-08-13T18:30:47.728Z
+freshness:
+  fact: 90
+  decision: null
+  risk: 14
+  question: 30
+  handoff: 7

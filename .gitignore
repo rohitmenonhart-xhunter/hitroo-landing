@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# marketing assets (large ad renders / videos — kept out of git history)
+/marketing/

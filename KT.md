@@ -7,11 +7,11 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 
 ## Stack & ops
 - **Next.js 13 App Router**, TypeScript, Tailwind; shadcn/ui primitives remain available. Marketing pages are **server components** with small client islands.
-- **Hosting:** Vercel, live at `www.hitroo.com` since 2026-09-25 (`hitroo.com` redirects there); functions in `sin1` (see `vercel.json`); `next/image` optimization on. Pushing to `main` deploys to production. `netlify.toml` is no longer used.
+- **Hosting:** Vercel, live at `www.hitroo.com` since 2026-09-25 (`hitroo.com` redirects there); functions in `sin1` (see `vercel.json`); `next/image` optimization on. Pushing to `main` deploys to production. `netlify.toml` was removed on 2026-09-26.
 - **Folders:** `Hitroo_internal_Apps/hitroo/` holds `hitroo_landing` (this site) and `hitroo_admin_page` (the admin); later internal apps go there too.
 - **Database:** shared Postgres on Fly.io, app `hitroo-db` (PostgreSQL 18, region `sin`, public TLS endpoint `hitroo-db.fly.dev:5432`). Database `hitroo`: schema `web` for this site (role `web_app`, write-only plus reading posts) and the admin (role `admin_app`), schema `internal` for internal apps (role `internal_app`). This repo's `db/` holds the schema for all of them. Credentials: `Hitroo_internal_Apps/_secrets/hitroo-db.env`. Details: [ARCHITECTURE.md](ARCHITECTURE.md).
 - **Commands:** `npm install` (no flags), `npm run typecheck`, `npm run lint`, `npm test` (22 node:test tests), `npm run db:migrate`, `npm run db:seed-posts`, `npm run indexnow` (after production deploys).
-- **Forms:** `LeadForm` → `/api/lead`, `CareersForm` → `/api/careers`. Both store to Postgres first, then email; honeypot, timing and optional Turnstile. `.env.local` has real SMTP credentials — test with `GMAIL_USER= GMAIL_APP_PASSWORD= npx next start` (stores without emailing) or via the honeypot (validated, then discarded), and delete test rows afterwards.
+- **Forms:** `LeadForm` → `/api/lead`, `CareersForm` → `/api/careers`. Both store to Postgres first, then email; per-visitor rate limits, email caps, honeypot, timing and optional Turnstile ([docs/contact-form-protection.md](docs/contact-form-protection.md)). `.env.local` has real SMTP credentials — test with `GMAIL_USER= GMAIL_APP_PASSWORD= npx next start` (stores without emailing) or via the honeypot (validated, then discarded), and delete test rows afterwards.
 
 ## Site structure
 - `app/(site)/layout.tsx` renders Header + `<main id="main">` + Footer + Analytics + CookieConsent for every marketing page.
@@ -20,7 +20,7 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - `/insights` (latest articles and blog posts), `/articles`, `/blog`, `/articles/[slug]`, `/blog/[slug]` — content from `web.posts`, managed in the admin app.
 - `/about`, `/research`, `/support`, `/careers` (role picker + application), `/contact` (details + form), `/ai-perspective` ("Is AI a threat to HITROO?"), `/privacy`, `app/not-found.tsx`.
 - **Admin:** a separate app, `../hitroo_admin_page`, live at https://admin.hitroo.com — analytics (visits, clicks, reads, world map, sources, audience, hours), leads and applications (status, notes, search, résumés), posts. One owner password, kept in `_secrets/hitroo-admin.env`.
-- API: `/api/lead`, `/api/careers`, `/api/track`, `/api/consent`, `/api/revalidate` (for the admin), `/api/chat` (no UI).
+- API: `/api/lead`, `/api/careers`, `/api/track`, `/api/consent`, `/api/revalidate` (for the admin).
 - Discovery: `/sitemap.xml`, `/robots.txt`, `/llms.txt`, `/llms-full.txt`, IndexNow key file in `public/`.
 
 ## Data we collect
@@ -58,11 +58,13 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - Sticky headers show up mid-page in Playwright full-page screenshots; check sections with viewport screenshots instead.
 - Don't set `referrer` in page metadata: Next 13.5 briefly writes other tags' values into it during client navigation (console errors). The `Referrer-Policy` header does the job.
 - New `web` tables need explicit grants in their migration — `web_app` gets nothing by default (migration 003).
+- Vercel never ran the old `netlify.toml` edge rate limits (the file is gone). Every limit lives in code and counts per server instance.
 - Vercel Functions reject request bodies over 4.5 MB (`413 FUNCTION_PAYLOAD_TOO_LARGE`, before our code runs). Uploads sent base64 in JSON must stay under about 3 MB; anything bigger needs a direct-to-storage upload.
 
 ## Open / next
 - Verify Google Search Console and Bing Webmaster Tools, submit the sitemap and run `npm run indexnow`.
-- Remove `netlify.toml` and the Netlify plugin now that Vercel serves the domain.
+- Turn on Turnstile (a Cloudflare widget for hitroo.com, both keys on Vercel): the real bot gate; rate limits only blunt floods.
+- Remove the unused `@netlify/plugin-nextjs` dependency.
 - Enable continuous database backups (Tigris) or a scheduled `pg_dump`.
 - Publish regularly to `/blog` and `/articles` (the Blog is empty; Articles has one post).
 - Real proof: 2–3 client stories, logos (with permission) and a testimonial — add after "Why HITROO" once provided.

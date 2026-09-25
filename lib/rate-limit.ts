@@ -1,8 +1,7 @@
 /** Small fixed-window rate limiter (per server instance; enough to blunt floods and brute force). */
 const buckets = new Map<string, { count: number; reset: number }>();
 
-export function rateLimited(key: string, limit: number, windowMs: number) {
-  const now = Date.now();
+export function rateLimited(key: string, limit: number, windowMs: number, now = Date.now()) {
   const b = buckets.get(key);
   if (!b || b.reset <= now) {
     buckets.set(key, { count: 1, reset: now + windowMs });

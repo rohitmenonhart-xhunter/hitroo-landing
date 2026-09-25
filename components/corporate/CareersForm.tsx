@@ -241,6 +241,7 @@ export default function CareersForm() {
         {turnstileSiteKey && (
           <Turnstile
             siteKey={turnstileSiteKey}
+            action="careers"
             resetSignal={turnstileResetSignal}
             onToken={setTurnstileToken}
             onError={() => setError('Verification expired or could not load. Please try again.')}

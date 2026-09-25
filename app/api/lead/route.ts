@@ -8,6 +8,9 @@ import {
     getTurnstileConfiguration,
     leadPayloadSchema,
     MAX_LEAD_BODY_BYTES,
+    mayAcknowledge,
+    mayNotify,
+    submissionLimited,
     verifyTurnstileToken,
 } from '@/lib/lead-protection';
 import {
@@ -35,6 +38,10 @@ export async function POST(request: NextRequest) {
 
         if (!isSameOrigin(request)) {
             return jsonError('Cross-origin submissions are not allowed', 403);
+        }
+
+        if (submissionLimited('lead', getClientIp(request) ?? 'unknown')) {
+            return jsonError('Too many messages. Please try again in a minute, or email info@hitroo.com.', 429);
         }
 
         let rawData: unknown;
@@ -128,6 +135,12 @@ export async function POST(request: NextRequest) {
             return jsonError('Messaging is not configured yet. Please email us directly.', 500);
         }
 
+        if (!mayNotify()) {
+            console.warn('Lead notification skipped: hourly email cap reached');
+            if (leadId) return stored();
+            return jsonError('We are receiving a lot of messages. Please email info@hitroo.com.', 503);
+        }
+
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD },
@@ -176,8 +189,9 @@ export async function POST(request: NextRequest) {
             throw mailErr;
         }
 
-        // 2) Send the visitor a friendly acknowledgment (best-effort)
-        if (data.email) {
+        // 2) Send the visitor a friendly acknowledgment (best-effort, capped so the form
+        //    can't be used to mail someone else's inbox)
+        if (data.email && mayAcknowledge(data.email)) {
             try {
                 await transporter.sendMail({
                     from: `HITROO <${process.env.GMAIL_USER}>`,

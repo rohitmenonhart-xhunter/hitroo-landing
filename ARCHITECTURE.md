@@ -33,7 +33,7 @@ flowchart LR
 | Database | Fly.io app `hitroo-db` | Fly Postgres (flex), PostgreSQL 18, 1 machine `shared-cpu-1x` / 1 GB, 10 GB encrypted volume, region `sin`. |
 | Public DB endpoint | `hitroo-db.fly.dev:5432` | Dedicated IPv4 `149.248.221.16` ($2/month) with Fly's `pg_tls` handler; connect with `sslmode=verify-full`. Fly apps can use `hitroo-db.internal` over the private network. |
 | Email | Gmail SMTP (`nodemailer`) | Lead and application notifications plus acknowledgments. |
-| Spam protection | Honeypot + timing + optional Turnstile | Turnstile only when both keys are set. |
+| Spam protection | Per-visitor rate limits, honeypot, timing, email caps, optional Turnstile | Limits live in code (`lib/lead-protection.ts`, per server instance); Turnstile only when both keys are set. See [docs/contact-form-protection.md](docs/contact-form-protection.md). |
 
 The Fly app replaced the earlier `decern-hitroo` server, which was destroyed on 2026-09-25 (its 892 KB data volume is backed up at `Hitroo_internal_Apps/_backups/decern-data-backup-2026-09-25.tgz`).
 
@@ -74,8 +74,8 @@ Then give the app `postgres://app_example:…@hitroo-db.fly.dev:5432/hitroo?sslm
 
 ## Data flows
 
-1. **Enquiries** — home page and `/contact` → `POST /api/lead` → strict zod schema, same-origin check, honeypot, completion timing, optional Turnstile → `INSERT web.leads` → Gmail notification + acknowledgment → `emailed = true`. If email fails, the lead is already stored and the visitor still sees success.
-2. **Careers** — `/careers` → `POST /api/careers` → validation and PDF check (≤ 3 MB: Vercel caps request bodies at 4.5 MB and the PDF travels base64-encoded) → `INSERT web.job_applications` (with the resume) → email with the resume attached.
+1. **Enquiries** — home page and `/contact` → `POST /api/lead` → per-visitor rate limit (5 a minute, 20 an hour), strict zod schema, same-origin check, honeypot, completion timing, optional Turnstile → `INSERT web.leads` → Gmail notification + acknowledgment → `emailed = true`. If email fails, the lead is already stored and the visitor still sees success. The acknowledgment goes to each address at most once an hour and 30 an hour in all, so the form can't be used to mail other people; team notifications stop at 60 an hour, and later leads still show in the admin.
+2. **Careers** — `/careers` → `POST /api/careers` → rate limit (3 a minute, 10 an hour), validation and PDF check (≤ 3 MB: Vercel caps request bodies at 4.5 MB and the PDF travels base64-encoded) → `INSERT web.job_applications` (with the resume) → email with the resume attached.
 3. **Analytics** — `components/corporate/Analytics` → `POST /api/track` (bot filter, 120 requests/min/IP, same-origin, strict schema in `lib/track-schema.ts`):
    - a **view** on every route change → `web.page_views`;
    - a **click** for links and buttons (label, and the target without query strings) → `web.events`;
@@ -118,7 +118,7 @@ Then give the app `postgres://app_example:…@hitroo-db.fly.dev:5432/hitroo?sslm
 
 ### Vercel environment variables
 
-**Website** (`hitroo-landing`): `DATABASE_URL` (web_app URL, Production only, so preview deployments never write to the live database), `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `LEAD_EMAIL_RECIPIENT`, `REVALIDATE_SECRET` (same value as the admin's), optional `TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`, optional `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION`, `GROQ_API_KEY`, and `NEXT_PUBLIC_SITE_URL` for preview deployments (default `https://www.hitroo.com`). `ADMIN_PASSWORD` was removed from the website on 2026-09-26. Never set `DATABASE_ADMIN_URL` on Vercel.
+**Website** (`hitroo-landing`): `DATABASE_URL` (web_app URL, Production only, so preview deployments never write to the live database), `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `LEAD_EMAIL_RECIPIENT`, `REVALIDATE_SECRET` (same value as the admin's), optional `TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`, optional `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION`, and `NEXT_PUBLIC_SITE_URL` for preview deployments (default `https://www.hitroo.com`). `ADMIN_PASSWORD` was removed from the website on 2026-09-26. Never set `DATABASE_ADMIN_URL` on Vercel.
 
 **Admin** (`hitroo_admin_page`): `DATABASE_URL` (admin_app URL), `ADMIN_PASSWORD`, `SESSION_SECRET` (32+ random characters), `SITE_URL` (`https://www.hitroo.com`), `REVALIDATE_SECRET`.
 
@@ -127,7 +127,7 @@ Then give the app `postgres://app_example:…@hitroo-db.fly.dev:5432/hitroo?sslm
 | Path | What |
 | --- | --- |
 | `app/(site)/` | Marketing pages; `layout.tsx` adds Header, Footer, Analytics and CookieConsent. |
-| `app/api/` | `lead`, `careers`, `track`, `consent`, `revalidate`, `chat`. |
+| `app/api/` | `lead`, `careers`, `track`, `consent`, `revalidate`. |
 | `app/sitemap.ts`, `app/robots.ts`, `app/llms.txt/`, `app/llms-full.txt/` | Discovery files. |
 | `components/corporate/` | Design system and page blocks; `components/seo/JsonLd.tsx`. |
 | `lib/db.ts`, `lib/data/*` | Postgres pool and write-only data access (forms, analytics) plus post reads. |

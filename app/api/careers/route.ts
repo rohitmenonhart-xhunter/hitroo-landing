@@ -11,7 +11,10 @@ import {
 } from '@/lib/careers-protection';
 import {
     getTurnstileConfiguration,
+    mayAcknowledge,
+    mayNotify,
     MIN_FORM_COMPLETION_MS,
+    submissionLimited,
     verifyTurnstileToken,
 } from '@/lib/lead-protection';
 import {
@@ -28,6 +31,12 @@ export async function POST(request: NextRequest) {
         }
         if (!isSameOrigin(request)) {
             return NextResponse.json({ error: 'Cross-origin submissions are not allowed' }, { status: 403 });
+        }
+        if (submissionLimited('careers', getClientIp(request) ?? 'unknown')) {
+            return NextResponse.json(
+                { error: 'Too many applications. Please try again in a minute, or email info@hitroo.com.' },
+                { status: 429 }
+            );
         }
 
         let rawData: unknown;
@@ -128,6 +137,15 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(
                 { error: 'Applications are not configured yet. Please email info@hitroo.com.' },
                 { status: 500 }
+            );
+        }
+
+        if (!mayNotify()) {
+            console.warn('Careers notification skipped: hourly email cap reached');
+            if (applicationId) return NextResponse.json({ success: true });
+            return NextResponse.json(
+                { error: 'We are receiving a lot of applications. Please email info@hitroo.com.' },
+                { status: 503 }
             );
         }
 
@@ -246,8 +264,9 @@ Submitted: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
             throw mailErr;
         }
 
-        // Send the applicant a branded acknowledgment (best-effort)
-        if (email) {
+        // Send the applicant a branded acknowledgment (best-effort, capped so the form
+        // can't be used to mail someone else's inbox)
+        if (email && mayAcknowledge(email)) {
             try {
                 await transporter.sendMail({
                     from: `HITROO Careers <${process.env.GMAIL_USER}>`,

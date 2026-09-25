@@ -29,7 +29,6 @@ ESLint is **disabled during builds** (`next.config.js` → `eslint.ignoreDuringB
 
 Required for API routes to function (set in Vercel / `.env.local`, never committed):
 
-- `GROQ_API_KEY` — Groq API for the (UI-less) chat route ([app/api/chat/route.ts](app/api/chat/route.ts), model `openai/gpt-oss-120b`)
 - `REVALIDATE_SECRET` — shared with the admin app; lets it refresh post pages the moment a post changes (`/api/revalidate`)
 - `GMAIL_USER`, `GMAIL_APP_PASSWORD` — Gmail SMTP (via `nodemailer`) for lead/careers emails
 - `LEAD_EMAIL_RECIPIENT` — inbox that receives lead and job-application emails
@@ -72,12 +71,11 @@ Single source of truth: `services` (title, short `label`, `short`, `pain`, icon,
 [lib/db.ts](lib/db.ts) is a small `pg` pool on `DATABASE_URL` (role `web_app`, schema `web`); data access lives in [lib/data/](lib/data/) (`posts`, `forms`, `analytics`). Tables: `leads`, `job_applications`, `page_views`, `events`, `consents`, `posts` — see [db/migrations/](db/migrations/) and [ARCHITECTURE.md](ARCHITECTURE.md). The site's role is **write-only** except for posts: it can add form and analytics rows and read posts, but cannot read leads, applications or analytics back (migration 003). Posts (articles and blog) are managed in the admin app and served with ISR (5 minutes; admin edits refresh immediately through `/api/revalidate`). This repo's `db/` folder is the home of the shared database's schema (bootstrap, roles, migrations) for every HITROO app. `data/content.json` is only the seed for `npm run db:seed-posts`. The site never runs DDL; schema changes go in a new migration file.
 
 ### API routes (`app/api/*/route.ts`)
-- `lead` — strict schema, same-origin, honeypot, timing, optional Turnstile → stores in `web.leads`, then emails (a failed email still returns success once stored). Requires phone OR email.
-- `careers` — same protections; verified PDF resume up to 3 MB → `web.job_applications` (resume included), then email with attachment.
+- `lead` — per-visitor rate limit (5/min, 20/h), strict schema, same-origin, honeypot, timing, optional Turnstile → stores in `web.leads`, then emails (a failed email still returns success once stored). The acknowledgment goes to each address at most once an hour (30/h in all); team emails stop at 60/h, and the admin still shows everything. Requires phone OR email.
+- `careers` — same protections (3/min, 10/h per visitor); verified PDF resume up to 3 MB → `web.job_applications` (resume included), then email with attachment.
 - `track` — first-party page views, clicks and engagement (visible time, scroll/read depth); bot filter, rate limit, no IPs; a random in-memory visit ID groups one visit's pages; visitor/session IDs only with consent.
 - `consent` — records cookie decisions.
 - `revalidate` — refreshes post listings and pages; `x-revalidate-secret` header (constant-time compare, failed-attempt rate limit). Called by the admin app.
-- `chat` — same-origin, bounded, rate-limited Groq proxy (no UI uses it).
 
 ### UI conventions
 - Import aliases (tsconfig `@/*` → repo root): `@/components`, `@/components/ui`, `@/lib/utils`, `@/hooks`.
@@ -86,4 +84,4 @@ Single source of truth: `services` (title, short `label`, `short`, `pain`, icon,
 
 ## Deployment
 
-Vercel: `vercel.json` pins functions to `sin1` (next to the database). Set the env vars listed in [ARCHITECTURE.md](ARCHITECTURE.md#vercel-environment-variables); run `npm run indexnow` after production deploys. Live at www.hitroo.com since 2026-09-25; pushing to `main` deploys to production. [netlify.toml](netlify.toml) and `@netlify/plugin-nextjs` are unused leftovers from the Netlify days.
+Vercel: `vercel.json` pins functions to `sin1` (next to the database). Set the env vars listed in [ARCHITECTURE.md](ARCHITECTURE.md#vercel-environment-variables); run `npm run indexnow` after production deploys. Live at www.hitroo.com since 2026-09-25; pushing to `main` deploys to production. `@netlify/plugin-nextjs` is an unused leftover from the Netlify days. Vercel never ran the old `netlify.toml` rate limits, so every limit lives in code ([docs/contact-form-protection.md](docs/contact-form-protection.md)).

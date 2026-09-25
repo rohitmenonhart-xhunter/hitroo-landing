@@ -2,6 +2,17 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
+## 2026-09-26 — Form rate limits; AI chat route removed
+
+### Security
+- The enquiry and careers forms limit each visitor again: 5 a minute and 20 an hour for enquiries, 3 and 10 for applications. The old limits were Netlify edge rules, which Vercel never ran.
+- The acknowledgment email goes to each address at most once an hour and 30 an hour in all, so the forms can't be used to send HITROO emails to other people; team notifications stop at 60 an hour, and later submissions still show in the admin.
+- Removed `/api/chat`: no page used it, it had no limit, and anyone could run the Groq model on HITROO's key. `GROQ_API_KEY` is removed from Vercel.
+- Removed `netlify.toml`.
+
+### Fixed
+- The careers form now sends its Turnstile token with the `careers` action the API checks; with Turnstile on, every application would have been rejected.
+
 ## 2026-09-26 — Admin live at admin.hitroo.com
 
 ### Deployed

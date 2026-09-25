@@ -1,8 +1,34 @@
 import { z } from 'zod';
+import { rateLimited } from './rate-limit.ts';
 
 export const MAX_LEAD_BODY_BYTES = 16 * 1024;
 export const MIN_FORM_COMPLETION_MS = 1_200;
 export const TURNSTILE_ACTION = 'contact';
+
+const MINUTE = 60_000;
+const HOUR = 60 * MINUTE;
+
+/*
+ * Form limits, counted per server instance. Vercel ignores the old netlify.toml edge rules,
+ * so the forms enforce their own. Past the email caps a submission is still stored and
+ * shows in the admin; it just isn't emailed.
+ */
+
+/** Too many submissions from one visitor (IP): 5 a minute / 20 an hour for enquiries, 3 / 10 for applications. */
+export function submissionLimited(form: 'lead' | 'careers', ip: string, now = Date.now()) {
+  const [perMinute, perHour] = form === 'lead' ? [5, 20] : [3, 10];
+  return rateLimited(`${form}:minute:${ip}`, perMinute, MINUTE, now) || rateLimited(`${form}:hour:${ip}`, perHour, HOUR, now);
+}
+
+/** Whether to email a sender their acknowledgment: once per address an hour, 30 an hour in all. */
+export function mayAcknowledge(email: string, now = Date.now()) {
+  return !rateLimited(`ack:${email.trim().toLowerCase()}`, 1, HOUR, now) && !rateLimited('ack:all', 30, HOUR, now);
+}
+
+/** Whether to email the team about a submission: at most 60 an hour. */
+export function mayNotify(now = Date.now()) {
+  return !rateLimited('notify:all', 60, HOUR, now);
+}
 
 const optionalText = (max: number) => z.string().trim().max(max).optional().default('');
 

@@ -4,8 +4,13 @@ import {
   getAutomationSignal,
   getTurnstileConfiguration,
   leadPayloadSchema,
+  mayAcknowledge,
+  mayNotify,
+  submissionLimited,
   verifyTurnstileToken,
 } from '../lib/lead-protection.ts';
+
+const HOUR = 60 * 60_000;
 
 const validPayload = {
   name: 'Asha Raman',
@@ -145,4 +150,41 @@ test('requires a successful Turnstile response for the contact action', async ()
     }),
     { status: 'rejected', errorCodes: ['invalid-action-or-response'] }
   );
+});
+
+test('limits enquiries per visitor: 5 a minute, 20 an hour', () => {
+  const start = Date.UTC(2030, 0, 1);
+  const ip = '203.0.113.1';
+  for (let minute = 0; minute < 4; minute++) {
+    const t = start + minute * 61_000;
+    for (let i = 0; i < 5; i++) assert.equal(submissionLimited('lead', ip, t), false);
+    assert.equal(submissionLimited('lead', ip, t), true, 'sixth in a minute');
+  }
+  assert.equal(submissionLimited('lead', ip, start + 4 * 61_000), true, '21st in an hour');
+  assert.equal(submissionLimited('lead', '203.0.113.2', start), false, 'other visitors are unaffected');
+  assert.equal(submissionLimited('lead', ip, start + HOUR + 5 * 61_000), false, 'allowed again after the hour');
+});
+
+test('limits applications per visitor: 3 a minute', () => {
+  const t = Date.UTC(2030, 1, 1);
+  for (let i = 0; i < 3; i++) assert.equal(submissionLimited('careers', '198.51.100.7', t), false);
+  assert.equal(submissionLimited('careers', '198.51.100.7', t), true);
+});
+
+test('acknowledges each address at most once an hour, and 30 an hour in all', () => {
+  const t = Date.UTC(2030, 2, 1);
+  assert.equal(mayAcknowledge('Asha@Example.com', t), true);
+  assert.equal(mayAcknowledge(' asha@example.com ', t + 1_000), false, 'same address, any case');
+  assert.equal(mayAcknowledge('asha@example.com', t + HOUR + 1_000), true, 'again after an hour');
+
+  const t2 = Date.UTC(2030, 3, 1);
+  for (let i = 0; i < 30; i++) assert.equal(mayAcknowledge(`person${i}@example.com`, t2), true);
+  assert.equal(mayAcknowledge('person30@example.com', t2), false, 'the 31st in an hour');
+});
+
+test('emails the team about at most 60 submissions an hour', () => {
+  const t = Date.UTC(2030, 4, 1);
+  for (let i = 0; i < 60; i++) assert.equal(mayNotify(t), true);
+  assert.equal(mayNotify(t), false);
+  assert.equal(mayNotify(t + HOUR), true, 'a new hour');
 });

@@ -61,7 +61,7 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - Vercel Functions reject request bodies over 4.5 MB (`413 FUNCTION_PAYLOAD_TOO_LARGE`, before our code runs). Uploads sent base64 in JSON must stay under about 3 MB; anything bigger needs a direct-to-storage upload.
 
 ## Open / next
-- Deploy the split (needs the owner's go-ahead): create `admin_app` on the production database (`db/roles/admin_app.sql`, password into `_secrets/hitroo-db.env`), run `npm run db:migrate` (002 + 003), create the admin's GitHub repo and Vercel project with admin.hitroo.com and its env vars, set `REVALIDATE_SECRET` on both projects, push this repo, then remove `ADMIN_PASSWORD` from the website's Vercel env.
+- Finish the split (the website half is live since 2026-09-26 with migration 002; the admin is on GitHub as the private repo `hitroo_admin`): create `admin_app` on the production database (`db/roles/admin_app.sql`, password into `_secrets/hitroo-db.env`), run `npm run db:migrate` (applies 003; the live site no longer needs the read access it removes), create the admin's Vercel project with admin.hitroo.com and its env vars, set `REVALIDATE_SECRET` on both projects, then remove `ADMIN_PASSWORD` from the website's Vercel env. Until the admin is live, leads and applications arrive by email only.
 - Verify Google Search Console and Bing Webmaster Tools, submit the sitemap and run `npm run indexnow`.
 - Remove `netlify.toml` and the Netlify plugin now that Vercel serves the domain.
 - Enable continuous database backups (Tigris) or a scheduled `pg_dump`.

@@ -2,7 +2,12 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
-## 2026-09-25 — Admin moves to its own app; clicks and reading analytics (not yet deployed)
+## 2026-09-25 — Admin moves to its own app; clicks and reading analytics
+
+### Deployed (2026-09-26)
+- Commit `3789408` is live on production. Migration 002 was applied to the production database first, on its own, so analytics never paused; migration 003 and the `admin_app` role are still to apply.
+- The admin app is on GitHub (private repo `hitroo_admin`) but not on Vercel yet; until it is, leads and applications arrive by email only.
+- Checked live: `/admin` is gone, `/api/revalidate` answers, and a labelled test page view and engagement event reached the database (deleted afterwards).
 
 ### Changed
 - Folders: the website now lives in `Hitroo_internal_Apps/hitroo/hitroo_landing`, next to the new admin, `hitroo/hitroo_admin_page`. Later internal apps go in `hitroo/` too.
@@ -29,7 +34,7 @@ All notable changes to the HITROO website and its infrastructure. Newest first. 
 - Checked on the live site: page titles, canonicals and JSON-LD; `/robots.txt`, `/sitemap.xml` (20 URLs), `/llms.txt`, the IndexNow key file; 308 redirects for the old URLs; security headers.
 - Checked end to end with one labelled test enquiry: stored in `web.leads` with country, region and city from Vercel's edge, and Gmail accepted the notification (`emailed = true`). Page views and the consent choice were recorded, with visitor and session IDs only after consent. Test data is removed after checking.
 
-### Fixed (not yet deployed)
+### Fixed (deployed 2026-09-26 in `3789408`)
 - Résumé uploads over about 3.3 MB failed on Vercel: functions reject request bodies over 4.5 MB (`413 FUNCTION_PAYLOAD_TOO_LARGE`), and the PDF travels base64-encoded inside JSON. The limit is now 3 MB in the form, the API and the docs.
 
 ## 2026-09-25 — Data platform, Insights, SEO/GEO (commit `70ecec0`)

@@ -68,7 +68,7 @@ export default async function PostPage({ kind, slug }: { kind: PostKind; slug: s
               <CoverImage src={post.cover_image} alt="" priority sizes="(min-width: 1024px) 1024px, 100vw" className="object-cover" />
             </div>
           )}
-          <div className="mx-auto mt-14 max-w-3xl lg:mt-20">
+          <div data-article className="mx-auto mt-14 max-w-3xl lg:mt-20">
             {post.excerpt && !post.body.trim().startsWith(post.excerpt.trim()) && (
               <p className="mb-10 text-[22px] font-light leading-relaxed tracking-[-0.01em] text-ink">{post.excerpt}</p>
             )}

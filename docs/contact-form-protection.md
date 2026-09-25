@@ -16,7 +16,7 @@ The site's public, bot-abusable server endpoints are protected in layers:
    validity window, and cannot be reused.
 
 The careers form uses the same honeypot, timing, Turnstile, origin, and payload
-controls, plus strict application fields and a verified PDF-only 5 MB upload
+controls, plus strict application fields and a verified PDF-only 3 MB upload
 limit. Netlify permits three career submissions per IP per minute.
 
 The legacy AI chat endpoint is same-origin, accepts at most 500 characters,

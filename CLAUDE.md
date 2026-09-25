@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Marketing site for HITROO — a software company building custom software, mobile and desktop apps, AI models, automation and vision systems. Next.js 13 App Router, TypeScript, Tailwind (+ shadcn/ui primitives). Hosted on **Vercel** (functions in `sin1`); data in the shared **Postgres on Fly.io** (`hitroo-db`). See [ARCHITECTURE.md](ARCHITECTURE.md) for the full system, [KT.md](KT.md) for what's built and [CHANGELOG.md](CHANGELOG.md) for history — update all three when you change something significant.
+Marketing site for HITROO — a software company building custom software, mobile and desktop apps, AI models, automation and vision systems. Next.js 13 App Router, TypeScript, Tailwind (+ shadcn/ui primitives). Hosted on **Vercel** (functions in `sin1`); data in the shared **Postgres on Fly.io** (`hitroo-db`). Lives in `hitroo/hitroo_landing`; the admin (leads, applications, posts, analytics) is a separate app, [`../hitroo_admin_page`](../hitroo_admin_page). See [ARCHITECTURE.md](ARCHITECTURE.md) for the full system, [KT.md](KT.md) for what's built and [CHANGELOG.md](CHANGELOG.md) for history — update all three when you change something significant.
 
 ## Commands
 
@@ -15,7 +15,7 @@ npm run build      # production build
 npm run start      # serve production build
 npm run lint       # next lint (also ignored during builds, see below)
 npm run typecheck  # tsc --noEmit — the type gate
-npm test           # node:test suites in tests/ (request security, lead protection, visitor helpers)
+npm test           # node:test suites in tests/ (request security, lead protection, visitor and tracking helpers)
 npm run db:migrate     # apply db/migrations/*.sql (uses DATABASE_ADMIN_URL from .env.local)
 npm run db:seed-posts  # import data/content.json posts into web.posts (idempotent)
 npm run indexnow       # after a production deploy: push sitemap URLs to Bing & co.
@@ -27,10 +27,10 @@ ESLint is **disabled during builds** (`next.config.js` → `eslint.ignoreDuringB
 
 ## Environment variables
 
-Required for API routes to function (set in Netlify env / `.env.local`, never committed):
+Required for API routes to function (set in Vercel / `.env.local`, never committed):
 
 - `GROQ_API_KEY` — Groq API for the (UI-less) chat route ([app/api/chat/route.ts](app/api/chat/route.ts), model `openai/gpt-oss-120b`)
-- `ADMIN_PASSWORD` — gates `/admin` and the `/api/admin/*` routes
+- `REVALIDATE_SECRET` — shared with the admin app; lets it refresh post pages the moment a post changes (`/api/revalidate`)
 - `GMAIL_USER`, `GMAIL_APP_PASSWORD` — Gmail SMTP (via `nodemailer`) for lead/careers emails
 - `LEAD_EMAIL_RECIPIENT` — inbox that receives lead and job-application emails
 - `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` — optional Cloudflare Turnstile
@@ -56,7 +56,7 @@ All database credentials live outside the repo in `Hitroo_internal_Apps/_secrets
 - **Imagery**: realistic, documentary-style photos generated with Codex, in `public/photos/*.webp`; briefs in [docs/art/photos-briefs.md](docs/art/photos-briefs.md). No people, no readable text, no brand-colour grading.
 
 ### Pages (App Router)
-Marketing pages live in the route group `app/(site)/` whose [layout](app/(site)/layout.tsx) renders the shared Header + `<main id="main">` + Footer once. Pages are **server components**; interactivity is isolated in client islands. Routes: `/`, `/services`, `/services/[slug]`, `/insights`, `/articles`, `/blog`, `/articles/[slug]`, `/blog/[slug]`, `/ai-perspective`, `/about`, `/research`, `/support`, `/careers`, `/contact`, `/privacy`. The group layout also mounts `Analytics` (first-party page views) and `CookieConsent`. `/admin` (noindex) sits outside the group; [app/not-found.tsx](app/not-found.tsx) renders its own Header/Footer. Metadata comes from `pageMetadata()` in [lib/seo.ts](lib/seo.ts) (per-page canonical — never set one in the root layout) and JSON-LD from the builders there, rendered with `components/seo/JsonLd`. Discovery: [app/sitemap.ts](app/sitemap.ts), [app/robots.ts](app/robots.ts), `app/llms.txt` and `app/llms-full.txt` (generated from site data and posts).
+Marketing pages live in the route group `app/(site)/` whose [layout](app/(site)/layout.tsx) renders the shared Header + `<main id="main">` + Footer once. Pages are **server components**; interactivity is isolated in client islands. Routes: `/`, `/services`, `/services/[slug]`, `/insights`, `/articles`, `/blog`, `/articles/[slug]`, `/blog/[slug]`, `/ai-perspective`, `/about`, `/research`, `/support`, `/careers`, `/contact`, `/privacy`. The group layout also mounts `Analytics` (first-party page views, clicks and reading) and `CookieConsent`. There is no admin here any more; [app/not-found.tsx](app/not-found.tsx) renders its own Header/Footer. Metadata comes from `pageMetadata()` in [lib/seo.ts](lib/seo.ts) (per-page canonical — never set one in the root layout) and JSON-LD from the builders there, rendered with `components/seo/JsonLd`. Discovery: [app/sitemap.ts](app/sitemap.ts), [app/robots.ts](app/robots.ts), `app/llms.txt` and `app/llms-full.txt` (generated from site data and posts).
 
 ### Components ([components/corporate/](components/corporate/))
 - `ui.tsx` — `Container`, `Button` (pill, arrow), `ArrowLink`, `Eyebrow`, `SectionHeader`, `Section`, `Statement` (large 1–2 line statement).
@@ -69,14 +69,14 @@ Marketing pages live in the route group `app/(site)/` whose [layout](app/(site)/
 Single source of truth: `services` (title, short `label`, `short`, `pain`, icon, photo, `overview` for metadata, approach/capabilities/outcomes/stack), `COMPANY`, and home/support content (`WHY_HITROO_STATEMENT`, `WHY_NEED`, `PROCESS`, `AUDIENCE`, `SUPPORT`). Edit content here, not in page components.
 
 ### Data (Postgres on Fly.io)
-[lib/db.ts](lib/db.ts) is a small `pg` pool on `DATABASE_URL` (role `web_app`, schema `web`); data access lives in [lib/data/](lib/data/) (`posts`, `forms`, `analytics`). Tables: `leads`, `job_applications`, `page_views`, `consents`, `posts` — see [db/migrations/](db/migrations/) and [ARCHITECTURE.md](ARCHITECTURE.md). Posts (articles and blog) are managed in `/admin` and served with ISR (5 minutes; admin edits refresh immediately). `data/content.json` is only the seed for `npm run db:seed-posts`. The site never runs DDL; schema changes go in a new migration file.
+[lib/db.ts](lib/db.ts) is a small `pg` pool on `DATABASE_URL` (role `web_app`, schema `web`); data access lives in [lib/data/](lib/data/) (`posts`, `forms`, `analytics`). Tables: `leads`, `job_applications`, `page_views`, `events`, `consents`, `posts` — see [db/migrations/](db/migrations/) and [ARCHITECTURE.md](ARCHITECTURE.md). The site's role is **write-only** except for posts: it can add form and analytics rows and read posts, but cannot read leads, applications or analytics back (migration 003). Posts (articles and blog) are managed in the admin app and served with ISR (5 minutes; admin edits refresh immediately through `/api/revalidate`). This repo's `db/` folder is the home of the shared database's schema (bootstrap, roles, migrations) for every HITROO app. `data/content.json` is only the seed for `npm run db:seed-posts`. The site never runs DDL; schema changes go in a new migration file.
 
 ### API routes (`app/api/*/route.ts`)
 - `lead` — strict schema, same-origin, honeypot, timing, optional Turnstile → stores in `web.leads`, then emails (a failed email still returns success once stored). Requires phone OR email.
-- `careers` — same protections; verified PDF resume up to 5 MB → `web.job_applications` (resume included), then email with attachment.
-- `track` — first-party page views (bot filter, rate limit, no IPs; visitor/session IDs only with consent).
+- `careers` — same protections; verified PDF resume up to 3 MB → `web.job_applications` (resume included), then email with attachment.
+- `track` — first-party page views, clicks and engagement (visible time, scroll/read depth); bot filter, rate limit, no IPs; a random in-memory visit ID groups one visit's pages; visitor/session IDs only with consent.
 - `consent` — records cookie decisions.
-- `admin/*` — posts CRUD, insights, leads/applications, resume download; `x-admin-password` header (constant-time compare, failed-attempt rate limit).
+- `revalidate` — refreshes post listings and pages; `x-revalidate-secret` header (constant-time compare, failed-attempt rate limit). Called by the admin app.
 - `chat` — same-origin, bounded, rate-limited Groq proxy (no UI uses it).
 
 ### UI conventions
@@ -86,4 +86,4 @@ Single source of truth: `services` (title, short `label`, `short`, `pain`, icon,
 
 ## Deployment
 
-Vercel: `vercel.json` pins functions to `sin1` (next to the database). Set the env vars listed in [ARCHITECTURE.md](ARCHITECTURE.md#vercel-environment-variables); run `npm run indexnow` after production deploys. [netlify.toml](netlify.toml) remains only until DNS moves off Netlify.
+Vercel: `vercel.json` pins functions to `sin1` (next to the database). Set the env vars listed in [ARCHITECTURE.md](ARCHITECTURE.md#vercel-environment-variables); run `npm run indexnow` after production deploys. Live at www.hitroo.com since 2026-09-25; pushing to `main` deploys to production. [netlify.toml](netlify.toml) and `@netlify/plugin-nextjs` are unused leftovers from the Netlify days.

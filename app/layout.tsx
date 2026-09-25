@@ -34,7 +34,8 @@ export const metadata: Metadata = {
   creator: 'HITROO',
   publisher: 'HITROO',
   applicationName: 'HITROO',
-  referrer: 'origin-when-cross-origin',
+  // No referrer meta: the Referrer-Policy header (next.config.js) sets it, and Next 13.5
+  // briefly writes other tags' values into it while navigating to and from posts.
   formatDetection: { telephone: false, address: false, email: false },
   robots: {
     index: true,

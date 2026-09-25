@@ -2,7 +2,37 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
-## 2026-09-25 — Data platform, Insights, SEO/GEO (not yet deployed or committed)
+## 2026-09-25 — Admin moves to its own app; clicks and reading analytics (not yet deployed)
+
+### Changed
+- Folders: the website now lives in `Hitroo_internal_Apps/hitroo/hitroo_landing`, next to the new admin, `hitroo/hitroo_admin_page`. Later internal apps go in `hitroo/` too.
+- The admin moved out of the website into its own Next.js 16 app, `hitroo_admin_page`: analytics, leads, applications and posts behind one owner password. The website no longer has `/admin` or `/api/admin/*`.
+- The website's database role is now write-only (migration 003): it can add form, analytics and consent rows and read posts, but can no longer read leads, applications or analytics. The admin uses a new `admin_app` role (`db/roles/admin_app.sql`).
+- The privacy policy now covers click, scroll and time-on-page analytics and the in-memory visit number.
+
+### Added
+- Analytics: clicks on links and buttons; engagement (visible time and scroll depth — article depth on posts); visits, grouped by a random visit id held only in the page's memory. New table `web.events`, new columns `page_views.visit_id` / `view_id` (migration 002).
+- `/api/revalidate` (secret-protected), so post changes made in the admin appear on the site at once.
+- Notes on leads and applications.
+- Tests for the tracking helpers and payload schema (22 tests in total).
+
+### Fixed
+- Client navigation to and from posts logged "Failed to set referrer policy": Next 13.5 briefly wrote other tags' values into the referrer meta tag. The tag is gone; the stricter `Referrer-Policy` header now sets the policy.
+
+### Removed
+- `app/admin`, `app/api/admin/*`, the admin reads and writes in `lib/data/`, and the website's use of `ADMIN_PASSWORD`.
+
+## 2026-09-25 — Live on Vercel
+
+### Deployed
+- Commit `70ecec0` is live on Vercel production at `www.hitroo.com` (`hitroo.com` redirects to it). `DATABASE_URL` is set for Production only.
+- Checked on the live site: page titles, canonicals and JSON-LD; `/robots.txt`, `/sitemap.xml` (20 URLs), `/llms.txt`, the IndexNow key file; 308 redirects for the old URLs; security headers.
+- Checked end to end with one labelled test enquiry: stored in `web.leads` with country, region and city from Vercel's edge, and Gmail accepted the notification (`emailed = true`). Page views and the consent choice were recorded, with visitor and session IDs only after consent. Test data is removed after checking.
+
+### Fixed (not yet deployed)
+- Résumé uploads over about 3.3 MB failed on Vercel: functions reject request bodies over 4.5 MB (`413 FUNCTION_PAYLOAD_TOO_LARGE`), and the PDF travels base64-encoded inside JSON. The limit is now 3 MB in the form, the API and the docs.
+
+## 2026-09-25 — Data platform, Insights, SEO/GEO (commit `70ecec0`)
 
 ### Infrastructure
 - Destroyed the Fly.io app `decern-hitroo` (Singapore) at the owner's request, after backing up its 892 KB data volume to `Hitroo_internal_Apps/_backups/decern-data-backup-2026-09-25.tgz`. Its secrets (OpenRouter, RunPod, access codes) were not copied; regenerate them at their providers if needed.

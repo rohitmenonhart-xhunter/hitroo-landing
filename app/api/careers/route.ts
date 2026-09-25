@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
         // Prepare attachment if resume exists
         const resume = decodeResume(resumeData);
         if (!resume) {
-            return NextResponse.json({ error: 'Resume must be a valid PDF under 5 MB' }, { status: 400 });
+            return NextResponse.json({ error: 'Resume must be a valid PDF under 3 MB' }, { status: 400 });
         }
 
         // Store first: the application is captured even if email delivery fails.

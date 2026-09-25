@@ -13,6 +13,7 @@ const SECTIONS: { title: string; body: string[] }[] = [
     body: [
       'Messages and job applications you send us: your name, contact details, message and, for applications, your resume.',
       'Page views: the page, the site that referred you, your country and city (from the network, not stored as an IP address), device type, browser and language.',
+      'How pages are used: the links and buttons you click, how far you scroll or read, and how long a page stays open. A random visit number, held only in the page’s memory and never stored on your device, groups the pages of one visit.',
       'If you accept cookies, a random visitor ID so we can see returning visits. We never store IP addresses and never sell data.',
     ],
   },

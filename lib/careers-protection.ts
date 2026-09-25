@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-export const MAX_RESUME_BYTES = 5 * 1024 * 1024;
-export const MAX_CAREERS_BODY_BYTES = 7 * 1024 * 1024;
+// Vercel Functions reject request bodies over 4.5 MB, and the resume travels base64-encoded
+// (+33%) inside JSON, so 3 MB is the largest PDF that fits with room for the other fields.
+export const MAX_RESUME_BYTES = 3 * 1024 * 1024;
+export const MAX_CAREERS_BODY_BYTES = Math.ceil((MAX_RESUME_BYTES * 4) / 3) + 64 * 1024;
 
 export const CAREER_POSITIONS = {
   fullstack: 'Full Stack Developer',

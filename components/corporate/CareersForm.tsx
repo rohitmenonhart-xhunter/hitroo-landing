@@ -16,7 +16,8 @@ const POSITIONS = [
   { id: 'ml-ai', title: 'ML / AI Engineer' },
 ];
 
-const MAX_RESUME_BYTES = 5 * 1024 * 1024;
+// Keep in step with MAX_RESUME_BYTES in lib/careers-protection (Vercel's 4.5 MB request cap).
+const MAX_RESUME_BYTES = 3 * 1024 * 1024;
 const EMPTY = { name: '', email: '', phone: '', linkedin: '', portfolio: '', whyHitroo: '', whyPosition: '', experience: '', availability: '' };
 
 /** Role picker + application → /api/careers (same payload and protections as before). */
@@ -65,7 +66,7 @@ export default function CareersForm() {
       setError('');
     } else {
       setResume(null);
-      setError('Please choose a PDF resume no larger than 5 MB.');
+      setError('Please choose a PDF resume no larger than 3 MB.');
     }
   };
 
@@ -201,7 +202,7 @@ export default function CareersForm() {
           </div>
         </div>
         <div>
-          <span className={LABEL}>Resume (PDF, up to 5 MB)</span>
+          <span className={LABEL}>Resume (PDF, up to 3 MB)</span>
           <label
             className={cn(
               'flex cursor-pointer items-center gap-3 rounded-md border border-dashed px-4 py-4 text-[15px] transition-colors',

@@ -29,7 +29,7 @@ flowchart LR
 | Piece | Where | Notes |
 | --- | --- | --- |
 | Website | Vercel project `hitroo-landing` (Next.js 13 App Router) | Live at www.hitroo.com (`hitroo.com` redirects there). `vercel.json` pins functions to `sin1` (Singapore), next to the database. Pushing to `main` deploys to production. |
-| Admin | Separate Vercel project (planned: admin.hitroo.com), Next.js 16 | One owner password; everything server-rendered; no public pages. See `../hitroo_admin_page/README.md`. |
+| Admin | Vercel project `hitroo_admin`, live at admin.hitroo.com, Next.js 16 | One owner password; everything server-rendered; no public pages. See `../hitroo_admin_page/README.md`. |
 | Database | Fly.io app `hitroo-db` | Fly Postgres (flex), PostgreSQL 18, 1 machine `shared-cpu-1x` / 1 GB, 10 GB encrypted volume, region `sin`. |
 | Public DB endpoint | `hitroo-db.fly.dev:5432` | Dedicated IPv4 `149.248.221.16` ($2/month) with Fly's `pg_tls` handler; connect with `sslmode=verify-full`. Fly apps can use `hitroo-db.internal` over the private network. |
 | Email | Gmail SMTP (`nodemailer`) | Lead and application notifications plus acknowledgments. |
@@ -59,7 +59,7 @@ One database, `hitroo`, split into segments by schema. Each consumer gets its ow
 | `web.consents` | Cookie decisions (`granted`/`denied`, policy version, country) as proof of consent. |
 | `web.posts` | Articles and blog posts (kind, slug, title, excerpt, body, category, cover, status, dates, SEO fields, `legacy_id`). |
 
-**Credentials** live outside the repos in `Hitroo_internal_Apps/_secrets/hitroo-db.env` (chmod 600): superuser URL, `hitroo` admin URL, `web_app`, `internal_app` and `admin_app` URLs. The website only ever gets `DATABASE_URL` = the `web_app` URL; the admin gets the `admin_app` URL. Store these in a password manager too.
+**Credentials** live outside the repos in `Hitroo_internal_Apps/_secrets/hitroo-db.env` (chmod 600): superuser URL, `hitroo` admin URL, `web_app`, `internal_app` and `admin_app` URLs. The website only ever gets `DATABASE_URL` = the `web_app` URL; the admin gets the `admin_app` URL. The admin's sign-in password, session secret and the shared revalidate key are in `_secrets/hitroo-admin.env`. Store these in a password manager too.
 
 ### Adding another internal app
 
@@ -118,7 +118,7 @@ Then give the app `postgres://app_example:…@hitroo-db.fly.dev:5432/hitroo?sslm
 
 ### Vercel environment variables
 
-**Website** (`hitroo-landing`): `DATABASE_URL` (web_app URL, Production only, so preview deployments never write to the live database), `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `LEAD_EMAIL_RECIPIENT`, `REVALIDATE_SECRET` (same value as the admin's), optional `TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`, optional `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION`, `GROQ_API_KEY`, and `NEXT_PUBLIC_SITE_URL` for preview deployments (default `https://www.hitroo.com`). `ADMIN_PASSWORD` is no longer used by the website. Never set `DATABASE_ADMIN_URL` on Vercel.
+**Website** (`hitroo-landing`): `DATABASE_URL` (web_app URL, Production only, so preview deployments never write to the live database), `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `LEAD_EMAIL_RECIPIENT`, `REVALIDATE_SECRET` (same value as the admin's), optional `TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`, optional `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION`, `GROQ_API_KEY`, and `NEXT_PUBLIC_SITE_URL` for preview deployments (default `https://www.hitroo.com`). `ADMIN_PASSWORD` was removed from the website on 2026-09-26. Never set `DATABASE_ADMIN_URL` on Vercel.
 
 **Admin** (`hitroo_admin_page`): `DATABASE_URL` (admin_app URL), `ADMIN_PASSWORD`, `SESSION_SECRET` (32+ random characters), `SITE_URL` (`https://www.hitroo.com`), `REVALIDATE_SECRET`.
 

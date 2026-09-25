@@ -19,7 +19,7 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - `/services` (photo cards) and `/services/[slug]` (hero photo → the problem → what you get → how we work + results → other services → CTA).
 - `/insights` (latest articles and blog posts), `/articles`, `/blog`, `/articles/[slug]`, `/blog/[slug]` — content from `web.posts`, managed in the admin app.
 - `/about`, `/research`, `/support`, `/careers` (role picker + application), `/contact` (details + form), `/ai-perspective` ("Is AI a threat to HITROO?"), `/privacy`, `app/not-found.tsx`.
-- **Admin:** a separate app, `../hitroo_admin_page` — analytics (visits, clicks, reads, world map, sources, audience, hours), leads and applications (status, notes, search, résumés), posts. One owner password.
+- **Admin:** a separate app, `../hitroo_admin_page`, live at https://admin.hitroo.com — analytics (visits, clicks, reads, world map, sources, audience, hours), leads and applications (status, notes, search, résumés), posts. One owner password, kept in `_secrets/hitroo-admin.env`.
 - API: `/api/lead`, `/api/careers`, `/api/track`, `/api/consent`, `/api/revalidate` (for the admin), `/api/chat` (no UI).
 - Discovery: `/sitemap.xml`, `/robots.txt`, `/llms.txt`, `/llms-full.txt`, IndexNow key file in `public/`.
 
@@ -61,7 +61,6 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - Vercel Functions reject request bodies over 4.5 MB (`413 FUNCTION_PAYLOAD_TOO_LARGE`, before our code runs). Uploads sent base64 in JSON must stay under about 3 MB; anything bigger needs a direct-to-storage upload.
 
 ## Open / next
-- Finish the split (the website half is live since 2026-09-26 with migration 002; the admin is on GitHub as the private repo `hitroo_admin`): create `admin_app` on the production database (`db/roles/admin_app.sql`, password into `_secrets/hitroo-db.env`), run `npm run db:migrate` (applies 003; the live site no longer needs the read access it removes), create the admin's Vercel project with admin.hitroo.com and its env vars, set `REVALIDATE_SECRET` on both projects, then remove `ADMIN_PASSWORD` from the website's Vercel env. Until the admin is live, leads and applications arrive by email only.
 - Verify Google Search Console and Bing Webmaster Tools, submit the sitemap and run `npm run indexnow`.
 - Remove `netlify.toml` and the Netlify plugin now that Vercel serves the domain.
 - Enable continuous database backups (Tigris) or a scheduled `pg_dump`.

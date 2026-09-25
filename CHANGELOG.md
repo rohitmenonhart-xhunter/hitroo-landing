@@ -2,6 +2,14 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
+## 2026-09-26 — Admin live at admin.hitroo.com
+
+### Deployed
+- The admin app runs on Vercel (project `hitroo_admin`) at https://admin.hitroo.com, with its own database role `admin_app` (`db/roles/admin_app.sql`).
+- Migration 003 applied: the website's database role is now write-only. It adds form, analytics and consent rows, reads posts and marks emails sent, but can no longer read anyone's details.
+- Environment variables: the admin's `DATABASE_URL`, `ADMIN_PASSWORD`, `SESSION_SECRET`, `SITE_URL` and `REVALIDATE_SECRET`; the website gained the same `REVALIDATE_SECRET` and lost the unused `ADMIN_PASSWORD`. Values are kept in `_secrets/hitroo-db.env` and `_secrets/hitroo-admin.env`.
+- Checked live: signing in works; the dashboard, leads, applications and posts load from production; the website's `/api/revalidate` accepts only the admin's key.
+
 ## 2026-09-25 — Admin moves to its own app; clicks and reading analytics
 
 ### Deployed (2026-09-26)

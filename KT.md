@@ -1,62 +1,63 @@
 # HITROO Website — Knowledge Transfer (KT)
 
-Living record of **what we have built**. Update this at the end of every working session. Pairs with [designs.md](designs.md) (the design language).
+Living record of **what we have built**. Update it at the end of every working session. Pairs with [ARCHITECTURE.md](ARCHITECTURE.md) (how it fits together), [CHANGELOG.md](CHANGELOG.md) (what changed) and [designs.md](designs.md) (the design language).
 
 ## What HITROO is
-A Chennai-based technology studio. It builds **custom software, mobile apps, desktop apps, AI models (incl. custom training & in-house models), AI automation, software/process audits + AI modernization, and managed/custom services** — and runs active R&D. Clients get ongoing support through the **HITROO app** (cross-platform: iOS/Android/Windows/macOS) with a 24h first-response / 48h typical-resolution SLA. Tagline: *Intelligence, Unbound.*
+A software company (headquartered in Chennai, India; clients worldwide). It builds **custom software, mobile apps, desktop apps, AI models (custom training and in-house models), AI automation, vision systems and managed services**, and supports clients after launch through the HITROO app (24h first response, 48h typical resolution). Contact: info@hitroo.com · +91 7550000805.
 
 ## Stack & ops
-- **Next.js 13 App Router**, TypeScript, Tailwind, shadcn/ui primitives. All page components are `'use client'`.
-- Deploy: Netlify (`@netlify/plugin-nextjs`), `images.unoptimized: true`.
-- Build: `npm run build`. Type gate: `npm run typecheck`. **Install needs `--legacy-peer-deps`** (React 18 vs an unused `@react-three/*` peer wanting React 19).
-- Contact = info@hitroo.com · +91 7550000805 (in `lib/site-data.ts` COMPANY + JSON-LD).
-- **Messaging:** the Contact form and Careers form POST to `/api/lead` and `/api/careers`, which email via Gmail/Workspace SMTP (nodemailer). `/api/lead` sends TWO emails: (1) a notification to `LEAD_EMAIL_RECIPIENT` (default `info@hitroo.com`, `replyTo` = sender) and (2) a branded acknowledgment to the visitor's email (best-effort). Env: `GMAIL_USER`, `GMAIL_APP_PASSWORD` (Google App Password), `LEAD_EMAIL_RECIPIENT`. Configured locally in `.env.local` (gitignored, info@hitroo.com Workspace) and verified end-to-end (POST → 200, real send). **Action:** set the same three vars in Netlify env for production. See `.env.example`.
-- Other env: `ADMIN_PASSWORD` (/admin), `GROQ_API_KEY` (legacy chat, unused by UI).
+- **Next.js 13 App Router**, TypeScript, Tailwind; shadcn/ui primitives remain available. Marketing pages are **server components** with small client islands.
+- **Hosting:** Vercel (functions in `sin1`, see `vercel.json`); `next/image` optimization on. `netlify.toml` remains only until DNS moves off Netlify.
+- **Database:** shared Postgres on Fly.io, app `hitroo-db` (PostgreSQL 18, region `sin`, public TLS endpoint `hitroo-db.fly.dev:5432`). Database `hitroo`: schema `web` for this site (role `web_app`), schema `internal` for internal apps (role `internal_app`). Credentials: `Hitroo_internal_Apps/_secrets/hitroo-db.env`. Details: [ARCHITECTURE.md](ARCHITECTURE.md).
+- **Commands:** `npm install` (no flags), `npm run typecheck`, `npm run lint`, `npm test` (17 node:test tests), `npm run db:migrate`, `npm run db:seed-posts`, `npm run indexnow` (after production deploys).
+- **Forms:** `LeadForm` → `/api/lead`, `CareersForm` → `/api/careers`. Both store to Postgres first, then email; honeypot, timing and optional Turnstile. `.env.local` has real SMTP credentials — test with `GMAIL_USER= GMAIL_APP_PASSWORD= npx next start` (stores without emailing) or via the honeypot (validated, then discarded), and delete test rows afterwards.
 
-## Site structure (current) — ALL pages now use the homepage design language
-- `/` Home — box-free editorial: Hero (bg.png) → Positioning → Services (list) → AI (image) → HITROO app/support (`#support`, phone mock) → How we work (image + numbered) → Quality & Security (image) → Research (`#research`, image) → Who we serve → Why HITROO → CTA → Footer.
-- `/services` hub (image + editorial list) + `/services/[slug]` — one **storytelling** template → all 7: Hero → The problem → Our approach (3 steps + solution image) → What we deliver → Capabilities + Outcomes + Tech → Related → CTA. Each service has TWO images (`image` hero + `solutionImage`) and per-service `problem`/`approach`/`outcomes` copy in `lib/site-data.ts`.
-- `/about`, `/contact` (form → `/api/lead`), `/careers` (form → `/api/careers`, positions as hairline list) — all redesigned with a faded colorful image + Reveal.
-- **NEW pages:** `/support` (HITROO app, phone mock + SLA + steps) and `/research` (focus areas + approach). Nav/Footer link to these (no longer `#` anchors).
-- `/articles/[id]`, `/news/[id]` — clean readers (shared Nav/Footer). `/admin` — internal CMS (`data/content.json`), left functional.
-- API: `/api/lead`, `/api/careers`, `/api/content`, `/api/chat` (unused by UI).
-- `sitemap.ts`: home, services (+7), support, research, about, careers, contact.
+## Site structure
+- `app/(site)/layout.tsx` renders Header + `<main id="main">` + Footer + Analytics + CookieConsent for every marketing page; `/admin` sits outside it.
+- `/` Home: hero (photo) → "Why HITROO" two-line statement (+ link to our AI view) → "Why your business needs it" (Software / Automation / AI) → "What we build" → "Fast, by design" → "Support in one app" → "Who we work with" → enquiry form.
+- `/services` (photo cards) and `/services/[slug]` (hero photo → the problem → what you get → how we work + results → other services → CTA).
+- `/insights` (latest articles and blog posts), `/articles`, `/blog`, `/articles/[slug]`, `/blog/[slug]` — content from `web.posts`, managed in `/admin`.
+- `/about`, `/research`, `/support`, `/careers` (role picker + application), `/contact` (details + form), `/ai-perspective` ("Is AI a threat to HITROO?"), `/privacy`, `app/not-found.tsx`.
+- `/admin` (noindex): Insights, Leads, Applications (resume download), Posts.
+- API: `/api/lead`, `/api/careers`, `/api/track`, `/api/consent`, `/api/admin/*`, `/api/chat` (no UI).
+- Discovery: `/sitemap.xml`, `/robots.txt`, `/llms.txt`, `/llms-full.txt`, IndexNow key file in `public/`.
 
-## ⚠️ Gotcha fixed (App Router)
-`app/services/layout.tsx`, `app/about/layout.tsx`, `app/careers/layout.tsx` originally did `export { default } from './page'` — which makes the **layout render the page and swallow `{children}`**, so every `/services/*` route showed the hub. Fixed: layouts now export a proper `({children}) => children` component (metadata stays). If a nested route ever renders its parent's page, check the layout for this.
+## Data we collect
+- Enquiries and job applications (with resumes) in `web.leads` / `web.job_applications`.
+- Page views in `web.page_views`: anonymous by default (path, referrer host, UTM, country/region/city from Vercel's edge, device/browser/OS, language); visitor and session IDs only after cookie consent. No IP addresses are stored.
+- Cookie decisions in `web.consents` (policy version `2026-09`). The policy text is `/privacy` — have it reviewed by a lawyer before launch (it commits to 24-month analytics retention and 30-day responses to data requests).
 
-## Shared components & motion
-`components/site/Nav.tsx`, `Footer.tsx`, and `Reveal.tsx` (scroll-reveal: fade+rise on view). Logo `/public/new_logo/logo_transparent.png` everywhere; no intro video.
-
-## The 7 services (`lib/site-data.ts`)
-Custom Software Development · Mobile App Development · Desktop App Development · AI Model Development & Training · AI Automation · Audit & AI Modernization · Managed & Custom Services. Each has `slug, title, short, tagline, icon, color, overview, capabilities[], features[], stack[]`.
-
-## Key decisions made
-- **Theme:** white + Google's four colors + SF Pro (replaced old black/pink + Comfortaa). See [designs.md](designs.md).
-- **No boxes** — editorial layout with hairlines, big type, big numerals, bare icons.
-- **Products removed entirely** — Capsona/Attyn/Belecure/Mockello/AI-Marketing and all `/products` pages deleted; products stripped from nav, footer, sitemap, JSON-LD, `site-data`.
-- **Support app named "HITROO"** (not "Retro" — that was a typo).
-- **Intro/splash video removed.**
-- **New logo** `/public/new_logo/logo_transparent.png` used in Nav, Footer, app mock.
+## Key decisions
+- **Theme:** corporate white — no coloured section bands and no divider lines (whitespace only), Inter, cobalt/navy accents. Replaced the Google-colour + SF Pro theme (SF Pro isn't licensed for web use).
+- **Copy:** minimal and business-first; "Why HITROO" is one two-line statement, not a list of reasons. No careers promotion on the home page; no "Chennai" in marketing copy.
+- **Logo:** linked rings, chosen from eight options. Trademark screening (WIPO Global Brand Database): no registered brand containing "HITROO"; two linked rings is a crowded motif, and the nearest marks in India classes 9/42 are Mastercard's interlocking-circles family. Keep the rings open, blue/navy only, and paired with the name. **Before public launch:** get an Indian trademark attorney's clearance and file "HITROO" (word) and the logo in classes 9 and 42; use ™ until registered.
+- **Database:** unmanaged Fly Postgres (we own backups and upgrades) reusing the slot of the destroyed `decern-hitroo` server; public TLS endpoint so Vercel can reach it; least-privilege roles per consumer.
+- **Analytics:** first-party and privacy-first (no Google Analytics, no third-party cookies).
+- **Products removed** earlier (Capsona, Attyn, Belecure, Mockello, AI Marketing Agent) — don't reintroduce.
+- **Photos:** realistic Codex photos only (glossy 3D sets and staged "notebook diagram" shots looked fake).
 
 ## Assets
-- `/public/hero/bg.png` — hero background (wavy lines).
-- `/public/img/` — 21 colorful Higgsfield glass-3D images. Section/hero: `ai, craft, secure, research, services-hub, mobile, desktop, automation, audit, managed, about, contact, careers, support`. Per-service solution visuals: `sol-software, sol-mobile, sol-desktop, sol-ai, sol-automation, sol-audit, sol-managed`. NOTE: regenerate any image that reads like a brand logo — the first `services-hub` looked like Google's logo and was regenerated as an abstract node-constellation. On the homepage they use **high rounding (`rounded-[2.75rem]`) + an inset edge-feather** (`box-shadow: inset … <section-bg>`) so edges blur into the page while keeping rounded corners (preferred over `.img-fade` mask, which erases corners). Match the inset color to the section bg (`#ffffff` or `#fafafa`).
-- `/public/hero/tile-*.png`, `toggle/plane/orbs.png` — earlier generated chips, currently **unused** (some also copied to `/public/3d_assets/`; safe to delete).
-- **Favicons:** a full favicon package lives in `/public/favicon/` (16/32/96, apple-icon-180, android-icon-*, ms-icon-*, `manifest.json`, `browserconfig.xml`) plus a real `/public/favicon.ico` at root for the default browser request. Wired site-wide via `metadata.icons` + `manifest` in [app/layout.tsx](app/layout.tsx). (The package arrived misnamed as a `favicon.ico/` **folder** with root-relative paths — it was renamed to `favicon/` and its manifest/browserconfig paths re-prefixed to `/favicon/`.)
+- `public/photos/` — realistic WebP photos (hero, why-*, svc-*, audience, support, research, about, ai-view). Briefs: `docs/art/photos-briefs.md`.
+- `public/brand/` — logo SVGs; `public/favicon.svg` + `public/favicon/*` + `public/favicon.ico` — rings favicon set.
+- `public/og-image.png` — 1200×675 social card; `public/new_logo/logo_whitebg.png` — square logo for the Organization JSON-LD.
 
 ## SEO / GEO
-- **Root metadata** ([app/layout.tsx](app/layout.tsx)): repositioned title/description/keywords (software · apps · AI · automation · vision · Chennai), OG + Twitter cards, `themeColor`, `alternates.canonical`. Removed the bogus `verification.google` placeholder — add the real Search Console code there when you have it.
-- **Structured data:** Organization + WebSite JSON-LD (with Chennai `PostalAddress`, contactPoint, sameAs, knowsAbout) for rich results + AI/GEO grounding.
-- **Per-page metadata:** each section `layout.tsx` sets unique title/description/canonical/OG. Dynamic services use [app/services/[slug]/layout.tsx](app/services/[slug]/layout.tsx) `generateMetadata` (per-service title/desc/canonical/OG) + `generateStaticParams` (prerendered).
-- **OG image:** `/public/og-image.png` (branded glass abstract, 1200×675).
-- **Sitemap** ([app/sitemap.ts](app/sitemap.ts)): static pages + all services + articles/news (read from `data/content.json`).
-- **robots.txt:** allows all + explicitly welcomes AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, …); points to sitemap; disallows /admin + /api.
-- **GEO:** `/public/llms.txt` (+ `/llm.txt` alias) — markdown summary of the company, services, and key pages for answer engines.
-- **Favicon in Google:** icons include 16/32/48/96/192 + apple-180 + `/favicon.ico`, all square and stable. Google caches favicons and recrawls on its own schedule — to speed it up, verify the site in Google Search Console and request indexing of the homepage; it can take days/weeks to appear.
+- `pageMetadata()` in `lib/seo.ts` gives every page a title, description, canonical, hreflang and social tags; JSON-LD per page type (see ARCHITECTURE.md).
+- No canonical in the root layout (it would be inherited by every page).
+- Every page renders the same set of meta tags — only pass `keywords` when a page needs its own.
+- `llms.txt` / `llms-full.txt` are generated from `lib/site-data.ts` and the latest posts; keep facts there current.
+
+## ⚠️ Gotchas
+- A section `layout.tsx` must render `{children}` — re-exporting the page as the layout swallows the page.
+- A layout that sets a plain-string `title` stops the root title template for pages below it — put metadata in the page instead (see `/services`).
+- `permanentRedirect()` inside ISR pages caches a 308 with no Location in Next 13.5 — use `next.config.js` redirects.
+- `revalidatePath` refreshes pages but not route handlers (sitemap, llms.txt) in Next 13.5 — those use a 10-minute `revalidate`.
+- Sticky headers show up mid-page in Playwright full-page screenshots; check sections with viewport screenshots instead.
 
 ## Open / next
-- `/articles/[id]` & `/news/[id]` are clean readers but could get the full editorial polish + a header image.
-- `/admin` still uses the old card UI (internal tool — low priority).
-- Optionally delete unused hero chips (`/public/hero/tile-*`, `toggle/plane/orbs`) + unused `card-soft`/`icon-chip` helpers + `@react-three/*`/`three` deps (clears the `--legacy-peer-deps` requirement).
-- Consider legal pages (`/privacy`, `/terms`).
+- Deploy to Vercel and set the env vars (ARCHITECTURE.md → Vercel environment variables), then move DNS, verify Google Search Console and Bing Webmaster Tools, submit the sitemap and run `npm run indexnow`.
+- Enable continuous database backups (Tigris) or a scheduled `pg_dump`.
+- Publish regularly to `/blog` and `/articles` (the Blog is empty; Articles has one post).
+- Real proof: 2–3 client stories, logos (with permission) and a testimonial — add after "Why HITROO" once provided.
+- `/terms` page; legal review of `/privacy`.
+- `@supabase/supabase-js` is installed but unused.

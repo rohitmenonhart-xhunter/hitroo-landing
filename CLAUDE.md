@@ -4,87 +4,86 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Marketing landing site for HITROO ("Intelligence, Unbound" — an AI/robotics/automation company). Next.js 13 App Router, TypeScript, Tailwind + shadcn/ui. Deployed on Netlify (`@netlify/plugin-nextjs`). Despite the Netlify config, `images.unoptimized` and `output` are tuned for static-friendly hosting.
+Marketing site for HITROO — a software company building custom software, mobile and desktop apps, AI models, automation and vision systems. Next.js 13 App Router, TypeScript, Tailwind (+ shadcn/ui primitives). Hosted on **Vercel** (functions in `sin1`); data in the shared **Postgres on Fly.io** (`hitroo-db`). See [ARCHITECTURE.md](ARCHITECTURE.md) for the full system, [KT.md](KT.md) for what's built and [CHANGELOG.md](CHANGELOG.md) for history — update all three when you change something significant.
 
 ## Commands
 
 ```bash
+npm install        # plain install works (the old React-three peer conflict is gone)
 npm run dev        # local dev server (localhost:3000)
 npm run build      # production build
 npm run start      # serve production build
-npm run lint       # next lint (note: also ignored during builds, see below)
-npm run typecheck  # tsc --noEmit — the real type gate
+npm run lint       # next lint (also ignored during builds, see below)
+npm run typecheck  # tsc --noEmit — the type gate
+npm test           # node:test suites in tests/ (request security, lead protection, visitor helpers)
+npm run db:migrate     # apply db/migrations/*.sql (uses DATABASE_ADMIN_URL from .env.local)
+npm run db:seed-posts  # import data/content.json posts into web.posts (idempotent)
+npm run indexnow       # after a production deploy: push sitemap URLs to Bing & co.
 ```
 
-There is no test suite. `npm run typecheck` is the only automated correctness check — run it after changes.
+Run `npm run typecheck`, `npm run lint` and `npm test` after changes.
 
 ESLint is **disabled during builds** (`next.config.js` → `eslint.ignoreDuringBuilds: true`), so `npm run build` will not catch lint errors. Run `npm run lint` explicitly.
 
 ## Environment variables
 
-Required for API routes to function (set in Netlify env / `.env`, never committed):
+Required for API routes to function (set in Netlify env / `.env.local`, never committed):
 
-- `GROQ_API_KEY` — Groq API for the AI chat ([app/api/chat/route.ts](app/api/chat/route.ts), model `openai/gpt-oss-120b`)
-- `ADMIN_PASSWORD` — gates content mutations in [app/api/content/route.ts](app/api/content/route.ts)
+- `GROQ_API_KEY` — Groq API for the (UI-less) chat route ([app/api/chat/route.ts](app/api/chat/route.ts), model `openai/gpt-oss-120b`)
+- `ADMIN_PASSWORD` — gates `/admin` and the `/api/admin/*` routes
 - `GMAIL_USER`, `GMAIL_APP_PASSWORD` — Gmail SMTP (via `nodemailer`) for lead/careers emails
 - `LEAD_EMAIL_RECIPIENT` — inbox that receives lead and job-application emails
 - `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` — optional Cloudflare Turnstile
-  pair for the contact form; set both or neither (see
+  pair for the contact and careers forms; set both or neither (see
   [docs/contact-form-protection.md](docs/contact-form-protection.md))
+- `DATABASE_URL` — Postgres URL for the least-privilege `web_app` role (`…@hitroo-db.fly.dev:5432/hitroo?sslmode=verify-full`). Without it the site still renders; forms fall back to email only and Insights are empty.
+- `DATABASE_ADMIN_URL` — **local only**, for migrations. Never set on Vercel.
+- `NEXT_PUBLIC_SITE_URL` — canonical origin (default `https://www.hitroo.com`, the primary domain; `hitroo.com` redirects there); set for preview deployments.
+- `GOOGLE_SITE_VERIFICATION`, `BING_SITE_VERIFICATION` — optional search-console verification tokens.
+
+All database credentials live outside the repo in `Hitroo_internal_Apps/_secrets/hitroo-db.env`.
+
+`.env.local` holds real SMTP and database credentials: a valid form submission sends real email and writes real rows. To test without emailing, run a server with `GMAIL_USER= GMAIL_APP_PASSWORD=` (it stores, skips email), or fill the hidden `website` honeypot (validated, then discarded). Delete test rows afterwards.
 
 ## Architecture
 
-### Design system
-White-primary theme using Google's four brand colors (`#4285F4` blue, `#EA4335` red, `#FBBC05` yellow, `#34A853` green) with **SF Pro Display** (self-hosted from [public/fonts/sf-pro-display/](public/fonts/sf-pro-display/) via `@font-face`). Tokens and reusable helpers live in [app/globals.css](app/globals.css): `.text-brand` (4-color gradient text), `.brand-bar-smooth`, `.card-soft`, `.glass`, `.btn-primary`, `.eyebrow`, `.bg-dots`/`.bg-grid`, `.icon-chip`, plus float/sheen/rise animations. The white theme is wired through `--primary` etc. so shadcn UI primitives recolor automatically.
+### Design system (corporate white)
+- **White everywhere, no divider lines** — no tinted section backgrounds and no hairlines between sections, list items or grid cells; generous whitespace does the separating (`Section` = `py-24 sm:py-32 lg:py-40`, `Statement`/`CtaBand` larger). `line` is only for form-field borders; `mist` only for image placeholders.
+- **Tokens** in [tailwind.config.ts](tailwind.config.ts): `ink` #0A1633 (text), `cobalt` #2451FF (+ `dark`, `soft`; links, buttons), `navy` #0A1B4A, `mist` #F4F6FA, `line` #E3E7EE. shadcn CSS variables in [app/globals.css](app/globals.css) are re-pointed to the same palette.
+- **Type**: Inter via `next/font` ([components/corporate/fonts.ts](components/corporate/fonts.ts)), applied on `<html>`/`<body>` in [app/layout.tsx](app/layout.tsx) as `font-corp`. Large light (300) headlines with tight tracking and `text-wrap: balance`.
+- **Logo**: two linked rings (cobalt + navy, rising 10°) — exact arc paths in [components/brand/Logo.tsx](components/brand/Logo.tsx), also `public/brand/hitroo-mark(-light).svg`, `public/favicon.svg` (switches colours in dark mode) and the PNG/ICO favicon set. Always shown with the HITROO name except as favicon/app icon; keep the rings open and never red/yellow/orange (trademark distance from Mastercard-style marks).
+- **Copy**: very minimal and business-first — one-line ledes, two-line statements, short labels (`service.label`), one CTA per block. Don't promote careers on marketing pages.
+- **Imagery**: realistic, documentary-style photos generated with Codex, in `public/photos/*.webp`; briefs in [docs/art/photos-briefs.md](docs/art/photos-briefs.md). No people, no readable text, no brand-colour grading.
 
-### Pages (App Router, `app/`)
-All page components are client components (`'use client'`). Marketing routes share [components/site/Nav.tsx](components/site/Nav.tsx) (scroll-aware, active-link, mobile menu) and [components/site/Footer.tsx](components/site/Footer.tsx). Routes: `/` (landing with the AI assistant), `/services` + dynamic `/services/[slug]`, `/products` + dynamic `/products/[slug]`, `/about`, `/careers`, `/contact`, `/admin`, plus dynamic `/articles/[id]` and `/news/[id]`. Some routes have a sibling `layout.tsx` for per-route `metadata`; the root [app/layout.tsx](app/layout.tsx) holds global SEO/OpenGraph and the SF Pro body font. [app/sitemap.ts](app/sitemap.ts) derives its entries from the data file; `baseUrl` is hardcoded to `https://hitroo.com`.
+### Pages (App Router)
+Marketing pages live in the route group `app/(site)/` whose [layout](app/(site)/layout.tsx) renders the shared Header + `<main id="main">` + Footer once. Pages are **server components**; interactivity is isolated in client islands. Routes: `/`, `/services`, `/services/[slug]`, `/insights`, `/articles`, `/blog`, `/articles/[slug]`, `/blog/[slug]`, `/ai-perspective`, `/about`, `/research`, `/support`, `/careers`, `/contact`, `/privacy`. The group layout also mounts `Analytics` (first-party page views) and `CookieConsent`. `/admin` (noindex) sits outside the group; [app/not-found.tsx](app/not-found.tsx) renders its own Header/Footer. Metadata comes from `pageMetadata()` in [lib/seo.ts](lib/seo.ts) (per-page canonical — never set one in the root layout) and JSON-LD from the builders there, rendered with `components/seo/JsonLd`. Discovery: [app/sitemap.ts](app/sitemap.ts), [app/robots.ts](app/robots.ts), `app/llms.txt` and `app/llms-full.txt` (generated from site data and posts).
 
-### Services & products data ([lib/site-data.ts](lib/site-data.ts))
-Single source of truth for the six service disciplines (software, app, desktop, AI models, AI automation, robotics) and the in-house products (Capsona, Attyn, Belecure, Mockello, AI Marketing Agent). The hub pages, dynamic `[slug]` detail pages, home page, footer, and sitemap all read from it — edit content here, not in the page components. Each entry carries its lucide `icon`, brand `color`, and feature list.
+### Components ([components/corporate/](components/corporate/))
+- `ui.tsx` — `Container`, `Button` (pill, arrow), `ArrowLink`, `Eyebrow`, `SectionHeader`, `Section`, `Statement` (large 1–2 line statement).
+- `PageHero`, `CtaBand`, `ServiceGrid` (open grid of service icons + short names), `ContactBlock`.
+- `Header` (server; builds the services mega menu) + `HeaderShell` (client; sticky white header, mega menu, mobile panel, active link), `Footer`, `Wordmark`.
+- Client islands: `LeadForm` (→ `/api/lead`), `CareersForm` (→ `/api/careers`), `Analytics` (→ `/api/track`), `CookieConsent` + `CookieSettingsLink` (→ `/api/consent`), `Turnstile`. Shared form classes in `form.ts`.
+- Insights: `PostList`, `PostPage` (article/blog page + JSON-LD), `PostBody` (safe markdown-lite renderer), `CoverImage`.
 
-### Content system (file-backed CMS)
-Articles and news are stored in [data/content.json](data/content.json) (NOT a database). [app/api/content/route.ts](app/api/content/route.ts) reads/writes this file with `fs`:
-- `GET` is public — returns all content.
-- `POST`/`DELETE` require `password === ADMIN_PASSWORD` in the request body.
+### Content data ([lib/site-data.ts](lib/site-data.ts))
+Single source of truth: `services` (title, short `label`, `short`, `pain`, icon, photo, `overview` for metadata, approach/capabilities/outcomes/stack), `COMPANY`, and home/support content (`WHY_HITROO_STATEMENT`, `WHY_NEED`, `PROCESS`, `AUDIENCE`, `SUPPORT`). Edit content here, not in page components.
 
-The [/admin](app/admin/page.tsx) page is the editor UI; article/news detail pages fetch `/api/content` client-side and filter by `id`. **Caveat:** writing to a JSON file at runtime does not persist on most serverless/static hosts (Netlify) — content added via `/admin` in production is ephemeral. Treat `content.json` as the source of truth and commit changes for permanence.
+### Data (Postgres on Fly.io)
+[lib/db.ts](lib/db.ts) is a small `pg` pool on `DATABASE_URL` (role `web_app`, schema `web`); data access lives in [lib/data/](lib/data/) (`posts`, `forms`, `analytics`). Tables: `leads`, `job_applications`, `page_views`, `consents`, `posts` — see [db/migrations/](db/migrations/) and [ARCHITECTURE.md](ARCHITECTURE.md). Posts (articles and blog) are managed in `/admin` and served with ISR (5 minutes; admin edits refresh immediately). `data/content.json` is only the seed for `npm run db:seed-posts`. The site never runs DDL; schema changes go in a new migration file.
 
 ### API routes (`app/api/*/route.ts`)
-- `chat` — proxies to Groq; `detectIntent()` keyword-matches the message to decide whether to surface a lead-capture prompt. System prompt with HITROO product context is inline in the route.
-- `lead` — validates, rate-limits, and bot-checks contact submissions before
-  sending a lead/early-access email via Gmail SMTP. Requires phone OR email.
-- `careers` — validates, rate-limits, and Turnstile-checks applications; accepts
-  a verified PDF resume up to 5 MB as a `nodemailer` attachment.
-- `chat` — same-origin, bounded, rate-limited Groq proxy.
-- `content` — cached public reads; bounded, same-origin, rate-limited admin
-  mutations with constant-time password comparison.
-- `content` — see content system above.
+- `lead` — strict schema, same-origin, honeypot, timing, optional Turnstile → stores in `web.leads`, then emails (a failed email still returns success once stored). Requires phone OR email.
+- `careers` — same protections; verified PDF resume up to 5 MB → `web.job_applications` (resume included), then email with attachment.
+- `track` — first-party page views (bot filter, rate limit, no IPs; visitor/session IDs only with consent).
+- `consent` — records cookie decisions.
+- `admin/*` — posts CRUD, insights, leads/applications, resume download; `x-admin-password` header (constant-time compare, failed-attempt rate limit).
+- `chat` — same-origin, bounded, rate-limited Groq proxy (no UI uses it).
 
 ### UI conventions
-- shadcn/ui ("default" style, neutral base) in [components/ui/](components/ui/) — generated primitives, don't hand-edit unless intentional. Config in [components.json](components.json).
 - Import aliases (tsconfig `@/*` → repo root): `@/components`, `@/components/ui`, `@/lib/utils`, `@/hooks`.
 - `cn()` from [lib/utils.ts](lib/utils.ts) (clsx + tailwind-merge) is the standard class-composition helper.
-- Theming via CSS variables / HSL tokens in [app/globals.css](app/globals.css), wired through [tailwind.config.ts](tailwind.config.ts). Dark mode is class-based.
-- [components/LaserFlow.tsx](components/LaserFlow.tsx) and [components/FluidGlass.tsx](components/FluidGlass.tsx) (Three.js / `@react-three/fiber` + `drei`) are **no longer used** after the redesign. They — and the `three`/`@react-three/*` deps — can be removed; doing so also resolves the React 18 vs `drei`-React-19 peer conflict that currently forces `npm install --legacy-peer-deps`.
-- The landing page plays a one-time intro video gated by `sessionStorage` key `hitroo-intro-seen`.
+- shadcn/ui primitives in [components/ui/](components/ui/) are generated — don't hand-edit unless intentional. Config in [components.json](components.json).
 
 ## Deployment
 
-Netlify ([netlify.toml](netlify.toml)): `npx next build`, publish `.next`, `@netlify/plugin-nextjs`. Images are unoptimized (`next.config.js`) so `next/image` works without an optimization backend.
-
-<!-- contextjoin:start -->
-
-## ContextJoin — required on every turn
-
-This project uses ContextJoin for shared agent memory and live coordination.
-On every turn of material work: call the `get_brief` MCP tool first, then
-`start_work` before editing files. Obey every DIRECTIVE line in tool
-results. Report touched files and keep your workpad current via
-`update_work`. When the task completes, `close_session` then
-`finish_work`. Records commit automatically and the user can revert them.
-If the MCP tools are unavailable, use `npx contextjoin brief` and
-`npx contextjoin work` instead. Full rules:
-.agents/skills/project-context-ledger/SKILL.md
-
-<!-- contextjoin:end -->
+Vercel: `vercel.json` pins functions to `sin1` (next to the database). Set the env vars listed in [ARCHITECTURE.md](ARCHITECTURE.md#vercel-environment-variables); run `npm run indexnow` after production deploys. [netlify.toml](netlify.toml) remains only until DNS moves off Netlify.

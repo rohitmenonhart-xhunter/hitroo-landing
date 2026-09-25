@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { esc, acknowledgmentEmail } from '@/lib/email';
+import { markApplicationEmailed, saveApplication } from '@/lib/data/forms';
+import { edgeGeo } from '@/lib/visitor';
 import {
     CAREER_POSITIONS,
     careerPayloadSchema,
@@ -98,7 +100,31 @@ export async function POST(request: NextRequest) {
             }
         }
 
+        // Prepare attachment if resume exists
+        const resume = decodeResume(resumeData);
+        if (!resume) {
+            return NextResponse.json({ error: 'Resume must be a valid PDF under 5 MB' }, { status: 400 });
+        }
+
+        // Store first: the application is captured even if email delivery fails.
+        const applicationId = await saveApplication({
+            position: positionTitle || position,
+            name,
+            email,
+            phone,
+            linkedin,
+            portfolio,
+            experience,
+            availability,
+            whyHitroo,
+            whyPosition,
+            resumeName,
+            resume,
+            country: edgeGeo(request.headers).country,
+        });
+
         if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+            if (applicationId) return NextResponse.json({ success: true });
             return NextResponse.json(
                 { error: 'Applications are not configured yet. Please email info@hitroo.com.' },
                 { status: 500 }
@@ -114,11 +140,7 @@ export async function POST(request: NextRequest) {
             },
         });
 
-        // Prepare attachment if resume exists
-        const resume = decodeResume(resumeData);
-        if (!resume) {
-            return NextResponse.json({ error: 'Resume must be a valid PDF under 5 MB' }, { status: 400 });
-        }
+
         const attachments = [{ filename: resumeName, content: resume }];
 
         const mailOptions = {
@@ -129,7 +151,7 @@ export async function POST(request: NextRequest) {
             attachments,
             html: `
         <div style="font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto;">
-          <h2 style="color: #4285F4;">New Job Application</h2>
+          <h2 style="color: #2451FF;">New Job Application</h2>
           <hr style="border: 1px solid #eee;" />
           
           <table style="width: 100%; border-collapse: collapse;">
@@ -215,7 +237,14 @@ Submitted: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
       `,
         };
 
-        await transporter.sendMail(mailOptions);
+        try {
+            await transporter.sendMail(mailOptions);
+            if (applicationId) await markApplicationEmailed(applicationId);
+        } catch (mailErr) {
+            console.error('Careers notification email failed:', mailErr);
+            if (applicationId) return NextResponse.json({ success: true });
+            throw mailErr;
+        }
 
         // Send the applicant a branded acknowledgment (best-effort)
         if (email) {
@@ -225,8 +254,8 @@ Submitted: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
                     to: email,
                     subject: 'We\'ve received your application — HITROO',
                     html: acknowledgmentEmail({
-                        heading: `Thanks${name ? `, ${esc(name)}` : ''} — your application<br/>is <span style="color:#34A853;">in</span>.`,
-                        intro: `We&rsquo;ve received your application${positionTitle ? ` for <strong style="color:#202124;">${esc(positionTitle)}</strong>` : ''}. Our team reviews every application within 7 days and we&rsquo;ll be in touch.`,
+                        heading: `Thanks${name ? `, ${esc(name)}` : ''} — your application<br/>is <span style="color:#2451FF;">in</span>.`,
+                        intro: `We&rsquo;ve received your application${positionTitle ? ` for <strong style="color:#0A1633;">${esc(positionTitle)}</strong>` : ''}. Our team reviews every application within 7 days and we&rsquo;ll be in touch.`,
                         recapLabel: 'Applied for',
                         recapBody: esc(positionTitle || 'HITROO'),
                     }),

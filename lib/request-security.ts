@@ -83,6 +83,7 @@ function isLoopbackHost(hostname: string) {
 
 export function getClientIp(request: NextRequest) {
   return (
+    request.headers.get('x-real-ip') ||
     request.headers.get('x-nf-client-connection-ip') ||
     request.headers.get('cf-connecting-ip') ||
     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||

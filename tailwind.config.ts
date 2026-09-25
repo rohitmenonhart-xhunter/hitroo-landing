@@ -19,7 +19,16 @@ const config: Config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      fontFamily: {
+        corp: ['var(--font-inter)', 'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+      },
       colors: {
+        /* Corporate white theme (home page) */
+        ink: '#0A1633',
+        cobalt: { DEFAULT: '#2451FF', dark: '#1A3ED9', soft: '#EEF2FF' },
+        navy: '#0A1B4A',
+        mist: '#F4F6FA',
+        line: '#E3E7EE',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

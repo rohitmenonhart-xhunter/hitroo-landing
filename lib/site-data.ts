@@ -1,63 +1,25 @@
-import {
-  Code2,
-  Smartphone,
-  MonitorSmartphone,
-  BrainCircuit,
-  Workflow,
-  RefreshCw,
-  Server,
-  type LucideIcon,
-  Layers,
-  Database,
-  Boxes,
-  Apple,
-  Globe,
-  Gauge,
-  MonitorDown,
-  Cable,
-  GitBranch,
-  FlaskConical,
-  Eye,
-  Bot,
-  Sparkles,
-  LineChart,
-  Search,
-  ShieldCheck,
-  LifeBuoy,
-  ScanLine,
-} from 'lucide-react';
-
-export const GOOGLE_COLORS = {
-  blue: '#4285F4',
-  red: '#EA4335',
-  yellow: '#FBBC05',
-  green: '#34A853',
-} as const;
-
-export interface Feature {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-}
-
-export interface Step {
-  title: string;
-  desc: string;
-}
+import { BrainCircuit, Code2, Eye, MonitorSmartphone, Server, Smartphone, Workflow, type LucideIcon } from 'lucide-react';
 
 export interface Service {
   slug: string;
+  /** Full name: page title and metadata. */
   title: string;
+  /** Short name for menus, grids and the footer. */
+  label: string;
+  /** One line under the title. */
   short: string;
+  /** Metadata title suffix. */
   tagline: string;
+  /** The business problem, in one line. */
+  pain: string;
   icon: LucideIcon;
-  color: string;
+  /** Realistic photo (public/photos). */
   image: string;
-  solutionImage: string;
+  imageAlt: string;
+  /** Search and social description (not shown on the page). */
   overview: string;
-  problem: string;
-  approach: Step[];
-  features: Feature[];
+  /** How we work, step titles. */
+  approach: string[];
   capabilities: string[];
   outcomes: string[];
   stack: string[];
@@ -65,40 +27,27 @@ export interface Service {
 
 export const COMPANY = {
   name: 'HITROO',
-  slogan: 'Intelligence, Unbound',
   email: 'info@hitroo.com',
   phone: '+91 7550000805',
   phoneHref: 'tel:+917550000805',
   location: 'Chennai, Tamil Nadu, India',
-  blurb:
-    'A Chennai-based software studio building intelligent software, apps, and AI for businesses — and staying with them long after launch.',
+  oneLiner: 'Software, automation and AI for business.',
 };
 
 export const services: Service[] = [
   {
     slug: 'custom-software',
     title: 'Custom Software Development',
-    short: 'Bespoke platforms and tools that solve your everyday operational problems.',
+    label: 'Custom software',
+    short: 'Platforms and tools built around the way you work.',
     tagline: 'Built around your business',
+    pain: 'Spreadsheets and disconnected tools cost you hours and hide your real numbers.',
     icon: Code2,
-    color: GOOGLE_COLORS.blue,
-    image: '/img/craft.png',
-    solutionImage: '/img/sol-software.png',
+    image: '/photos/svc-software.webp',
+    imageAlt: 'A developer desk with two monitors, a laptop and a notebook of diagrams',
     overview:
-      'We design and build custom software for companies, businesses, and individuals — turning the manual, messy parts of your operation into reliable, scalable systems you own.',
-    problem:
-      'Most businesses run on a patchwork of spreadsheets, disconnected tools, and manual workarounds. They quietly cost hours every day, hide your real numbers, and break the moment you try to grow.',
-    approach: [
-      { title: 'Map the workflow', desc: 'We learn how your business actually runs before a line of code is written.' },
-      { title: 'Architect for scale', desc: 'Clean, modular systems with the right data model and integrations.' },
-      { title: 'Ship in iterations', desc: 'You see working software early and often — never a big-bang reveal.' },
-    ],
-    features: [
-      { icon: Layers, title: 'Architecture', description: 'Clean, modular systems built to last.' },
-      { icon: Server, title: 'Backend & APIs', description: 'Scalable services and integrations.' },
-      { icon: Database, title: 'Data', description: 'Solid data models and reporting.' },
-      { icon: Boxes, title: 'End-to-end', description: 'Concept to production, one team.' },
-    ],
+      'We design and build custom software for companies, businesses and individuals — turning the manual, messy parts of your operation into reliable, scalable systems you own.',
+    approach: ['Map the workflow', 'Architect for scale', 'Ship in iterations'],
     capabilities: [
       'Web platforms and internal tools',
       'APIs and third-party integrations',
@@ -113,27 +62,16 @@ export const services: Service[] = [
   {
     slug: 'mobile-apps',
     title: 'Mobile App Development',
+    label: 'Mobile apps',
     short: 'Native and cross-platform apps for iOS and Android.',
     tagline: 'Mobile that performs',
+    pain: 'Your customers live on their phones. A slow or missing app sends them elsewhere.',
     icon: Smartphone,
-    color: GOOGLE_COLORS.red,
-    image: '/img/mobile.png',
-    solutionImage: '/img/sol-mobile.png',
+    image: '/photos/svc-mobile.webp',
+    imageAlt: 'A phone on a restaurant billing counter showing an ordering app',
     overview:
-      'High-performance mobile apps with intuitive interfaces, offline-ready architecture, and smooth motion — shipped to the App Store and Play Store.',
-    problem:
-      'Your customers live on their phones. A missing, slow, or clunky app means lost engagement, poor reviews, and revenue that quietly leaks to competitors with a better experience.',
-    approach: [
-      { title: 'Design for the thumb', desc: 'Interfaces built for how people really hold and tap their phones.' },
-      { title: 'Build native-grade', desc: 'Native or cross-platform — whichever gives you the best experience.' },
-      { title: 'Ship to both stores', desc: 'We handle review, release, and ongoing updates end to end.' },
-    ],
-    features: [
-      { icon: Apple, title: 'iOS', description: 'Polished, native-feeling Apple apps.' },
-      { icon: Smartphone, title: 'Android', description: 'Fast across all Android hardware.' },
-      { icon: Globe, title: 'Cross-platform', description: 'One codebase, both platforms.' },
-      { icon: Gauge, title: 'Performance', description: 'Smooth, lean, responsive.' },
-    ],
+      'High-performance mobile apps with intuitive interfaces, offline-ready architecture and smooth motion — shipped to the App Store and Play Store.',
+    approach: ['Design for the thumb', 'Build native-grade', 'Ship to both stores'],
     capabilities: [
       'Native iOS and Android',
       'Cross-platform with React Native and Flutter',
@@ -148,29 +86,18 @@ export const services: Service[] = [
   {
     slug: 'desktop-apps',
     title: 'Desktop App Development',
-    short: 'Capable desktop software for Windows, macOS, and Linux.',
+    label: 'Desktop apps',
+    short: 'Fast desktop software for Windows, macOS and Linux.',
     tagline: 'Power on the desktop',
+    pain: 'Heavy workloads, offline use and hardware often outgrow the browser.',
     icon: MonitorSmartphone,
-    color: GOOGLE_COLORS.yellow,
-    image: '/img/desktop.png',
-    solutionImage: '/img/sol-desktop.png',
+    image: '/photos/svc-desktop.webp',
+    imageAlt: 'An engineering workstation with two monitors and printed drawings',
     overview:
-      'Native-feeling desktop applications that integrate deeply with the operating system, update themselves, and run fast on every platform.',
-    problem:
-      'Heavy workflows, offline needs, and hardware integrations often outgrow the browser. But desktop software has a reputation for being painful to build, sign, and keep updated across operating systems.',
-    approach: [
-      { title: 'Native where it counts', desc: 'We use native power for the parts that need it, web speed for the rest.' },
-      { title: 'Deep OS integration', desc: 'Files, devices, tray, notifications — the full desktop experience.' },
-      { title: 'Auto-update everything', desc: 'Signed, notarized builds that update silently in the background.' },
-    ],
-    features: [
-      { icon: MonitorDown, title: 'Cross-OS', description: 'One product, every desktop.' },
-      { icon: Cable, title: 'System integration', description: 'Deep OS and device access.' },
-      { icon: GitBranch, title: 'Auto-update', description: 'Seamless background updates.' },
-      { icon: Gauge, title: 'Native speed', description: 'Responsive, efficient code.' },
-    ],
+      'Native-feeling desktop applications that integrate deeply with the operating system, update themselves and run fast on every platform.',
+    approach: ['Native where it counts', 'Deep OS integration', 'Auto-update everything'],
     capabilities: [
-      'Windows, macOS, and Linux builds',
+      'Windows, macOS and Linux builds',
       'System and hardware integration',
       'Background services and tray apps',
       'Auto-update and crash reporting',
@@ -183,34 +110,23 @@ export const services: Service[] = [
   {
     slug: 'ai-models',
     title: 'AI Model Development & Training',
-    short: 'Build, fine-tune, and custom-train AI models — or deploy our in-house models.',
+    label: 'AI models',
+    short: 'Custom-trained AI models, or our ready in-house models.',
     tagline: 'Models for your domain',
+    pain: 'Generic AI doesn’t know your data, so it fails where it matters most.',
     icon: BrainCircuit,
-    color: GOOGLE_COLORS.green,
-    image: '/img/ai.png',
-    solutionImage: '/img/sol-ai.png',
+    image: '/photos/svc-ai.webp',
+    imageAlt: 'A machine-learning workstation with two graphics cards and a monitor',
     overview:
       'We develop and custom-train AI models on your data, fine-tune language and vision systems, and offer in-house models you can put to work immediately.',
-    problem:
-      'Off-the-shelf AI doesn’t know your domain, your data, or your edge cases — so it underperforms exactly where it matters most, and generic APIs get expensive and unpredictable at scale.',
-    approach: [
-      { title: 'Prepare your data', desc: 'Cleaning, labeling, and pipelines that make training actually work.' },
-      { title: 'Train & fine-tune', desc: 'Custom and fine-tuned models tuned to your domain and metrics.' },
-      { title: 'Serve at low latency', desc: 'Optimized, monitored inference — including our in-house models.' },
-    ],
-    features: [
-      { icon: FlaskConical, title: 'Training', description: 'Data prep, training, and tuning.' },
-      { icon: BrainCircuit, title: 'LLMs & vision', description: 'Fine-tuned to your domain.' },
-      { icon: Eye, title: 'In-house models', description: 'Ready-built models you can use now.' },
-      { icon: Gauge, title: 'Inference', description: 'Optimized, low-latency serving.' },
-    ],
+    approach: ['Prepare your data', 'Train and fine-tune', 'Serve at low latency'],
     capabilities: [
       'Custom model training and fine-tuning',
       'In-house models ready to deploy',
       'LLM deployment and optimization',
       'Vision and multimodal models',
       'Data preparation and labeling',
-      'Evaluation, benchmarking, and validation',
+      'Evaluation and benchmarking',
     ],
     outcomes: ['Models tuned to your domain', 'In-house option, ready now', 'Fast, reliable inference'],
     stack: ['PyTorch', 'vLLM', 'CUDA', 'Hugging Face', 'ONNX'],
@@ -218,34 +134,23 @@ export const services: Service[] = [
   {
     slug: 'ai-automation',
     title: 'AI Automation',
-    short: 'Automate entire business workflows end to end.',
+    label: 'AI automation',
+    short: 'Workflows that run themselves, end to end.',
     tagline: 'Automate the routine',
+    pain: 'Repetitive work eats hours every week, and hiring doesn’t fix it.',
     icon: Workflow,
-    color: GOOGLE_COLORS.blue,
-    image: '/img/automation.png',
-    solutionImage: '/img/sol-automation.png',
+    image: '/photos/svc-automation.webp',
+    imageAlt: 'A document scanner feeding invoices beside a laptop in an accounts office',
     overview:
-      'Intelligent automation that connects your tools and removes manual effort — autonomous agents, document processing, and operations workflows that run themselves.',
-    problem:
-      'Teams burn hours on repetitive, rules-based work — copying data between systems, chasing approvals, and answering the same questions. It’s slow, error-prone, and impossible to scale by hiring.',
-    approach: [
-      { title: 'Find the busywork', desc: 'We map the repetitive, high-volume tasks worth automating first.' },
-      { title: 'Build the agents', desc: 'Reliable agents and workflows that use your existing tools.' },
-      { title: 'Keep humans in the loop', desc: 'Approvals, monitoring, and guardrails where they matter.' },
-    ],
-    features: [
-      { icon: Bot, title: 'AI agents', description: 'Goal-driven agents that use your tools.' },
-      { icon: Workflow, title: 'Workflows', description: 'Reliable orchestration across apps.' },
-      { icon: Sparkles, title: 'Assistants', description: 'Conversational, tuned to you.' },
-      { icon: LineChart, title: 'Ops at scale', description: 'Less manual work, more output.' },
-    ],
+      'Intelligent automation that connects your tools and removes manual effort — AI agents, document processing and operations workflows that run themselves.',
+    approach: ['Find the busywork', 'Build the agents', 'Keep humans in the loop'],
     capabilities: [
-      'Autonomous, tool-using AI agents',
-      'Workflow orchestration and RPA',
-      'Document understanding and extraction',
+      'AI agents that use your tools',
+      'Workflow orchestration',
+      'Document reading and extraction',
       'Conversational assistants',
-      'Integration with your existing systems',
-      'Monitoring and human-in-the-loop',
+      'Integration with your systems',
+      'Monitoring and approvals',
     ],
     outcomes: ['Hours of manual work removed', 'Fewer errors', 'Scales without new headcount'],
     stack: ['LangChain', 'OpenAI', 'n8n', 'Temporal', 'Vector DBs'],
@@ -253,100 +158,43 @@ export const services: Service[] = [
   {
     slug: 'vision-systems',
     title: 'Vision Systems',
-    short: 'Computer vision and automated quality inspection for the real world.',
+    label: 'Vision systems',
+    short: 'Cameras and AI that inspect quality on the line.',
     tagline: 'Quality, automated by sight',
+    pain: 'Manual inspection is slow, inconsistent and misses defects.',
     icon: Eye,
-    color: GOOGLE_COLORS.blue,
-    image: '/img/vision.png',
-    solutionImage: '/img/sol-vision.png',
+    image: '/photos/why-ai.webp',
+    imageAlt: 'An inspection camera above a conveyor carrying machined parts',
     overview:
-      'We build computer-vision systems that see and judge the physical world — automated quality inspection, defect detection, and machine-vision pipelines powered by our custom and fine-tuned in-house models.',
-    problem:
-      'Manual quality checks are slow, inconsistent, and miss defects — and they can’t keep up with a moving production line. Off-the-shelf vision tools rarely understand your specific parts, defects, or environment.',
-    approach: [
-      { title: 'Capture & label', desc: 'We set up cameras and build a labeled dataset of your parts and defects.' },
-      { title: 'Train custom models', desc: 'Custom CV models and fine-tuned VLMs, in-house, tuned to your line.' },
-      { title: 'Deploy on the line', desc: 'Real-time inspection on the conveyor, with alerts and dashboards.' },
-    ],
-    features: [
-      { icon: Eye, title: 'Defect detection', description: 'Catch flaws people miss, every time.' },
-      { icon: ScanLine, title: 'Quality inspection', description: 'Automated pass/fail on the line.' },
-      { icon: BrainCircuit, title: 'Custom & VLM models', description: 'Fine-tuned in-house for your parts.' },
-      { icon: Gauge, title: 'Real-time', description: 'Inspect at full production speed.' },
-    ],
+      'Computer-vision systems that see and judge the physical world — automated quality inspection, defect detection and machine-vision pipelines powered by custom and fine-tuned in-house models.',
+    approach: ['Capture and label', 'Train custom models', 'Deploy on the line'],
     capabilities: [
       'Automated quality inspection',
       'Defect and anomaly detection',
-      'Conveyor-belt and production-line vision',
-      'Object detection, classification, and tracking',
-      'Custom CV models and fine-tuned VLMs (in-house)',
+      'Production-line vision',
+      'Detection, classification and tracking',
+      'Custom and fine-tuned vision models',
       'Real-time alerts and dashboards',
     ],
-    outcomes: ['Fewer defects shipped', 'Consistent, 24/7 inspection', 'Inspection that scales with the line'],
+    outcomes: ['Fewer defects shipped', 'Consistent 24/7 inspection', 'Scales with the line'],
     stack: ['PyTorch', 'OpenCV', 'YOLO', 'TensorRT', 'VLMs'],
-  },
-  {
-    slug: 'audit-modernization',
-    title: 'Audit & AI Modernization',
-    short: 'Audit existing software, speed up processes, and make legacy systems AI-ready.',
-    tagline: 'Bring your stack to the AI era',
-    icon: RefreshCw,
-    color: GOOGLE_COLORS.red,
-    image: '/img/audit.png',
-    solutionImage: '/img/sol-audit.png',
-    overview:
-      'We audit your existing software and processes, find what is slowing you down, and modernize it — upgrading legacy systems to be AI-ready and AI-enabled.',
-    problem:
-      'Legacy software slows you down, costs more every year, and locks you out of AI. But a full rewrite is risky, expensive, and most teams can’t afford to stop and rebuild from scratch.',
-    approach: [
-      { title: 'Audit what you have', desc: 'A clear-eyed review of code, architecture, performance, and risk.' },
-      { title: 'Modernize safely', desc: 'Incremental upgrades — no risky big-bang rewrite.' },
-      { title: 'AI-enable the core', desc: 'Add the data and hooks that make your software AI-ready.' },
-    ],
-    features: [
-      { icon: Search, title: 'Audit', description: 'Find what slows you down.' },
-      { icon: Gauge, title: 'Speed-ups', description: 'Faster processes and software.' },
-      { icon: Sparkles, title: 'AI-enable', description: 'Make existing software AI-ready.' },
-      { icon: ShieldCheck, title: 'Hardened', description: 'Secured as part of the upgrade.' },
-    ],
-    capabilities: [
-      'Software and architecture audits',
-      'Process and performance audits',
-      'Legacy modernization',
-      'AI-readiness assessment',
-      'AI feature enablement',
-      'Security review and hardening',
-    ],
-    outcomes: ['Faster, safer systems', 'An AI-ready foundation', 'No risky big-bang rewrite'],
-    stack: ['Static analysis', 'Profiling', 'Cloud', 'LLMs'],
   },
   {
     slug: 'managed-services',
     title: 'Managed & Custom Services',
-    short: 'Provision custom-built or managed services for your business on demand.',
+    label: 'Managed services',
+    short: 'We run and maintain your systems, on demand.',
     tagline: 'Services on demand',
+    pain: 'Running servers and support in-house pulls your best people off the product.',
     icon: Server,
-    color: GOOGLE_COLORS.green,
-    image: '/img/managed.png',
-    solutionImage: '/img/sol-managed.png',
+    image: '/photos/svc-managed.webp',
+    imageAlt: 'An open network rack with servers and bundled cables in an office server room',
     overview:
-      'Need something specific? We provision custom-built and managed services for your business — from dedicated infrastructure to bespoke capabilities, run and maintained by us.',
-    problem:
-      'Running infrastructure, uptime, and support in-house pulls your best engineers away from the product — and gaps in monitoring or on-call only show up when something is already on fire.',
-    approach: [
-      { title: 'Provision & set up', desc: 'We stand up the infrastructure and services you need.' },
-      { title: 'Run & monitor', desc: 'Proactive monitoring, alerting, and SLAs so nothing surprises you.' },
-      { title: 'Support & scale', desc: 'Dedicated engineering that grows capacity with your demand.' },
-    ],
-    features: [
-      { icon: Server, title: 'Managed infra', description: 'We run it so you do not have to.' },
-      { icon: ShieldCheck, title: 'Reliability', description: 'SLAs, monitoring, uptime.' },
-      { icon: LifeBuoy, title: 'Support', description: 'Dedicated engineering on call.' },
-      { icon: GitBranch, title: 'Maintenance', description: 'Kept current and healthy.' },
-    ],
+      'Custom-built and managed services for your business — from dedicated infrastructure to bespoke capabilities, run and maintained by us.',
+    approach: ['Provision and set up', 'Run and monitor', 'Support and scale'],
     capabilities: [
       'Custom-built services',
-      'Managed infrastructure and operations',
+      'Managed infrastructure',
       'Dedicated support engineering',
       'SLAs and monitoring',
       'Scaling and reliability',
@@ -358,3 +206,57 @@ export const services: Service[] = [
 ];
 
 export const getService = (slug: string) => services.find((s) => s.slug === slug);
+
+/* ------------------------------------------------------------------
+   Home page
+   ------------------------------------------------------------------ */
+
+/** Why HITROO, in two lines. */
+export const WHY_HITROO_STATEMENT = ['Most firms build your software and move on.', 'We build it fast, keep it secure and stay.'];
+
+/** Why a business needs each offer: two short sentences, then one step forward. */
+export const WHY_NEED = [
+  {
+    title: 'Software',
+    text: 'Spreadsheets and scattered apps waste hours. One system built for your business ends that.',
+    href: '/services/custom-software',
+    cta: 'Explore software',
+    image: '/photos/why-software.webp',
+    alt: 'A back-office desk buried in printed spreadsheets, invoices and binders',
+  },
+  {
+    title: 'Automation',
+    text: 'Repetitive work eats your team’s week. Automation does it in minutes, without errors.',
+    href: '/services/ai-automation',
+    cta: 'Explore automation',
+    image: '/photos/why-automation.webp',
+    alt: 'A warehouse aisle with a barcode scanner and paper pick lists on a trolley',
+  },
+  {
+    title: 'AI',
+    text: 'Your data already holds answers. AI finds them faster than any team, day and night.',
+    href: '/services/ai-models',
+    cta: 'Explore AI',
+    image: '/photos/why-ai.webp',
+    alt: 'An inspection camera above a conveyor carrying machined parts',
+  },
+];
+
+export const PROCESS = ['Discover', 'Design', 'Build', 'Test & secure', 'Launch', 'Support'];
+
+export const AUDIENCE = [
+  { title: 'Enterprises', image: '/photos/companies.webp', alt: 'The entrance plaza of a corporate office campus' },
+  { title: 'Growing businesses', image: '/photos/businesses.webp', alt: 'A hardware shop counter with a payment terminal and a tablet' },
+  { title: 'Founders & startups', image: '/photos/founders.webp', alt: 'A co-working desk with a laptop and app sketches in a notebook' },
+];
+
+/* ------------------------------------------------------------------
+   Support (the HITROO app)
+   ------------------------------------------------------------------ */
+
+export const SUPPORT = {
+  platforms: ['iOS', 'Android', 'Windows', 'macOS'],
+  steps: ['Raise a ticket', 'We pick it up', 'We ship the fix', 'You stay updated'],
+  image: '/photos/support.webp',
+  imageAlt: 'A phone showing a support chat app beside a laptop on an office desk',
+};

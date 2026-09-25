@@ -1,358 +1,532 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Trash2, Plus, Loader2, Lock, Newspaper, FileText, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { useCallback, useEffect, useState, type FormEvent } from 'react';
+import { Download, Loader2, LogOut, Pencil, Plus, Trash2 } from 'lucide-react';
+import Wordmark from '@/components/corporate/Wordmark';
+import { FIELD, LABEL, SUBMIT } from '@/components/corporate/form';
+import { cn } from '@/lib/utils';
 
-interface Article {
-    id: string;
-    title: string;
-    body: string;
-    category: string;
-    date: string;
+type Tab = 'insights' | 'leads' | 'applications' | 'posts';
+type Count = { label: string | null; n: number };
+interface Insights {
+  days: number;
+  totals: { views: number; visitors: number; leads: number; applications: number };
+  pages: Count[];
+  countries: Count[];
+  referrers: Count[];
+  devices: Count[];
+  daily: { day: string; n: number }[];
+}
+interface Lead {
+  id: string;
+  created_at: string;
+  name: string | null;
+  email: string | null;
+  phone: string | null;
+  interest: string | null;
+  message: string | null;
+  page: string | null;
+  country: string | null;
+}
+interface Application {
+  id: string;
+  created_at: string;
+  position: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  linkedin: string | null;
+  portfolio: string | null;
+  experience: string | null;
+  availability: string | null;
+  resume_name: string | null;
+  country: string | null;
+}
+interface Post {
+  id: string;
+  kind: 'article' | 'blog';
+  slug: string;
+  title: string;
+  excerpt: string;
+  body: string;
+  category: string | null;
+  cover_image: string | null;
+  status: 'draft' | 'published';
+  published_at: string;
+  seo_title: string | null;
+  seo_description: string | null;
 }
 
-interface NewsItem {
-    id: string;
-    title: string;
-    body: string;
-    date: string;
-    highlight: boolean;
-}
+const EMPTY_POST = {
+  kind: 'blog' as 'article' | 'blog',
+  title: '',
+  slug: '',
+  category: '',
+  excerpt: '',
+  body: '',
+  cover_image: '',
+  status: 'published' as 'draft' | 'published',
+  published_at: '',
+  seo_title: '',
+  seo_description: '',
+};
 
-const FIELD = 'w-full px-3 py-2.5 bg-[#f8f9fa] border border-[#e8eaed] rounded-lg text-sm text-[#202124] placeholder:text-[#80868b] focus:outline-none focus:border-[#4285F4] focus:bg-white focus:ring-4 focus:ring-[#4285F4]/10 transition-all';
+const when = (d: string) => new Date(d).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
 
 export default function AdminPage() {
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [password, setPassword] = useState('');
-    const [authError, setAuthError] = useState('');
+  const [password, setPassword] = useState('');
+  const [authed, setAuthed] = useState(false);
+  const [error, setError] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [tab, setTab] = useState<Tab>('insights');
 
-    const [articles, setArticles] = useState<Article[]>([]);
-    const [news, setNews] = useState<NewsItem[]>([]);
-    const [loading, setLoading] = useState(false);
+  const api = useCallback(
+    async (path: string, init: RequestInit = {}) => {
+      const res = await fetch(path, {
+        ...init,
+        headers: { 'x-admin-password': password, ...(init.body ? { 'Content-Type': 'application/json' } : {}), ...init.headers },
+      });
+      if (res.status === 401) {
+        setAuthed(false);
+        throw new Error('Wrong password');
+      }
+      return res;
+    },
+    [password]
+  );
 
-    // Article form
-    const [articleTitle, setArticleTitle] = useState('');
-    const [articleBody, setArticleBody] = useState('');
-    const [articleCategory, setArticleCategory] = useState('Technology');
-    const [articleDate, setArticleDate] = useState('');
-
-    // News form
-    const [newsTitle, setNewsTitle] = useState('');
-    const [newsBody, setNewsBody] = useState('');
-    const [newsDate, setNewsDate] = useState('');
-    const [newsHighlight, setNewsHighlight] = useState(false);
-
-    const [addingArticle, setAddingArticle] = useState(false);
-    const [addingNews, setAddingNews] = useState(false);
-
-    const fetchContent = async () => {
-        setLoading(true);
-        try {
-            const res = await fetch('/api/content');
-            const data = await res.json();
-            setArticles(data.articles || []);
-            setNews(data.news || []);
-        } catch {
-            // Handle error silently
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if (isAuthenticated) {
-            fetchContent();
-        }
-    }, [isAuthenticated]);
-
-    const handleLogin = async (e: React.FormEvent) => {
-        e.preventDefault();
-        // Test password by attempting a protected action
-        try {
-            const res = await fetch('/api/content', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password, type: 'test', item: {} }),
-            });
-
-            if (res.status === 401) {
-                setAuthError('Invalid password');
-            } else {
-                setIsAuthenticated(true);
-                setAuthError('');
-            }
-        } catch {
-            setAuthError('Connection error');
-        }
-    };
-
-    const addArticle = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!articleTitle.trim()) return;
-
-        setAddingArticle(true);
-        try {
-            const res = await fetch('/api/content', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    password,
-                    type: 'article',
-                    item: {
-                        title: articleTitle,
-                        body: articleBody,
-                        category: articleCategory,
-                        date: articleDate || undefined,
-                    },
-                }),
-            });
-
-            if (res.ok) {
-                setArticleTitle('');
-                setArticleBody('');
-                setArticleDate('');
-                fetchContent();
-            }
-        } catch {
-            // Handle error
-        } finally {
-            setAddingArticle(false);
-        }
-    };
-
-    const addNews = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!newsTitle.trim()) return;
-
-        setAddingNews(true);
-        try {
-            const res = await fetch('/api/content', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    password,
-                    type: 'news',
-                    item: {
-                        title: newsTitle,
-                        body: newsBody,
-                        date: newsDate || undefined,
-                        highlight: newsHighlight,
-                    },
-                }),
-            });
-
-            if (res.ok) {
-                setNewsTitle('');
-                setNewsBody('');
-                setNewsDate('');
-                setNewsHighlight(false);
-                fetchContent();
-            }
-        } catch {
-            // Handle error
-        } finally {
-            setAddingNews(false);
-        }
-    };
-
-    const deleteItem = async (type: 'article' | 'news', id: string) => {
-        if (!confirm('Are you sure you want to delete this item?')) return;
-
-        try {
-            await fetch('/api/content', {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password, type, id }),
-            });
-            fetchContent();
-        } catch {
-            // Handle error
-        }
-    };
-
-    // Login screen
-    if (!isAuthenticated) {
-        return (
-            <div className="min-h-screen bg-white flex items-center justify-center p-6 relative overflow-hidden">
-                <div className="absolute inset-0 z-0 pointer-events-none">
-                    <div className="absolute top-[20%] left-[20%] w-[22rem] h-[22rem] rounded-full bg-[#4285F4]/10 blur-[110px] animate-float-slow" />
-                    <div className="absolute bottom-[20%] right-[20%] w-[20rem] h-[20rem] rounded-full bg-[#34A853]/10 blur-[110px] animate-float-slow" style={{ animationDelay: '-6s' }} />
-                </div>
-                <div className="relative z-10 w-full max-w-sm">
-                    <div className="text-center mb-8">
-                        <Link href="/" className="inline-flex items-center gap-2.5 mb-6">
-                            <Image src="/favicon/favicon-96x96.png" alt="HITROO" width={32} height={32} className="rounded-lg" />
-                            <span className="text-lg font-bold text-[#202124]">HITROO</span>
-                        </Link>
-                        <h1 className="text-2xl font-bold text-[#202124]">Admin Access</h1>
-                        <p className="text-sm text-[#5f6368] mt-2">Enter password to continue</p>
-                    </div>
-
-                    <form onSubmit={handleLogin} className="space-y-4 bg-white p-7 rounded-3xl card-soft">
-                        <div className="relative">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#80868b]" />
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Password"
-                                className="w-full pl-12 pr-4 py-3 bg-[#f8f9fa] border border-[#e8eaed] rounded-xl text-sm text-[#202124] placeholder:text-[#80868b] focus:outline-none focus:border-[#4285F4] focus:bg-white focus:ring-4 focus:ring-[#4285F4]/10 transition-all"
-                            />
-                        </div>
-                        {authError && (
-                            <p className="text-sm text-[#EA4335] text-center">{authError}</p>
-                        )}
-                        <button
-                            type="submit"
-                            className="btn-primary w-full py-3 text-sm font-medium rounded-xl"
-                        >
-                            Login
-                        </button>
-                    </form>
-
-                    <Link href="/" className="flex items-center justify-center gap-2 mt-6 text-sm text-[#80868b] hover:text-[#4285F4] transition-colors">
-                        <ArrowLeft className="h-4 w-4" /> Back to Home
-                    </Link>
-                </div>
-            </div>
-        );
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem('hitroo_admin');
+      if (saved) setPassword(saved);
+    } catch {
+      /* ignore */
     }
+  }, []);
 
-    // Admin dashboard
+  const login = async (e?: FormEvent) => {
+    e?.preventDefault();
+    setBusy(true);
+    setError('');
+    try {
+      const res = await api('/api/admin/insights?days=1');
+      if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Could not sign in');
+      setAuthed(true);
+      try {
+        sessionStorage.setItem('hitroo_admin', password);
+      } catch {
+        /* ignore */
+      }
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  const logout = () => {
+    setAuthed(false);
+    setPassword('');
+    try {
+      sessionStorage.removeItem('hitroo_admin');
+    } catch {
+      /* ignore */
+    }
+  };
+
+  if (!authed) {
     return (
-        <div className="min-h-screen bg-[#f8f9fa] p-6">
-            <div className="max-w-4xl mx-auto">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-8 pt-4">
-                    <div className="flex items-center gap-4">
-                        <Link href="/">
-                            <Image src="/favicon/favicon-96x96.png" alt="HITROO" width={32} height={32} className="rounded-lg" />
-                        </Link>
-                        <div>
-                            <h1 className="text-xl font-bold text-[#202124]">Content Manager</h1>
-                            <p className="text-xs text-[#80868b] uppercase tracking-widest">Admin Dashboard</p>
-                        </div>
-                    </div>
-                    <button
-                        onClick={() => setIsAuthenticated(false)}
-                        className="text-sm font-medium text-[#5f6368] hover:text-[#EA4335] transition-colors"
-                    >
-                        Logout
-                    </button>
-                </div>
-
-                {loading ? (
-                    <div className="flex items-center justify-center py-20">
-                        <Loader2 className="h-6 w-6 text-[#4285F4] animate-spin" />
-                    </div>
-                ) : (
-                    <div className="grid md:grid-cols-2 gap-8">
-                        {/* Articles Section */}
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-2 mb-4">
-                                <FileText className="h-5 w-5 text-[#4285F4]" />
-                                <h2 className="text-base font-semibold text-[#202124]">Articles</h2>
-                            </div>
-
-                            {/* Add Article Form */}
-                            <form onSubmit={addArticle} className="p-5 bg-white rounded-2xl card-soft space-y-3">
-                                <input type="text" value={articleTitle} onChange={(e) => setArticleTitle(e.target.value)} placeholder="Article title" className={FIELD} />
-                                <textarea value={articleBody} onChange={(e) => setArticleBody(e.target.value)} placeholder="Article content (supports multiple paragraphs)" rows={4} className={`${FIELD} resize-none`} />
-                                <div className="flex gap-2">
-                                    <select value={articleCategory} onChange={(e) => setArticleCategory(e.target.value)} className={FIELD}>
-                                        <option value="Technology">Technology</option>
-                                        <option value="Engineering">Engineering</option>
-                                        <option value="Insights">Insights</option>
-                                        <option value="Product">Product</option>
-                                        <option value="Company">Company</option>
-                                    </select>
-                                    <input type="text" value={articleDate} onChange={(e) => setArticleDate(e.target.value)} placeholder="Dec 2024" className={`${FIELD} w-28`} />
-                                </div>
-                                <button
-                                    type="submit"
-                                    disabled={!articleTitle.trim() || addingArticle}
-                                    className="btn-primary w-full py-2.5 text-sm font-medium rounded-lg disabled:opacity-40 disabled:shadow-none flex items-center justify-center gap-2"
-                                >
-                                    {addingArticle ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
-                                    Add Article
-                                </button>
-                            </form>
-
-                            {/* Articles List */}
-                            <div className="space-y-2">
-                                {articles.length === 0 ? (
-                                    <p className="text-sm text-[#80868b] text-center py-4">No articles yet</p>
-                                ) : (
-                                    articles.map((article) => (
-                                        <div key={article.id} className="flex items-center justify-between p-4 bg-white rounded-xl border border-[#e8eaed]">
-                                            <div>
-                                                <p className="text-sm font-medium text-[#202124]">{article.title}</p>
-                                                <p className="text-xs text-[#80868b]">{article.category} • {article.date}</p>
-                                            </div>
-                                            <button onClick={() => deleteItem('article', article.id)} className="p-2 text-[#80868b] hover:text-[#EA4335] transition-colors">
-                                                <Trash2 className="h-4 w-4" />
-                                            </button>
-                                        </div>
-                                    ))
-                                )}
-                            </div>
-                        </div>
-
-                        {/* News Section */}
-                        <div className="space-y-4">
-                            <div className="flex items-center gap-2 mb-4">
-                                <Newspaper className="h-5 w-5 text-[#EA4335]" />
-                                <h2 className="text-base font-semibold text-[#202124]">Latest News</h2>
-                            </div>
-
-                            {/* Add News Form */}
-                            <form onSubmit={addNews} className="p-5 bg-white rounded-2xl card-soft space-y-3">
-                                <input type="text" value={newsTitle} onChange={(e) => setNewsTitle(e.target.value)} placeholder="News headline" className={FIELD} />
-                                <textarea value={newsBody} onChange={(e) => setNewsBody(e.target.value)} placeholder="News content (optional)" rows={3} className={`${FIELD} resize-none`} />
-                                <div className="flex gap-2">
-                                    <input type="text" value={newsDate} onChange={(e) => setNewsDate(e.target.value)} placeholder="Dec 2024" className={`${FIELD} flex-1`} />
-                                    <label className="flex items-center gap-2 px-3 py-2.5 bg-[#f8f9fa] border border-[#e8eaed] rounded-lg cursor-pointer">
-                                        <input type="checkbox" checked={newsHighlight} onChange={(e) => setNewsHighlight(e.target.checked)} className="accent-[#4285F4]" />
-                                        <span className="text-sm text-[#5f6368]">Highlight</span>
-                                    </label>
-                                </div>
-                                <button
-                                    type="submit"
-                                    disabled={!newsTitle.trim() || addingNews}
-                                    className="btn-primary w-full py-2.5 text-sm font-medium rounded-lg disabled:opacity-40 disabled:shadow-none flex items-center justify-center gap-2"
-                                >
-                                    {addingNews ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
-                                    Add News
-                                </button>
-                            </form>
-
-                            {/* News List */}
-                            <div className="space-y-2">
-                                {news.length === 0 ? (
-                                    <p className="text-sm text-[#80868b] text-center py-4">No news yet</p>
-                                ) : (
-                                    news.map((item) => (
-                                        <div key={item.id} className={`flex items-center justify-between p-4 rounded-xl border ${item.highlight ? 'bg-[#4285F4]/5 border-[#4285F4]/30' : 'bg-white border-[#e8eaed]'}`}>
-                                            <div className="flex items-center gap-2">
-                                                {item.highlight && <div className="w-2 h-2 rounded-full bg-[#4285F4] animate-pulse" />}
-                                                <div>
-                                                    <p className={`text-sm font-medium ${item.highlight ? 'text-[#4285F4]' : 'text-[#202124]'}`}>{item.title}</p>
-                                                    <p className="text-xs text-[#80868b]">{item.date}</p>
-                                                </div>
-                                            </div>
-                                            <button onClick={() => deleteItem('news', item.id)} className="p-2 text-[#80868b] hover:text-[#EA4335] transition-colors">
-                                                <Trash2 className="h-4 w-4" />
-                                            </button>
-                                        </div>
-                                    ))
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </div>
-        </div>
+      <main className="flex min-h-screen items-center justify-center bg-white px-5">
+        <form onSubmit={login} className="w-full max-w-sm">
+          <Link href="/" aria-label="HITROO home">
+            <Wordmark />
+          </Link>
+          <h1 className="mt-10 text-[32px] font-light tracking-[-0.03em] text-ink">Admin</h1>
+          <label htmlFor="admin-password" className={`${LABEL} mt-8`}>
+            Password
+          </label>
+          <input id="admin-password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} className={FIELD} autoFocus />
+          <button type="submit" className={`${SUBMIT} mt-6 w-full`} disabled={!password || busy}>
+            {busy ? <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" /> : 'Sign in'}
+          </button>
+          {error && <p className="mt-4 text-[14px] text-red-600">{error}</p>}
+        </form>
+      </main>
     );
+  }
+
+  return (
+    <main className="min-h-screen bg-white">
+      <div className="mx-auto max-w-[1240px] px-5 py-10 sm:px-8 lg:px-10">
+        <div className="flex items-center justify-between">
+          <Link href="/" aria-label="HITROO home">
+            <Wordmark />
+          </Link>
+          <button type="button" onClick={logout} className="inline-flex items-center gap-2 text-[14px] text-slate-500 hover:text-ink">
+            <LogOut aria-hidden="true" className="h-4 w-4" />
+            Sign out
+          </button>
+        </div>
+        <nav className="mt-12 flex flex-wrap gap-2" aria-label="Admin sections">
+          {(['insights', 'leads', 'applications', 'posts'] as Tab[]).map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => setTab(t)}
+              className={cn('h-10 rounded-full px-5 text-[14px] font-medium capitalize transition-colors', tab === t ? 'bg-cobalt text-white' : 'bg-mist text-ink hover:bg-cobalt-soft')}
+            >
+              {t}
+            </button>
+          ))}
+        </nav>
+        <div className="mt-12">
+          {tab === 'insights' && <InsightsView api={api} />}
+          {tab === 'leads' && <LeadsView api={api} kind="leads" />}
+          {tab === 'applications' && <LeadsView api={api} kind="applications" />}
+          {tab === 'posts' && <PostsView api={api} />}
+        </div>
+      </div>
+    </main>
+  );
+}
+
+type Api = (path: string, init?: RequestInit) => Promise<Response>;
+
+function useLoad<T>(load: () => Promise<T>, deps: unknown[]) {
+  const [data, setData] = useState<T | null>(null);
+  const [error, setError] = useState('');
+  const refresh = useCallback(() => {
+    setError('');
+    load()
+      .then(setData)
+      .catch((e) => setError((e as Error).message));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
+  useEffect(refresh, [refresh]);
+  return { data, error, refresh };
+}
+
+function Stat({ label, value }: { label: string; value: number }) {
+  return (
+    <div>
+      <p className="text-[44px] font-light leading-none tracking-[-0.03em] text-ink tabular-nums">{value.toLocaleString()}</p>
+      <p className="mt-3 text-[14px] text-slate-500">{label}</p>
+    </div>
+  );
+}
+
+function TopList({ title, rows }: { title: string; rows: Count[] }) {
+  const max = Math.max(1, ...rows.map((r) => r.n));
+  return (
+    <div>
+      <h3 className="text-[18px] font-medium text-ink">{title}</h3>
+      {!rows.length && <p className="mt-4 text-[14px] text-slate-500">No data yet.</p>}
+      <ul className="mt-4 grid gap-3">
+        {rows.map((r) => (
+          <li key={r.label ?? '—'} className="grid gap-1">
+            <div className="flex justify-between text-[14px]">
+              <span className="truncate text-ink">{r.label ?? 'Direct / unknown'}</span>
+              <span className="tabular-nums text-slate-500">{r.n}</span>
+            </div>
+            <div className="h-1.5 rounded-full bg-mist">
+              <div className="h-1.5 rounded-full bg-cobalt" style={{ width: `${(r.n / max) * 100}%` }} />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function InsightsView({ api }: { api: Api }) {
+  const [days, setDays] = useState(30);
+  const { data, error } = useLoad<Insights>(async () => (await api(`/api/admin/insights?days=${days}`)).json(), [days]);
+  const max = Math.max(1, ...(data?.daily.map((d) => d.n) ?? [1]));
+  return (
+    <section>
+      <div className="flex flex-wrap items-center gap-2">
+        {[7, 30, 90].map((d) => (
+          <button
+            key={d}
+            type="button"
+            onClick={() => setDays(d)}
+            className={cn('h-9 rounded-full px-4 text-[13px] font-medium', days === d ? 'bg-ink text-white' : 'bg-mist text-ink')}
+          >
+            {d} days
+          </button>
+        ))}
+      </div>
+      {error && <p className="mt-6 text-red-600">{error}</p>}
+      {!data && !error && <Loader2 aria-label="Loading" className="mt-10 h-6 w-6 animate-spin text-cobalt" />}
+      {data && (
+        <>
+          <div className="mt-12 grid grid-cols-2 gap-10 lg:grid-cols-4">
+            <Stat label="Page views" value={data.totals.views} />
+            <Stat label="Visitors (with consent)" value={data.totals.visitors} />
+            <Stat label="Leads" value={data.totals.leads} />
+            <Stat label="Applications" value={data.totals.applications} />
+          </div>
+          <div className="mt-16">
+            <h3 className="text-[18px] font-medium text-ink">Daily page views</h3>
+            <div className="mt-6 flex h-40 items-end gap-1" aria-label="Daily page views chart">
+              {data.daily.map((d) => (
+                <div key={d.day} title={`${d.day}: ${d.n}`} className="flex-1 rounded-t bg-cobalt/80" style={{ height: `${Math.max(3, (d.n / max) * 100)}%` }} />
+              ))}
+              {!data.daily.length && <p className="text-[14px] text-slate-500">No page views yet.</p>}
+            </div>
+          </div>
+          <div className="mt-16 grid gap-14 md:grid-cols-2 lg:grid-cols-4">
+            <TopList title="Top pages" rows={data.pages} />
+            <TopList title="Countries" rows={data.countries} />
+            <TopList title="Referrers" rows={data.referrers} />
+            <TopList title="Devices" rows={data.devices} />
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
+function LeadsView({ api, kind }: { api: Api; kind: 'leads' | 'applications' }) {
+  const { data, error } = useLoad<{ leads: Lead[]; applications: Application[] }>(async () => (await api('/api/admin/leads')).json(), []);
+
+  const download = async (a: Application) => {
+    const res = await api(`/api/admin/applications/${a.id}/resume`);
+    if (!res.ok) return;
+    const url = URL.createObjectURL(await res.blob());
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = a.resume_name || 'resume.pdf';
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  if (error) return <p className="text-red-600">{error}</p>;
+  if (!data) return <Loader2 aria-label="Loading" className="h-6 w-6 animate-spin text-cobalt" />;
+
+  if (kind === 'leads') {
+    if (!data.leads.length) return <p className="text-slate-500">No enquiries yet.</p>;
+    return (
+      <ul className="grid gap-10">
+        {data.leads.map((l) => (
+          <li key={l.id} className="grid gap-2">
+            <p className="text-[13px] text-slate-500">{[when(l.created_at), l.country, l.page].filter(Boolean).join(' · ')}</p>
+            <p className="text-[19px] font-medium text-ink">{l.name || 'No name'}{l.interest ? ` — ${l.interest}` : ''}</p>
+            <p className="text-[15px] text-slate-600">{[l.email, l.phone].filter(Boolean).join(' · ')}</p>
+            {l.message && <p className="max-w-3xl whitespace-pre-wrap text-[15px] leading-relaxed text-slate-700">{l.message}</p>}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  if (!data.applications.length) return <p className="text-slate-500">No applications yet.</p>;
+  return (
+    <ul className="grid gap-10">
+      {data.applications.map((a) => (
+        <li key={a.id} className="grid gap-2">
+          <p className="text-[13px] text-slate-500">{[when(a.created_at), a.country, a.experience, a.availability].filter(Boolean).join(' · ')}</p>
+          <p className="text-[19px] font-medium text-ink">
+            {a.name} — {a.position}
+          </p>
+          <p className="text-[15px] text-slate-600">{[a.email, a.phone, a.linkedin, a.portfolio].filter(Boolean).join(' · ')}</p>
+          {a.resume_name && (
+            <button type="button" onClick={() => download(a)} className="inline-flex w-fit items-center gap-2 text-[14px] font-medium text-cobalt hover:text-cobalt-dark">
+              <Download aria-hidden="true" className="h-4 w-4" />
+              {a.resume_name}
+            </button>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function PostsView({ api }: { api: Api }) {
+  const { data, error, refresh } = useLoad<{ posts: Post[] }>(async () => (await api('/api/admin/posts')).json(), []);
+  const [form, setForm] = useState(EMPTY_POST);
+  const [editing, setEditing] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [message, setMessage] = useState('');
+
+  const set = (k: keyof typeof EMPTY_POST, v: string) => setForm((f) => ({ ...f, [k]: v }));
+
+  const edit = (p: Post) => {
+    setEditing(p.id);
+    setForm({
+      kind: p.kind,
+      title: p.title,
+      slug: p.slug,
+      category: p.category ?? '',
+      excerpt: p.excerpt,
+      body: p.body,
+      cover_image: p.cover_image ?? '',
+      status: p.status,
+      published_at: p.published_at.slice(0, 16),
+      seo_title: p.seo_title ?? '',
+      seo_description: p.seo_description ?? '',
+    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const save = async (e: FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    setMessage('');
+    try {
+      const payload = { ...form, published_at: form.published_at ? new Date(form.published_at).toISOString() : '' };
+      const res = await api('/api/admin/posts', {
+        method: editing ? 'PUT' : 'POST',
+        body: JSON.stringify(editing ? { id: editing, ...payload } : payload),
+      });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(out.error || 'Could not save');
+      setMessage(editing ? 'Saved.' : 'Published.');
+      setEditing(null);
+      setForm(EMPTY_POST);
+      refresh();
+    } catch (err) {
+      setMessage((err as Error).message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const remove = async (p: Post) => {
+    if (!window.confirm(`Delete “${p.title}”?`)) return;
+    await api(`/api/admin/posts?id=${p.id}`, { method: 'DELETE' });
+    refresh();
+  };
+
+  return (
+    <section className="grid gap-20">
+      <form onSubmit={save} className="grid max-w-3xl gap-5">
+        <h2 className="text-[28px] font-light tracking-[-0.02em] text-ink">{editing ? 'Edit post' : 'New post'}</h2>
+        <div className="grid gap-5 sm:grid-cols-3">
+          <div>
+            <label htmlFor="post-kind" className={LABEL}>
+              Section
+            </label>
+            <select id="post-kind" value={form.kind} onChange={(e) => set('kind', e.target.value)} className={FIELD}>
+              <option value="blog">Blog</option>
+              <option value="article">Article</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="post-status" className={LABEL}>
+              Status
+            </label>
+            <select id="post-status" value={form.status} onChange={(e) => set('status', e.target.value)} className={FIELD}>
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="post-date" className={LABEL}>
+              Publish date (optional)
+            </label>
+            <input id="post-date" type="datetime-local" value={form.published_at} onChange={(e) => set('published_at', e.target.value)} className={FIELD} />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="post-title" className={LABEL}>
+            Title
+          </label>
+          <input id="post-title" value={form.title} onChange={(e) => set('title', e.target.value)} className={FIELD} required maxLength={200} />
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label htmlFor="post-slug" className={LABEL}>
+              URL slug (optional)
+            </label>
+            <input id="post-slug" value={form.slug} onChange={(e) => set('slug', e.target.value)} className={FIELD} placeholder="made-from-the-title" maxLength={90} />
+          </div>
+          <div>
+            <label htmlFor="post-category" className={LABEL}>
+              Category
+            </label>
+            <input id="post-category" value={form.category} onChange={(e) => set('category', e.target.value)} className={FIELD} placeholder="AI, Software, Business…" maxLength={60} />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="post-excerpt" className={LABEL}>
+            Summary (one or two lines)
+          </label>
+          <textarea id="post-excerpt" value={form.excerpt} onChange={(e) => set('excerpt', e.target.value)} rows={2} className={`${FIELD} resize-none`} maxLength={400} />
+        </div>
+        <div>
+          <label htmlFor="post-body" className={LABEL}>
+            Body — one paragraph per line; ## heading, - list, **bold**, [link](https://…)
+          </label>
+          <textarea id="post-body" value={form.body} onChange={(e) => set('body', e.target.value)} rows={14} className={FIELD} />
+        </div>
+        <div>
+          <label htmlFor="post-cover" className={LABEL}>
+            Cover image URL (optional)
+          </label>
+          <input id="post-cover" value={form.cover_image} onChange={(e) => set('cover_image', e.target.value)} className={FIELD} placeholder="/photos/… or https://…" maxLength={500} />
+        </div>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div>
+            <label htmlFor="post-seo-title" className={LABEL}>
+              Search title (optional)
+            </label>
+            <input id="post-seo-title" value={form.seo_title} onChange={(e) => set('seo_title', e.target.value)} className={FIELD} maxLength={120} />
+          </div>
+          <div>
+            <label htmlFor="post-seo-desc" className={LABEL}>
+              Search description (optional)
+            </label>
+            <input id="post-seo-desc" value={form.seo_description} onChange={(e) => set('seo_description', e.target.value)} className={FIELD} maxLength={200} />
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-4">
+          <button type="submit" className={SUBMIT} disabled={saving || !form.title}>
+            {saving ? <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" /> : editing ? 'Save changes' : (
+              <>
+                <Plus aria-hidden="true" className="h-4 w-4" />
+                Publish
+              </>
+            )}
+          </button>
+          {editing && (
+            <button type="button" onClick={() => { setEditing(null); setForm(EMPTY_POST); }} className="text-[14px] text-slate-500 hover:text-ink">
+              Cancel
+            </button>
+          )}
+          {message && <p className="text-[14px] text-slate-600">{message}</p>}
+        </div>
+      </form>
+
+      <div>
+        <h2 className="text-[28px] font-light tracking-[-0.02em] text-ink">All posts</h2>
+        {error && <p className="mt-6 text-red-600">{error}</p>}
+        {!data && !error && <Loader2 aria-label="Loading" className="mt-6 h-6 w-6 animate-spin text-cobalt" />}
+        {data && !data.posts.length && <p className="mt-6 text-slate-500">No posts yet.</p>}
+        <ul className="mt-8 grid gap-8">
+          {data?.posts.map((p) => (
+            <li key={p.id} className="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <p className="text-[13px] text-slate-500">
+                  {[p.kind === 'blog' ? 'Blog' : 'Article', p.status === 'draft' ? 'Draft' : 'Published', when(p.published_at)].join(' · ')}
+                </p>
+                <a href={`/${p.kind === 'blog' ? 'blog' : 'articles'}/${p.slug}`} target="_blank" rel="noreferrer" className="mt-1 block text-[19px] text-ink hover:text-cobalt">
+                  {p.title}
+                </a>
+              </div>
+              <div className="flex gap-3">
+                <button type="button" onClick={() => edit(p)} aria-label={`Edit ${p.title}`} className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-mist text-ink hover:bg-cobalt-soft">
+                  <Pencil aria-hidden="true" className="h-4 w-4" />
+                </button>
+                <button type="button" onClick={() => remove(p)} aria-label={`Delete ${p.title}`} className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-mist text-ink hover:bg-red-50 hover:text-red-600">
+                  <Trash2 aria-hidden="true" className="h-4 w-4" />
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
 }

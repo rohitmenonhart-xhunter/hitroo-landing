@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { esc, acknowledgmentEmail } from '@/lib/email';
+import { markLeadEmailed, saveLead } from '@/lib/data/forms';
+import { edgeGeo } from '@/lib/visitor';
 import {
     getAutomationSignal,
     getTurnstileConfiguration,
@@ -96,7 +98,32 @@ export async function POST(request: NextRequest) {
             }
         }
 
+        // Store first: the enquiry is captured even if email delivery fails.
+        let page: string | null = null;
+        try {
+            page = new URL(request.headers.get('referer') || '').pathname;
+        } catch {
+            page = null;
+        }
+        const leadId = await saveLead({
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            interest: data.interest,
+            message: data.message || data.context,
+            leadType: data.leadType,
+            page,
+            userAgent: request.headers.get('user-agent'),
+            geo: edgeGeo(request.headers),
+        });
+        const stored = () =>
+            NextResponse.json(
+                { success: true, message: 'Submitted successfully' },
+                { headers: { 'Cache-Control': 'no-store, max-age=0' } }
+            );
+
         if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
+            if (leadId) return stored();
             console.error('Lead email not configured: missing GMAIL_USER / GMAIL_APP_PASSWORD');
             return jsonError('Messaging is not configured yet. Please email us directly.', 500);
         }
@@ -122,14 +149,15 @@ export async function POST(request: NextRequest) {
                 .join('\n') || 'No details provided';
 
         // 1) Notify the HITROO team
+        try {
         await transporter.sendMail({
             from: `HITROO Website <${process.env.GMAIL_USER}>`,
             to: RECIPIENT,
             replyTo: data.email || undefined,
             subject,
             html: `
-        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#202124;">
-          <h2 style="color:#4285F4;margin-bottom:4px;">${esc(subject)}</h2>
+        <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#0A1633;">
+          <h2 style="color:#2451FF;margin-bottom:4px;">${esc(subject)}</h2>
           <hr style="border:none;border-top:1px solid #eee;" />
           ${data.name ? `<p><strong>Name:</strong> ${esc(data.name)}</p>` : ''}
           ${data.email ? `<p><strong>Email:</strong> <a href="mailto:${esc(data.email)}">${esc(data.email)}</a></p>` : ''}
@@ -141,6 +169,13 @@ export async function POST(request: NextRequest) {
             text: `${subject}\n\n${data.name ? `Name: ${data.name}\n` : ''}${data.email ? `Email: ${data.email}\n` : ''}${data.phone ? `Phone: ${data.phone}\n` : ''}\nMessage:\n${context}\n\nSent from the HITROO website · ${timestamp}`,
         });
 
+            if (leadId) await markLeadEmailed(leadId);
+        } catch (mailErr) {
+            console.error('Lead notification email failed:', mailErr);
+            if (leadId) return stored();
+            throw mailErr;
+        }
+
         // 2) Send the visitor a friendly acknowledgment (best-effort)
         if (data.email) {
             try {
@@ -149,7 +184,7 @@ export async function POST(request: NextRequest) {
                     to: data.email,
                     subject: 'We\'ve received your message — HITROO',
                     html: acknowledgmentEmail({
-                        heading: `Thanks${data.name ? `, ${esc(data.name)}` : ''} — your message<br/>is <span style="color:#4285F4;">in</span>.`,
+                        heading: `Thanks${data.name ? `, ${esc(data.name)}` : ''} — your message<br/>is <span style="color:#2451FF;">in</span>.`,
                         intro: 'A member of the HITROO team will get back to you within a day. Here&rsquo;s a copy of what you sent us.',
                         recapLabel: 'Your message',
                         recapBody: esc(context),

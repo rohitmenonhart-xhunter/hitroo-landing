@@ -1,9 +1,0 @@
-schemaVersion: 1
-approval: auto
-rawTranscripts: false
-secretIngestion: false
-liveCoordination:
-  canonical: false
-  defaultLeaseSeconds: 900
-  maxLeaseSeconds: 3600
-  absolutePaths: false

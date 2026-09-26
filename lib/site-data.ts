@@ -1,4 +1,6 @@
-import { BrainCircuit, Code2, Eye, MonitorSmartphone, Server, Smartphone, Workflow, type LucideIcon } from 'lucide-react';
+import type { Leader } from '@/components/corporate/LeaderQuote';
+/** Service groups: the columns of the Services menu. */
+export type ServiceGroup = 'build' | 'ai' | 'run';
 
 export interface Service {
   slug: string;
@@ -6,13 +8,15 @@ export interface Service {
   title: string;
   /** Short name for menus, grids and the footer. */
   label: string;
+  group: ServiceGroup;
   /** One line under the title. */
   short: string;
   /** Metadata title suffix. */
   tagline: string;
   /** The business problem, in one line. */
   pain: string;
-  icon: LucideIcon;
+  /** Brand icon: a transparent PNG in public/icons. */
+  icon: string;
   /** Realistic photo (public/photos). */
   image: string;
   imageAlt: string;
@@ -32,6 +36,10 @@ export const COMPANY = {
   phoneHref: 'tel:+917550000805',
   location: 'Chennai, Tamil Nadu, India',
   oneLiner: 'Software, automation and AI for business.',
+  /** The standard paragraph at the end of news items and in the newsroom. */
+  about:
+    'HITROO builds custom software, mobile and desktop apps, AI models, automation and computer-vision systems for businesses. One team designs, builds, security-tests and supports every project.',
+  linkedin: 'https://www.linkedin.com/company/hitroo',
 };
 
 export const services: Service[] = [
@@ -39,10 +47,11 @@ export const services: Service[] = [
     slug: 'custom-software',
     title: 'Custom Software Development',
     label: 'Custom software',
+    group: 'build',
     short: 'Platforms and tools built around the way you work.',
     tagline: 'Built around your business',
     pain: 'Spreadsheets and disconnected tools cost you hours and hide your real numbers.',
-    icon: Code2,
+    icon: '/icons/custom-software.png',
     image: '/photos/svc-software.webp',
     imageAlt: 'A developer desk with two monitors, a laptop and a notebook of diagrams',
     overview:
@@ -63,10 +72,11 @@ export const services: Service[] = [
     slug: 'mobile-apps',
     title: 'Mobile App Development',
     label: 'Mobile apps',
+    group: 'build',
     short: 'Native and cross-platform apps for iOS and Android.',
     tagline: 'Mobile that performs',
     pain: 'Your customers live on their phones. A slow or missing app sends them elsewhere.',
-    icon: Smartphone,
+    icon: '/icons/mobile-apps.png',
     image: '/photos/svc-mobile.webp',
     imageAlt: 'A phone on a restaurant billing counter showing an ordering app',
     overview:
@@ -87,10 +97,11 @@ export const services: Service[] = [
     slug: 'desktop-apps',
     title: 'Desktop App Development',
     label: 'Desktop apps',
+    group: 'build',
     short: 'Fast desktop software for Windows, macOS and Linux.',
     tagline: 'Power on the desktop',
     pain: 'Heavy workloads, offline use and hardware often outgrow the browser.',
-    icon: MonitorSmartphone,
+    icon: '/icons/desktop-apps.png',
     image: '/photos/svc-desktop.webp',
     imageAlt: 'An engineering workstation with two monitors and printed drawings',
     overview:
@@ -111,10 +122,11 @@ export const services: Service[] = [
     slug: 'ai-models',
     title: 'AI Model Development & Training',
     label: 'AI models',
+    group: 'ai',
     short: 'Custom-trained AI models, or our ready in-house models.',
     tagline: 'Models for your domain',
     pain: 'Generic AI doesn’t know your data, so it fails where it matters most.',
-    icon: BrainCircuit,
+    icon: '/icons/ai-models.png',
     image: '/photos/svc-ai.webp',
     imageAlt: 'A machine-learning workstation with two graphics cards and a monitor',
     overview:
@@ -135,10 +147,11 @@ export const services: Service[] = [
     slug: 'ai-automation',
     title: 'AI Automation',
     label: 'AI automation',
+    group: 'ai',
     short: 'Workflows that run themselves, end to end.',
     tagline: 'Automate the routine',
     pain: 'Repetitive work eats hours every week, and hiring doesn’t fix it.',
-    icon: Workflow,
+    icon: '/icons/ai-automation.png',
     image: '/photos/svc-automation.webp',
     imageAlt: 'A document scanner feeding invoices beside a laptop in an accounts office',
     overview:
@@ -159,10 +172,11 @@ export const services: Service[] = [
     slug: 'vision-systems',
     title: 'Vision Systems',
     label: 'Vision systems',
+    group: 'ai',
     short: 'Cameras and AI that inspect quality on the line.',
     tagline: 'Quality, automated by sight',
     pain: 'Manual inspection is slow, inconsistent and misses defects.',
-    icon: Eye,
+    icon: '/icons/vision-systems.png',
     image: '/photos/svc-vision.webp',
     imageAlt: 'An inspection camera above a conveyor carrying machined parts',
     overview:
@@ -183,10 +197,11 @@ export const services: Service[] = [
     slug: 'managed-services',
     title: 'Managed & Custom Services',
     label: 'Managed services',
+    group: 'run',
     short: 'We run and maintain your systems, on demand.',
     tagline: 'Services on demand',
     pain: 'Running servers and support in-house pulls your best people off the product.',
-    icon: Server,
+    icon: '/icons/managed-services.png',
     image: '/photos/svc-managed.webp',
     imageAlt: 'An open network rack with servers and bundled cables in an office server room',
     overview:
@@ -242,7 +257,29 @@ export const WHY_NEED = [
   },
 ];
 
-export const PROCESS = ['Discover', 'Design', 'Build', 'Test & secure', 'Launch', 'Support'];
+/** The delivery process (home "Fast, by design"): one short line and an icon per step. */
+export const PROCESS_STEPS = [
+  { name: 'Discover', line: 'Your goals, mapped.', image: '/photos/process-discover.webp', alt: 'Blank sticky notes in two groups on a glass wall, joined by a marker arrow' },
+  { name: 'Design', line: 'Screens you can click.', image: '/photos/process-design.webp', alt: 'A designer’s desk with app screens on a monitor, a wireframe on a tablet and paper sketches' },
+  { name: 'Build', line: 'Working software, early.', image: '/photos/process-build.webp', alt: 'An engineer’s workstation with code on two monitors' },
+  { name: 'Test & secure', line: 'Every change checked.', image: '/photos/process-test.webp', alt: 'Phones and tablets lined up for testing on a white bench' },
+  { name: 'Launch', line: 'Live, and watched.', image: '/photos/process-launch.webp', alt: 'A check-in app on a tablet beside a card terminal at a clinic reception desk' },
+  { name: 'Support', line: 'First reply in 24 hours.', image: '/photos/process-support.webp', alt: 'A support desk with a headset beside a laptop' },
+];
+
+export const PROCESS = PROCESS_STEPS.map((s) => s.name);
+
+/**
+ * The home page's word from HITROO's leadership: a real person's own photo, name, role and words
+ * (chosen by Rohit on 2026-09-26) — never a generated face or an invented quote. `null` hides it.
+ */
+export const LEADER: Leader | null = {
+  lines: ['The software a business runs on can’t be a demo.', 'We build it to work on day one and keep it working for years.'],
+  name: 'Rohit',
+  role: 'Founder, HITROO',
+  photo: '/people/rohit.webp',
+  alt: 'Rohit, founder of HITROO',
+};
 
 export const AUDIENCE = [
   { title: 'Enterprises', image: '/photos/companies.webp', alt: 'The entrance plaza of a corporate office campus' },
@@ -260,3 +297,73 @@ export const SUPPORT = {
   image: '/photos/support.webp',
   imageAlt: 'A phone showing a support chat app beside a laptop on an office desk',
 };
+
+/* ------------------------------------------------------------------
+   Navigation groups (header menus and footer)
+   ------------------------------------------------------------------ */
+
+export const SERVICE_GROUPS: { id: ServiceGroup; label: string; line: string }[] = [
+  { id: 'build', label: 'Build', line: 'Software your business runs on.' },
+  { id: 'ai', label: 'AI', line: 'Models and agents that work for you.' },
+  { id: 'run', label: 'Run', line: 'We keep it running.' },
+];
+
+export interface NavItem {
+  href: string;
+  label: string;
+  line: string;
+  /** Brand icon: a transparent PNG in public/icons. */
+  icon: string;
+}
+
+export const RESOURCES: { learn: NavItem[]; company: NavItem[]; support: NavItem[] } = {
+  learn: [
+    { href: '/insights', label: 'Insights', line: 'Latest articles and news', icon: '/icons/insights.png' },
+    { href: '/blog', label: 'Blog', line: 'Quick takes on technology', icon: '/icons/blog.png' },
+    { href: '/articles', label: 'Articles', line: 'In-depth thinking', icon: '/icons/articles.png' },
+    { href: '/research', label: 'Research', line: 'Applied AI, vision and systems', icon: '/icons/research.png' },
+    { href: '/ai-perspective', label: 'Our view on AI', line: 'Is AI a threat to software firms?', icon: '/icons/ai-view.png' },
+  ],
+  company: [
+    { href: '/news', label: 'Newsroom', line: 'Company news and press', icon: '/icons/news.png' },
+    { href: '/brand', label: 'Brand kit', line: 'Logo, colours and type', icon: '/icons/brand.png' },
+  ],
+  support: [
+    { href: '/support', label: 'Support app', line: 'First reply in 24 hours', icon: '/icons/support.png' },
+    { href: '/contact', label: 'Contact us', line: 'We reply within a day', icon: '/icons/contact.png' },
+  ],
+};
+
+/* ------------------------------------------------------------------
+   Home story carousel
+   ------------------------------------------------------------------ */
+
+export const STORIES = [
+  {
+    eyebrow: 'Our story',
+    lines: ['Built with care.', 'Built to last.'],
+    text: 'We design, build and support the software businesses run on, for years.',
+    href: '/about',
+    cta: 'Read our story',
+    image: '/photos/story-business.webp',
+    alt: 'A warehouse packing station at night, an orders app on a tablet under a work lamp',
+  },
+  {
+    eyebrow: 'Our view on AI',
+    lines: ['AI makes us faster.', 'We make it right.'],
+    text: 'AI drafts in hours. We design, test and support it for years.',
+    href: '/ai-perspective',
+    cta: 'Read our view',
+    image: '/photos/story-ai.webp',
+    alt: 'An engineer’s desk at night, code and an AI assistant side by side on the monitor',
+  },
+  {
+    eyebrow: 'Research',
+    lines: ['Hard problems in.', 'Real products out.'],
+    text: 'Applied AI, vision and systems research that becomes product.',
+    href: '/research',
+    cta: 'See our research',
+    image: '/photos/story-research.webp',
+    alt: 'A robot arm with a wrist camera lifting a machined part from a tray in a lab at night',
+  },
+];

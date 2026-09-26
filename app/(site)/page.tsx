@@ -1,9 +1,12 @@
 import Image from 'next/image';
 import ContactBlock from '@/components/corporate/ContactBlock';
 import PageHero from '@/components/corporate/PageHero';
+import LeaderQuote from '@/components/corporate/LeaderQuote';
+import ProcessAccordion from '@/components/corporate/ProcessAccordion';
 import ServiceGrid from '@/components/corporate/ServiceGrid';
+import StoryCarousel from '@/components/corporate/StoryCarousel';
 import { ArrowLink, Button, Eyebrow, Section, SectionHeader, Statement } from '@/components/corporate/ui';
-import { AUDIENCE, PROCESS, SUPPORT, WHY_HITROO_STATEMENT, WHY_NEED } from '@/lib/site-data';
+import { AUDIENCE, LEADER, PROCESS_STEPS, STORIES, SUPPORT, WHY_HITROO_STATEMENT, WHY_NEED } from '@/lib/site-data';
 import type { Metadata } from 'next';
 import JsonLd from '@/components/seo/JsonLd';
 import { pageMetadata, webPageLd } from '@/lib/seo';
@@ -32,6 +35,7 @@ export default function Home() {
         image="/photos/hero.webp"
         imageAlt="A meeting room after a planning session, with laptops, reports and a dashboard on the wall screen"
         imagePosition="50% 15%"
+        spacious
       />
 
       <Statement
@@ -70,19 +74,21 @@ export default function Home() {
         </div>
       </Section>
 
+      <StoryCarousel stories={STORIES} />
+
       <Section labelledBy="how-title">
-        <SectionHeader id="how-title" title="Fast, by design" />
-        <ol className="mt-14 grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 lg:mt-20 lg:grid-cols-6">
-          {PROCESS.map((step, i) => (
-            <li key={step}>
-              <span aria-hidden="true" className="text-[40px] font-light leading-none tracking-[-0.03em] text-cobalt tabular-nums">
-                {i + 1}
-              </span>
-              <h3 className="mt-5 text-[18px] font-medium text-ink">{step}</h3>
-            </li>
-          ))}
-        </ol>
+        <SectionHeader
+          id="how-title"
+          title="Fast, by design"
+          lede="Working software early, tested at every step."
+          action={<ArrowLink href="/contact">Start a project</ArrowLink>}
+        />
+        <div className="mt-14 lg:mt-20">
+          <ProcessAccordion steps={PROCESS_STEPS} />
+        </div>
       </Section>
+
+      {LEADER && <LeaderQuote {...LEADER} />}
 
       <Section labelledBy="support-title">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">

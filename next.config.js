@@ -23,7 +23,8 @@ const nextConfig = {
     return [
       // Old file-CMS article ids → clean slugs.
       { source: '/articles/1766601625775', destination: '/articles/a-subtle-shift-a-big-impact', permanent: true },
-      { source: '/news/:path*', destination: '/blog', permanent: true },
+      // Old file-CMS news ids (long numbers) → the blog. /news itself is now the newsroom.
+      { source: '/news/:id(\\d{6,})', destination: '/blog', permanent: true },
       { source: '/llm.txt', destination: '/llms.txt', permanent: true },
     ];
   },

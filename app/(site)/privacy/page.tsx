@@ -1,5 +1,6 @@
+import Link from 'next/link';
+import LegalSections, { type LegalSection } from '@/components/corporate/LegalSections';
 import PageHero from '@/components/corporate/PageHero';
-import { Container } from '@/components/corporate/ui';
 import JsonLd from '@/components/seo/JsonLd';
 import { COMPANY } from '@/lib/site-data';
 import { breadcrumbLd, pageMetadata, webPageLd } from '@/lib/seo';
@@ -7,7 +8,7 @@ import { breadcrumbLd, pageMetadata, webPageLd } from '@/lib/seo';
 const DESCRIPTION = 'What HITROO collects on this website, why, how long we keep it, and your choices.';
 export const metadata = pageMetadata({ title: 'Privacy policy', description: DESCRIPTION, path: '/privacy' });
 
-const SECTIONS: { title: string; body: string[] }[] = [
+const SECTIONS: LegalSection[] = [
   {
     title: 'What we collect',
     body: [
@@ -26,7 +27,14 @@ const SECTIONS: { title: string; body: string[] }[] = [
     body: [
       'hitroo_consent remembers your choice for one year.',
       'hitroo_vid is a random visitor ID, set only if you accept, kept for one year.',
-      'We use no advertising or third-party tracking cookies. Change your choice any time with “Cookie settings” in the footer.',
+      'hitroo_sid, in your browser’s session storage and only if you accept, groups the pages of one visit; it clears when you close the tab.',
+      <>
+        We use no advertising or third-party tracking cookies. Change your choice any time with “Cookie settings” in the footer. Details are in our{' '}
+        <Link href="/cookies" className="font-medium text-cobalt hover:text-cobalt-dark">
+          cookie policy
+        </Link>
+        .
+      </>,
     ],
   },
   {
@@ -50,23 +58,8 @@ export default function PrivacyPage() {
     <>
       <JsonLd data={webPageLd('WebPage', 'Privacy policy', '/privacy', DESCRIPTION)} />
       <JsonLd data={breadcrumbLd([{ name: 'Privacy policy', path: '/privacy' }])} />
-      <PageHero eyebrow="Privacy" title="Privacy policy" lede="What we collect, why, and your choices. Last updated 25 September 2026." />
-      <Container className="pb-32 pt-12 lg:pb-44 lg:pt-20">
-        <div className="grid max-w-3xl gap-16">
-          {SECTIONS.map((s) => (
-            <section key={s.title} aria-labelledby={s.title}>
-              <h2 id={s.title} className="text-[26px] font-light tracking-[-0.02em] text-ink">
-                {s.title}
-              </h2>
-              <div className="mt-5 grid gap-4 text-[17px] leading-relaxed text-slate-600">
-                {s.body.map((p) => (
-                  <p key={p}>{p}</p>
-                ))}
-              </div>
-            </section>
-          ))}
-        </div>
-      </Container>
+      <PageHero eyebrow="Privacy" title="Privacy policy" lede="What we collect, why, and your choices. Last updated 26 September 2026." />
+      <LegalSections sections={SECTIONS} />
     </>
   );
 }

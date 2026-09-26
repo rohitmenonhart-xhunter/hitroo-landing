@@ -2,12 +2,14 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Check } from 'lucide-react';
 import CtaBand from '@/components/corporate/CtaBand';
+import FaqList from '@/components/corporate/FaqList';
 import PageHero from '@/components/corporate/PageHero';
 import ServiceGrid from '@/components/corporate/ServiceGrid';
 import { ArrowLink, Button, Section, SectionHeader, Statement } from '@/components/corporate/ui';
 import { getService, services } from '@/lib/site-data';
 import JsonLd from '@/components/seo/JsonLd';
-import { breadcrumbLd, pageMetadata, serviceLd } from '@/lib/seo';
+import { serviceFaq } from '@/lib/faq';
+import { breadcrumbLd, faqLd, pageMetadata, serviceLd } from '@/lib/seo';
 
 export function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -31,6 +33,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
   return (
     <>
       <JsonLd data={serviceLd(s)} />
+      <JsonLd data={faqLd(serviceFaq(s))} />
       <JsonLd data={breadcrumbLd([{ name: 'Services', path: '/services' }, { name: s.title, path: `/services/${s.slug}` }])} />
       <PageHero
         eyebrow="Services"
@@ -86,6 +89,13 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             </ul>
             <p className="mt-10 text-[14px] text-slate-500">{s.stack.join(' · ')}</p>
           </div>
+        </div>
+      </Section>
+
+      <Section labelledBy="faq-title">
+        <SectionHeader id="faq-title" title="Questions" />
+        <div className="mt-10 lg:mt-14">
+          <FaqList items={serviceFaq(s)} />
         </div>
       </Section>
 

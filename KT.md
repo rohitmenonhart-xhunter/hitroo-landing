@@ -10,24 +10,25 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - **Hosting:** Vercel, live at `www.hitroo.com` since 2026-09-25 (`hitroo.com` redirects there); functions in `sin1` (see `vercel.json`); `next/image` optimization on. Pushing to `main` deploys to production. `netlify.toml` was removed on 2026-09-26.
 - **Folders:** `Hitroo_internal_Apps/hitroo/` holds `hitroo_landing` (this site) and `hitroo_admin_page` (the admin); later internal apps go there too.
 - **Database:** shared Postgres on Fly.io, app `hitroo-db` (PostgreSQL 18, region `sin`, public TLS endpoint `hitroo-db.fly.dev:5432`). Database `hitroo`: schema `web` for this site (role `web_app`, write-only plus reading posts) and the admin (role `admin_app`), schema `internal` for internal apps (role `internal_app`). This repo's `db/` holds the schema for all of them. Credentials: `Hitroo_internal_Apps/_secrets/hitroo-db.env`. Details: [ARCHITECTURE.md](ARCHITECTURE.md).
-- **Commands:** `npm install` (no flags), `npm run typecheck`, `npm run lint`, `npm test` (22 node:test tests), `npm run db:migrate`, `npm run db:seed-posts`, `npm run indexnow` (after production deploys).
+- **Commands:** `npm install` (no flags), `npm run typecheck`, `npm run lint`, `npm test` (26 node:test tests), `npm run db:migrate`, `npm run db:seed-posts`, `npm run indexnow` (after production deploys).
 - **Forms:** `LeadForm` → `/api/lead`, `CareersForm` → `/api/careers`. Both store to Postgres first, then email; per-visitor rate limits, email caps, honeypot, timing and optional Turnstile ([docs/contact-form-protection.md](docs/contact-form-protection.md)). `.env.local` has real SMTP credentials — test with `GMAIL_USER= GMAIL_APP_PASSWORD= npx next start` (stores without emailing) or via the honeypot (validated, then discarded), and delete test rows afterwards.
 
 ## Site structure
 - `app/(site)/layout.tsx` renders Header + `<main id="main">` + Footer + Analytics + CookieConsent for every marketing page.
-- `/` Home: hero (photo) → "Why HITROO" two-line statement (+ link to our AI view) → "Why your business needs it" (Software / Automation / AI) → "What we build" → "Fast, by design" → "Support in one app" → "Who we work with" → enquiry form.
+- `/` Home: hero (photo) → "Why HITROO" two-line statement (+ link to our AI view) → "Why your business needs it" (Software / Automation / AI) → "What we build" → story cards (Our story / Our view on AI / Research) → "Fast, by design" (six photo panels) → a word from Rohit, the founder (quote + small photo) → "Support in one app" → "Who we work with" → enquiry form.
 - `/services` (photo cards) and `/services/[slug]` (hero photo → the problem → what you get → how we work + results → other services → CTA).
-- `/insights` (latest articles and blog posts), `/articles`, `/blog`, `/articles/[slug]`, `/blog/[slug]` — content from `web.posts`, managed in the admin app.
-- `/about`, `/research`, `/support`, `/careers` (role picker + application), `/contact` (details + form), `/ai-perspective` ("Is AI a threat to HITROO?"), `/privacy`, `app/not-found.tsx`.
+- `/insights` (latest articles and blog posts), `/articles`, `/blog`, `/articles/[slug]`, `/blog/[slug]`, `/news` (newsroom: news, press contact, About HITROO, brand kit link), `/news/[slug]` — content from `web.posts`, managed in the admin app. Old `/news/<numeric id>` links still redirect to `/blog`.
+- `/about`, `/research`, `/support`, `/careers` (role picker + application), `/contact` (details + form), `/ai-perspective` ("Is AI a threat to HITROO?"), `/brand` (brand kit: logo and mark downloads, space and size, colours, type, don'ts), `/privacy`, `/cookies`, `/terms`, `/accessibility`, `/security` (+ `/.well-known/security.txt`), `/site-map`, `app/not-found.tsx`.
 - **Admin:** a separate app, `../hitroo_admin_page`, live at https://admin.hitroo.com — analytics (visits, clicks, reads, world map, sources, audience, hours), leads and applications (status, notes, search, résumés), posts. One owner password, kept in `_secrets/hitroo-admin.env`.
 - API: `/api/lead`, `/api/careers`, `/api/track`, `/api/consent`, `/api/revalidate` (for the admin).
-- Discovery: `/sitemap.xml`, `/robots.txt`, `/llms.txt`, `/llms-full.txt`, IndexNow key file in `public/`.
+- Discovery: `/sitemap.xml`, `/robots.txt`, `/llms.txt`, `/llms-full.txt`, `/feed.xml` (RSS of all posts, linked from every page), IndexNow key file in `public/`.
+- Questions (FAQPage data): every service page and `/services` show short questions built from site facts; posts get FAQ data from their `## Questions` section.
 
 ## Data we collect
 - Enquiries and job applications (with resumes) in `web.leads` / `web.job_applications`.
 - Page views in `web.page_views`: anonymous by default (path, referrer host, UTM, country/region/city from Vercel's edge, device/browser/OS, language, a random visit id held only in the page's memory); visitor and session IDs only after cookie consent. No IP addresses are stored.
 - Clicks and engagement in `web.events`: link/button text and target (no query strings), visible seconds and furthest scroll per page view. A post counts as read at 75% of the article.
-- Cookie decisions in `web.consents` (policy version `2026-09`). The policy text is `/privacy` — have it reviewed by a lawyer before launch (it commits to 24-month analytics retention and 30-day responses to data requests).
+- Cookie decisions in `web.consents` (policy version `2026-09`). The policy text is `/privacy` and `/cookies` — have them reviewed by a lawyer before launch (it commits to 24-month analytics retention and 30-day responses to data requests).
 
 ## Key decisions
 - **Theme:** corporate white — no coloured section bands and no divider lines (whitespace only), Inter, cobalt/navy accents. Replaced the Google-colour + SF Pro theme (SF Pro isn't licensed for web use).
@@ -37,11 +38,14 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - **Analytics:** first-party and privacy-first (no Google Analytics, no third-party cookies). A visit is one page load and the pages it navigates to; a reload starts a new visit.
 - **Admin as its own app:** only the owner uses it (one password, no accounts). The website's database role cannot read leads, résumés or analytics — if the public site were ever compromised, nobody's details could be read through it.
 - **Products removed** earlier (Capsona, Attyn, Belecure, Mockello, AI Marketing Agent) — don't reintroduce.
+- **Logo:** always blue and black, on white or light backgrounds; no reversed version anywhere on the site (the footer's navy strip was removed for this, 2026-09-26).
+- **"Fast, by design":** six photo panels (2026-09-26). Rejected first: a scroll-lit icon stepper ("noob") and an animated code-drawn app mock with fake cursors ("AI slop").
 - **Photos:** realistic Codex photos only (glossy 3D sets and staged "notebook diagram" shots looked fake). The gritty documentary set then looked unprofessional, so new photos use the professional style line in `docs/art/photos-briefs.md` (2026-09-26).
 
 ## Assets
 - `public/photos/` — realistic WebP photos (hero, need-* for "Why your business needs it", svc-* including svc-vision, audience, support, research, about, ai-view). Briefs: `docs/art/photos-briefs.md`.
-- `public/brand/` — logo SVGs; `public/favicon.svg` + `public/favicon/*` + `public/favicon.ico` — rings favicon set.
+- `public/photos/process-*.webp` (the six steps) and `story-*.webp` (cinematic story cards). `public/icons/` — the Codex icon set used in menus and the service grid.
+- `public/brand/` — `hitroo-logo.svg/.png` (lockup, name as outlines from Inter SemiBold), `hitroo-mark.svg/.png`, `hitroo-brand-kit.zip`; `public/favicon.svg` + `public/favicon/*` + `public/favicon.ico` — rings favicon set.
 - `public/og-image.png` — 1200×675 social card; `public/new_logo/logo_whitebg.png` — square logo for the Organization JSON-LD.
 
 ## SEO / GEO
@@ -68,5 +72,8 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - Enable continuous database backups (Tigris) or a scheduled `pg_dump`.
 - Publish regularly to `/blog` and `/articles` (first blog post 2026-09-26; Articles is empty).
 - Real proof: 2–3 client stories, logos (with permission) and a testimonial — add after "Why HITROO" once provided.
-- `/terms` page; legal review of `/privacy`.
+- Legal review of `/privacy`, `/cookies` and `/terms`.
+- Content calendar: blog posts are scheduled daily at 09:00 IST through 1 October 2026 (they appear on their own when their date passes). Keep one a day going: trending topics from Hacker News tied to a service, plus evergreen guides that invite a brief.
+- Search Console and Bing Webmaster verification (needs the owner's accounts) to see queries and speed up indexing.
+- Pages that need real input before they can exist: case studies, industries, leadership, partners, events and awards.
 - `@supabase/supabase-js` is installed but unused.

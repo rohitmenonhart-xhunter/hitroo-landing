@@ -1,4 +1,5 @@
 import { listPosts, postUrl } from '@/lib/data/posts';
+import { generalFaq } from '@/lib/faq';
 import { COMPANY, PROCESS, services, SUPPORT, WHY_HITROO_STATEMENT } from '@/lib/site-data';
 import { abs } from '@/lib/seo';
 
@@ -37,9 +38,11 @@ export async function llmsTxt() {
     `- [Research](${abs('/research')}): Applied AI, computer vision, automation and systems.`,
     `- [Contact](${abs('/contact')}): Tell us what you need; we reply within a day.`,
     `- [Careers](${abs('/careers')}): Software, AI/ML and hardware roles.`,
+    `- [Newsroom](${abs('/news')}): Company news, press contact and brand kit.`,
+    `- [Brand kit](${abs('/brand')}): Logo (SVG, PNG), colours and type.`,
     '',
     '## Insights',
-    `- [Articles](${abs('/articles')}) and [Blog](${abs('/blog')})`,
+    `- [Articles](${abs('/articles')}), [Blog](${abs('/blog')}) and [Newsroom](${abs('/news')})`,
     ...posts.map((p) => `- [${p.title}](${abs(postUrl(p))})${p.excerpt ? `: ${p.excerpt}` : ''}`),
     '',
     '## Optional',
@@ -78,11 +81,7 @@ export async function llmsFullTxt() {
     'AI can draft a prototype in hours; software a business runs on still takes a team that understands the business, designs the architecture and security, and tests, launches and supports it for years. HITROO uses AI inside an architecture it designs and controls, for faster iterations, behind layers of tests — so speed never costs quality. Smartphones didn’t replace the computer; they multiplied the software the world needs. AI will do the same.',
     '',
     '## Common questions',
-    'Q: What does HITROO build? A: Custom software, mobile and desktop apps, AI models, AI automation, computer-vision systems and managed services.',
-    'Q: How fast does HITROO deliver? A: In short iterations, with working software early and often; the process is Discover → Design → Build → Test & secure → Launch → Support.',
-    'Q: Does HITROO support software after launch? A: Yes. Through the HITROO app, with a first reply within 24 hours and most fixes within 48.',
-    'Q: Who does HITROO work with? A: Enterprises, growing businesses, and founders and startups, worldwide.',
-    `Q: How do I start a project? A: Use ${abs('/contact')} or email ${COMPANY.email}; HITROO replies within a day.`,
+    ...generalFaq(COMPANY.email, abs('/contact')).map((f) => `Q: ${f.q} A: ${f.a}`),
     '',
   ];
   return text(lines.join('\n'));

@@ -1,7 +1,7 @@
 import { cache } from 'react';
 import { hasDatabase, sql } from '@/lib/db';
 
-export type PostKind = 'article' | 'blog';
+export type PostKind = 'article' | 'blog' | 'news';
 
 export interface Post {
   id: string;
@@ -23,7 +23,8 @@ export interface Post {
 
 export type PostSummary = Pick<Post, 'id' | 'kind' | 'slug' | 'title' | 'excerpt' | 'category' | 'cover_image' | 'published_at' | 'updated_at'>;
 
-export const POST_PATH: Record<PostKind, string> = { article: '/articles', blog: '/blog' };
+export const POST_PATH: Record<PostKind, string> = { article: '/articles', blog: '/blog', news: '/news' };
+export const KIND_LABEL: Record<PostKind, string> = { article: 'Article', blog: 'Blog', news: 'News' };
 export const postUrl = (p: Pick<Post, 'kind' | 'slug'>) => `${POST_PATH[p.kind]}/${p.slug}`;
 
 const SUMMARY = 'id, kind, slug, title, excerpt, category, cover_image, published_at, updated_at';

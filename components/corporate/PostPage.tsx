@@ -9,9 +9,11 @@ import PostBody from './PostBody';
 import { formatDate } from './PostList';
 import { Container, Eyebrow } from './ui';
 import { getPost, POST_PATH, postUrl, readingMinutes, type PostKind } from '@/lib/data/posts';
-import { articleLd, breadcrumbLd, pageMetadata } from '@/lib/seo';
+import { COMPANY } from '@/lib/site-data';
+import { postFaq } from '@/lib/faq';
+import { articleLd, breadcrumbLd, faqLd, pageMetadata } from '@/lib/seo';
 
-const SECTION: Record<PostKind, string> = { article: 'Articles', blog: 'Blog' };
+const SECTION: Record<PostKind, string> = { article: 'Articles', blog: 'Blog', news: 'Newsroom' };
 
 export async function postMetadata(kind: PostKind, slug: string): Promise<Metadata> {
   const post = await getPost(kind, slug);
@@ -28,14 +30,16 @@ export async function postMetadata(kind: PostKind, slug: string): Promise<Metada
   };
 }
 
-/** One article or blog post: title, meta, optional cover, body, then the closing call to action. */
+/** One article, blog post or news item: title, meta, optional cover, body, then the closing call to action. */
 export default async function PostPage({ kind, slug }: { kind: PostKind; slug: string }) {
   const post = await getPost(kind, slug);
   if (!post) notFound();
 
   const path = postUrl(post);
+  const faq = postFaq(post.body);
   return (
     <>
+      {faq.length > 0 && <JsonLd data={faqLd(faq)} />}
       <JsonLd
         data={articleLd({
           kind,
@@ -47,9 +51,16 @@ export default async function PostPage({ kind, slug }: { kind: PostKind; slug: s
           modified: new Date(post.updated_at),
           author: post.author,
           category: post.category,
+          words: post.body.split(/\s+/).filter(Boolean).length,
         })}
       />
-      <JsonLd data={breadcrumbLd([{ name: 'Insights', path: '/insights' }, { name: SECTION[kind], path: POST_PATH[kind] }, { name: post.title, path }])} />
+      <JsonLd
+        data={breadcrumbLd([
+          ...(kind === 'news' ? [] : [{ name: 'Insights', path: '/insights' }]),
+          { name: SECTION[kind], path: POST_PATH[kind] },
+          { name: post.title, path },
+        ])}
+      />
       <article>
         <Container className="pb-8 pt-8 sm:pt-12 lg:pt-16">
           <div className="mx-auto max-w-3xl">
@@ -73,6 +84,18 @@ export default async function PostPage({ kind, slug }: { kind: PostKind; slug: s
               <p className="mb-10 text-[22px] font-light leading-relaxed tracking-[-0.01em] text-ink">{post.excerpt}</p>
             )}
             <PostBody body={post.body} />
+            {kind === 'news' && (
+              <div className="mt-16 text-[16px] leading-relaxed text-slate-600">
+                <p className="font-medium text-ink">About HITROO</p>
+                <p className="mt-2">{COMPANY.about}</p>
+                <p className="mt-4">
+                  Press:{' '}
+                  <a href={`mailto:${COMPANY.email}`} className="font-medium text-cobalt hover:text-cobalt-dark">
+                    {COMPANY.email}
+                  </a>
+                </p>
+              </div>
+            )}
           </div>
         </Container>
       </article>

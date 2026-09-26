@@ -1,6 +1,6 @@
 import CoverImage from './CoverImage';
 import Link from 'next/link';
-import { postUrl, type PostSummary } from '@/lib/data/posts';
+import { KIND_LABEL, postUrl, type PostSummary } from '@/lib/data/posts';
 
 export const formatDate = (d: Date | string) => new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -18,7 +18,7 @@ export default function PostList({ posts, empty = 'New posts are on the way.' }:
               </div>
             )}
             <p className="text-[13px] font-medium text-slate-500">
-              {[p.kind === 'blog' ? 'Blog' : 'Article', p.category, formatDate(p.published_at)].filter(Boolean).join(' · ')}
+              {[KIND_LABEL[p.kind], p.category, formatDate(p.published_at)].filter(Boolean).join(' · ')}
             </p>
             <h3 className="mt-3 text-[26px] font-light leading-snug tracking-[-0.02em] text-ink [text-wrap:balance] group-hover:text-cobalt">{p.title}</h3>
             {p.excerpt && <p className="mt-3 line-clamp-3 text-[16px] leading-relaxed text-slate-600">{p.excerpt}</p>}

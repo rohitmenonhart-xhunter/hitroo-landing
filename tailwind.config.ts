@@ -21,12 +21,15 @@ const config: Config = {
       },
       fontFamily: {
         corp: ['var(--font-inter)', 'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
+        /* Story moments only (the home carousel, featured cards). */
+        serif: ['var(--font-serif)', 'Georgia', 'serif'],
       },
       colors: {
         /* Corporate white theme (home page) */
         ink: '#0A1633',
-        cobalt: { DEFAULT: '#2451FF', dark: '#1A3ED9', soft: '#EEF2FF' },
+        cobalt: { DEFAULT: '#2451FF', dark: '#1A3ED9', soft: '#EEF2FF', light: '#9DB2FF' },
         navy: '#0A1B4A',
+        cream: '#F5F0E6',
         mist: '#F4F6FA',
         line: '#E3E7EE',
         background: 'hsl(var(--background))',

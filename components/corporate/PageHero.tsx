@@ -1,8 +1,10 @@
 import Image from 'next/image';
 import type { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 import { Container, Eyebrow } from './ui';
 
-/** Page opener: title left, one line and actions right, optional wide photo below. */
+/** Page opener: title left, one line and actions right, optional wide photo below. Inner pages sit close
+ * under the header; `spacious` keeps the home page's extra air. */
 export default function PageHero({
   eyebrow,
   title,
@@ -11,6 +13,7 @@ export default function PageHero({
   image,
   imageAlt = '',
   imagePosition,
+  spacious,
 }: {
   eyebrow?: string;
   title: ReactNode;
@@ -19,11 +22,12 @@ export default function PageHero({
   image?: string;
   imageAlt?: string;
   imagePosition?: string;
+  spacious?: boolean;
 }) {
   return (
-    <section aria-labelledby="page-title" className="pb-8 pt-16 sm:pt-24 lg:pt-32">
+    <section aria-labelledby="page-title" className={cn('pb-8', spacious ? 'pt-16 sm:pt-24 lg:pt-32' : 'pt-10 sm:pt-12 lg:pt-16')}>
       <Container>
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end lg:gap-12">
+        <div className={cn('grid gap-8 lg:grid-cols-12 lg:gap-12', spacious ? 'lg:items-end' : 'lg:items-center')}>
           <div className="lg:col-span-7">
             {eyebrow && <Eyebrow className="mb-5">{eyebrow}</Eyebrow>}
             <h1

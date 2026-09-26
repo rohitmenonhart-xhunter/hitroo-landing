@@ -7,9 +7,18 @@ import { ChevronDown, Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Wordmark from './Wordmark';
 
+export interface HeaderMenu {
+  id: string;
+  label: string;
+  /** Rendered on the server and passed in, so no menu content ships as JS. */
+  panel: ReactNode;
+  /** Full-width panel with the page dimmed behind it; otherwise a dropdown under its button. */
+  wide?: boolean;
+  /** Path prefixes that make the item look active. */
+  match: string[];
+}
+
 const LINKS = [
-  { href: '/insights', label: 'Insights' },
-  { href: '/research', label: 'Research' },
   { href: '/support', label: 'Support' },
   { href: '/about', label: 'About' },
 ];
@@ -17,23 +26,28 @@ const LINKS = [
 const NAV_ITEM =
   'inline-flex h-10 items-center gap-1 rounded-md px-3 text-[15px] text-ink/80 transition-colors hover:text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-cobalt';
 
+const PANEL_IN = 'animate-in fade-in-0 slide-in-from-top-1 duration-200';
+
 /**
- * Sticky white header: a services mega menu on desktop, a full-height panel on mobile.
- * The menu contents are rendered on the server and passed in, so no content ships as JS.
+ * Sticky white header. Desktop: menus open on hover or click (Services as a full-width panel over a
+ * dimmed page, others as dropdowns); Escape, an outside click or navigating closes them.
+ * Mobile: a full-height panel with expandable sections.
  */
-export default function HeaderShell({ servicesMenu, mobileServices }: { servicesMenu: ReactNode; mobileServices: ReactNode }) {
+export default function HeaderShell({ menus, mobile: sections }: { menus: HeaderMenu[]; mobile: { id: string; label: string; content: ReactNode }[] }) {
   const [scrolled, setScrolled] = useState(false);
-  const [mega, setMega] = useState(false);
+  const [open, setOpen] = useState<string | null>(null);
   const [mobile, setMobile] = useState(false);
-  const [mobileSvc, setMobileSvc] = useState(false);
+  const [section, setSection] = useState<string | null>(null);
   const headerRef = useRef<HTMLElement>(null);
-  const megaBtnRef = useRef<HTMLButtonElement>(null);
+  const triggers = useRef<Record<string, HTMLButtonElement | null>>({});
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeTimer = useRef(0);
+  // The menu the mouse is over: clicking it then keeps it open instead of toggling it shut.
+  const hovered = useRef<string | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
-    setMega(false);
+    setOpen(null);
     setMobile(false);
   }, [pathname]);
 
@@ -45,12 +59,12 @@ export default function HeaderShell({ servicesMenu, mobileServices }: { services
   }, []);
 
   useEffect(() => {
-    if (!mega && !mobile) return;
+    if (!open && !mobile) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
-      if (mega) {
-        setMega(false);
-        megaBtnRef.current?.focus();
+      if (open) {
+        triggers.current[open]?.focus();
+        setOpen(null);
       }
       if (mobile) {
         setMobile(false);
@@ -58,7 +72,7 @@ export default function HeaderShell({ servicesMenu, mobileServices }: { services
       }
     };
     const onPointerDown = (e: PointerEvent) => {
-      if (headerRef.current && !headerRef.current.contains(e.target as Node)) setMega(false);
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) setOpen(null);
     };
     document.addEventListener('keydown', onKey);
     document.addEventListener('pointerdown', onPointerDown);
@@ -66,7 +80,7 @@ export default function HeaderShell({ servicesMenu, mobileServices }: { services
       document.removeEventListener('keydown', onKey);
       document.removeEventListener('pointerdown', onPointerDown);
     };
-  }, [mega, mobile]);
+  }, [open, mobile]);
 
   useEffect(() => {
     if (!mobile) return;
@@ -83,23 +97,34 @@ export default function HeaderShell({ servicesMenu, mobileServices }: { services
 
   useEffect(() => () => window.clearTimeout(closeTimer.current), []);
 
-  const hoverOpen = (e: ReactPointerEvent) => {
+  const cancelClose = () => window.clearTimeout(closeTimer.current);
+  const hoverOpen = (id: string) => (e: ReactPointerEvent) => {
     if (e.pointerType !== 'mouse') return;
-    window.clearTimeout(closeTimer.current);
-    setMega(true);
+    hovered.current = id;
+    cancelClose();
+    setOpen(id);
   };
   const hoverClose = (e: ReactPointerEvent) => {
     if (e.pointerType !== 'mouse') return;
-    window.clearTimeout(closeTimer.current);
-    closeTimer.current = window.setTimeout(() => setMega(false), 160);
+    cancelClose();
+    closeTimer.current = window.setTimeout(() => setOpen(null), 160);
   };
+  const leaveItem = (e: ReactPointerEvent) => {
+    if (e.pointerType === 'mouse') hovered.current = null;
+    hoverClose(e);
+  };
+  const hoverKeep = (e: ReactPointerEvent) => {
+    if (e.pointerType === 'mouse') cancelClose();
+  };
+
+  const wideOpen = menus.some((m) => m.wide && m.id === open);
 
   return (
     <header
       ref={headerRef}
       className={cn(
         'sticky top-0 z-50 bg-white transition-shadow duration-200',
-        (scrolled || mega || mobile) && 'shadow-[0_10px_30px_-18px_rgba(10,22,51,0.22)]'
+        (scrolled || open || mobile) && 'shadow-[0_10px_30px_-18px_rgba(10,22,51,0.22)]'
       )}
     >
       <a
@@ -115,19 +140,32 @@ export default function HeaderShell({ servicesMenu, mobileServices }: { services
 
         <nav aria-label="Primary" className="ml-10 hidden lg:block xl:ml-14">
           <ul className="flex items-center gap-1">
-            <li onPointerEnter={hoverOpen} onPointerLeave={hoverClose}>
-              <button
-                ref={megaBtnRef}
-                type="button"
-                className={cn(NAV_ITEM, (mega || pathname.startsWith('/services')) && 'text-ink')}
-                aria-expanded={mega}
-                aria-controls="services-menu"
-                onClick={() => setMega((v) => !v)}
-              >
-                Services
-                <ChevronDown aria-hidden="true" className={cn('h-4 w-4 transition-transform duration-200', mega && 'rotate-180')} />
-              </button>
-            </li>
+            {menus.map((m) => {
+              const isOpen = open === m.id;
+              const active = m.match.some((p) => pathname.startsWith(p));
+              return (
+                <li key={m.id} className={m.wide ? undefined : 'relative'} onPointerEnter={hoverOpen(m.id)} onPointerLeave={leaveItem}>
+                  <button
+                    ref={(el) => {
+                      triggers.current[m.id] = el;
+                    }}
+                    type="button"
+                    className={cn(NAV_ITEM, (isOpen || active) && 'text-ink')}
+                    aria-expanded={isOpen}
+                    aria-controls={`${m.id}-menu`}
+                    onClick={() => setOpen((v) => (v === m.id && hovered.current !== m.id ? null : m.id))}
+                  >
+                    {m.label}
+                    <ChevronDown aria-hidden="true" className={cn('h-4 w-4 transition-transform duration-200', isOpen && 'rotate-180')} />
+                  </button>
+                  {!m.wide && (
+                    <div id={`${m.id}-menu`} className={cn('absolute left-0 top-full pt-4', isOpen ? 'block' : 'hidden')}>
+                      <div className={cn('rounded-2xl bg-white p-4 shadow-[0_24px_60px_-20px_rgba(10,22,51,0.3)] ring-1 ring-ink/5', PANEL_IN)}>{m.panel}</div>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
             {LINKS.map((l) => {
               const active = pathname.startsWith(l.href);
               return (
@@ -162,41 +200,51 @@ export default function HeaderShell({ servicesMenu, mobileServices }: { services
         </div>
       </div>
 
-      {/* Desktop services menu */}
+      {/* Full-width desktop panels */}
+      {menus
+        .filter((m) => m.wide)
+        .map((m) => (
+          <div
+            key={m.id}
+            id={`${m.id}-menu`}
+            onPointerEnter={hoverKeep}
+            onPointerLeave={hoverClose}
+            className={cn(
+              'absolute inset-x-0 top-full bg-white shadow-[0_28px_48px_-28px_rgba(10,22,51,0.28)]',
+              open === m.id ? cn('hidden lg:block', PANEL_IN) : 'hidden'
+            )}
+          >
+            <div className="mx-auto w-full max-w-[1240px] px-10 pb-8 pt-7">{m.panel}</div>
+          </div>
+        ))}
+      {/* Dims the page under a full-width panel; a click closes it. */}
       <div
-        id="services-menu"
-        onPointerEnter={hoverOpen}
-        onPointerLeave={hoverClose}
-        className={cn(
-          'absolute inset-x-0 top-full bg-white shadow-[0_28px_48px_-28px_rgba(10,22,51,0.28)]',
-          mega ? 'hidden animate-in fade-in-0 slide-in-from-top-1 duration-200 lg:block' : 'hidden'
-        )}
-      >
-        <div className="mx-auto w-full max-w-[1240px] px-10 py-6">{servicesMenu}</div>
-      </div>
+        aria-hidden="true"
+        onClick={() => setOpen(null)}
+        className={cn('fixed inset-x-0 bottom-0 top-[72px] -z-10 bg-ink/25', wideOpen ? 'hidden animate-in fade-in-0 duration-200 lg:block' : 'hidden')}
+      />
 
       {/* Mobile menu */}
-      <div
-        id="mobile-menu"
-        className={cn('fixed inset-x-0 bottom-0 top-[72px] overflow-y-auto bg-white lg:hidden', mobile ? 'block' : 'hidden')}
-      >
+      <div id="mobile-menu" className={cn('fixed inset-x-0 bottom-0 top-[72px] overflow-y-auto bg-white lg:hidden', mobile ? 'block' : 'hidden')}>
         <nav aria-label="Mobile" className="mx-auto w-full max-w-[1240px] px-5 pb-10 sm:px-8">
           <ul>
-            <li>
-              <button
-                type="button"
-                className="flex w-full items-center justify-between py-4 text-left text-[18px] text-ink"
-                aria-expanded={mobileSvc}
-                aria-controls="mobile-services"
-                onClick={() => setMobileSvc((v) => !v)}
-              >
-                Services
-                <ChevronDown aria-hidden="true" className={cn('h-5 w-5 transition-transform duration-200', mobileSvc && 'rotate-180')} />
-              </button>
-              <div id="mobile-services" className={mobileSvc ? 'block' : 'hidden'}>
-                {mobileServices}
-              </div>
-            </li>
+            {sections.map((s) => (
+              <li key={s.id}>
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between py-4 text-left text-[18px] text-ink"
+                  aria-expanded={section === s.id}
+                  aria-controls={`mobile-${s.id}`}
+                  onClick={() => setSection((v) => (v === s.id ? null : s.id))}
+                >
+                  {s.label}
+                  <ChevronDown aria-hidden="true" className={cn('h-5 w-5 transition-transform duration-200', section === s.id && 'rotate-180')} />
+                </button>
+                <div id={`mobile-${s.id}`} className={section === s.id ? 'block' : 'hidden'}>
+                  {s.content}
+                </div>
+              </li>
+            ))}
             {LINKS.map((l) => (
               <li key={l.href}>
                 <Link href={l.href} className="block py-4 text-[18px] text-ink">
@@ -205,10 +253,7 @@ export default function HeaderShell({ servicesMenu, mobileServices }: { services
               </li>
             ))}
           </ul>
-          <Link
-            href="/contact"
-            className="mt-8 flex h-12 items-center justify-center rounded-full bg-cobalt text-[15px] font-medium text-white hover:bg-cobalt-dark"
-          >
+          <Link href="/contact" className="mt-8 flex h-12 items-center justify-center rounded-full bg-cobalt text-[15px] font-medium text-white hover:bg-cobalt-dark">
             Contact us
           </Link>
         </nav>

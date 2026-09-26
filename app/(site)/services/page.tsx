@@ -1,11 +1,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import CtaBand from '@/components/corporate/CtaBand';
+import FaqList from '@/components/corporate/FaqList';
 import PageHero from '@/components/corporate/PageHero';
-import { Button, Section } from '@/components/corporate/ui';
-import { services } from '@/lib/site-data';
+import { Button, Section, SectionHeader } from '@/components/corporate/ui';
+import { generalFaq } from '@/lib/faq';
+import { COMPANY, services } from '@/lib/site-data';
 import JsonLd from '@/components/seo/JsonLd';
-import { abs, breadcrumbLd, pageMetadata, webPageLd } from '@/lib/seo';
+import { abs, breadcrumbLd, faqLd, pageMetadata, webPageLd } from '@/lib/seo';
+
+const FAQ = generalFaq(COMPANY.email, 'www.hitroo.com/contact');
 
 export const metadata = pageMetadata({
   title: 'Services — software, apps, automation and AI',
@@ -27,6 +31,7 @@ export default function ServicesPage() {
         }}
       />
       <JsonLd data={breadcrumbLd([{ name: 'Services', path: '/services' }])} />
+      <JsonLd data={faqLd(FAQ)} />
       <PageHero
         eyebrow="Services"
         title="What we build."
@@ -57,6 +62,13 @@ export default function ServicesPage() {
             </li>
           ))}
         </ul>
+      </Section>
+
+      <Section labelledBy="faq-title">
+        <SectionHeader id="faq-title" title="Questions" />
+        <div className="mt-10 lg:mt-14">
+          <FaqList items={FAQ} />
+        </div>
       </Section>
 
       <CtaBand />

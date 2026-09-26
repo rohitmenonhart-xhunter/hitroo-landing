@@ -6,10 +6,10 @@ import { rateLimited } from '@/lib/rate-limit';
 import { getClientIp, readLimitedJson } from '@/lib/request-security';
 
 // Pages that list posts, plus the discovery files (which also refresh on their own every 10 minutes).
-const ALWAYS = ['/insights', '/articles', '/blog', '/sitemap.xml', '/llms.txt'];
+const ALWAYS = ['/insights', '/articles', '/blog', '/news', '/sitemap.xml', '/llms.txt'];
 
 const schema = z
-  .object({ paths: z.array(z.string().regex(/^\/(articles|blog)\/[a-z0-9]+(-[a-z0-9]+)*$/)).max(10).optional().default([]) })
+  .object({ paths: z.array(z.string().regex(/^\/(articles|blog|news)\/[a-z0-9]+(-[a-z0-9]+)*$/)).max(10).optional().default([]) })
   .strict();
 
 const reply = (body: object, status = 200) => NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } });

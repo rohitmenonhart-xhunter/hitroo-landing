@@ -12,6 +12,45 @@ Inside a modern, spotless automated fulfilment centre: two white-and-grey indust
 ## need-ai
 A modern data centre aisle seen straight down its centre: two rows of sleek matte-black server racks with small white status lights and neatly routed cables, clean white raised-floor tiles and a white ceiling with soft, even light, receding in calm one-point perspective. Cool, neutral and precise; bright, not dark, and not blue-tinted.
 
+# Cinematic story set (home story cards) — Codex briefs, 2026-09-26
+Full-bleed backgrounds for `StoryCarousel`; the text sits on a navy shade on the left, so each subject is in the right half. The first set (a watch movement, a laptop at night, a lab bench) didn't make sense for the stories; these are literal instead of metaphors. Two takes each; the "b" takes were used.
+
+Shared style: Style: a cinematic still photograph, like a frame from a premium brand film, shot on a full-frame cinema camera with a 40mm lens at T2 and shallow depth of field. Photorealistic and believable, not CGI, not a 3D render, not an illustration. Moody but clean: deep navy-blue shadows and soft cool ambient light with a few warm practical lights; subtle film grain; rich contrast without crushed blacks; modern, tidy and premium, no clutter. No people, no faces, no hands. No readable text, letters, numbers or logos anywhere; screens show soft, out-of-focus interfaces. No neon, no sci-fi holograms, no lens-flare streaks, no glowing particles. Wide landscape 1536x1024 composed for a 21:9 crop through the middle: the subject sits in the right half of the frame; the left 45% is dark, calm negative space where text will be overlaid.
+
+## story-business (Our story: "Built with care. Built to last.")
+A modern distribution warehouse at night, after hours: tall shelving with neat boxes recedes into deep blue shadow; in the right half of the frame, a tidy packing station under a single warm work lamp, with a rugged tablet on a stand showing a clean orders app (soft, out of focus), a label printer and a few sealed parcels. The software a business runs on, quietly working.
+
+## story-ai (Our view on AI: "AI makes us faster. We make it right.")
+A software engineer's workstation at night in a dark, modern office: in the right half of the frame, a large monitor shows code on the left and a narrow AI-assistant chat panel on the right (soft, out of focus, nothing readable), with a keyboard and a closed notebook lit by the cool glow of the screen and a small warm desk lamp; city lights as soft bokeh through the window behind.
+
+## story-research (Research: "Hard problems in. Real products out.")
+Replaced the same day: the first take (a camera rig over a part, all cool light) looked rendered next to the other two. Used take (robot "a", with the realism line "It must look like a real photograph of a real working lab: real materials, believable scale, slight everyday imperfection; nothing plastic, nothing too perfect."):
+An applied-AI research lab at night: in the right half of the frame, a compact white collaborative robot arm with a small camera on its wrist is lifting a machined aluminium part from a tray on a lab bench, caught mid-motion; a warm desk lamp at the edge of the bench and a cool overhead work light; two monitors behind show soft, out-of-focus camera feeds; the rest of the lab falls away into deep blue shadow.
+
+# Icon set (menus, service grid) — Codex, 2026-09-26
+Drawn as sheets on a transparent background and cut apart into 256 px PNGs in `public/icons/`. Style (sheet B, chosen): "refined line-and-fill duotone icons: confident 3px navy outlines with rounded caps and joins, filled with cobalt and pale periwinkle areas, like the product icons on an enterprise software website." Colours: only cobalt #2451FF and navy #0A1B4A with pale periwinkle #D6DEFF as the single tint; no shadows, gradients, 3D or glow. New icons: attach an existing sheet (or a few icons on white) as the reference image and ask for "exactly the same style". Newsroom and Brand kit were made that way: "(1) news: a folded newspaper with a headline bar and a small photo block, and a small megaphone at its corner. (2) brand kit: a colour palette card with three round swatches beside a pen nib."
+
+# Process photo set (home "Fast, by design") — Codex briefs, 2026-09-26
+One photo per delivery step, shown as the six photo panels of the steps (`components/corporate/ProcessAccordion.tsx`; the open panel crops to about 6:5, folded strips show a thin slice). Same shared style as the Professional photo set above, with "Landscape 1536x1024, subject centred so it still reads well when cropped to 5:4", plus this realism line for the second takes: "It must be indistinguishable from a real photograph taken on an ordinary working day: natural, slightly imperfect arrangement of objects, real materials, real light falloff; nothing too symmetrical, nothing too perfect." Rejected takes: a perfectly gridded sticky-note wall and a wall of dashboards in an operations room (both read as generated).
+
+## process-discover
+Close, angled view along a glass wall in a bright meeting room, used for a discovery workshop: rows of blank square sticky notes in white and pale blue, placed by hand with slightly uneven gaps and a few at small angles, a strip of blue masking tape, and a hand-drawn marker arrow leading between two groups; the nearest notes in crisp focus, the rest of the wall falling off into soft focus. A light-oak table edge with a black marker lying on it in the foreground. Soft daylight.
+
+## process-design
+A product designer's desk in a bright studio: a large monitor shows a design tool canvas with many small app screens arranged in rows, soft and slightly out of focus; in the foreground in crisp focus, a tablet with a stylus showing a rough wireframe sketch and a few printed phone-screen sketches with pencil marks, loosely overlapping on a light-oak desk. Soft daylight from a window at the side.
+
+## process-build
+A software engineer's workstation in a bright modern office. Two large thin monitors on slim arms, both showing code in a dark editor theme: rows of small coloured code lines, too soft and out of focus to read. A low-profile keyboard, a mouse and a closed notebook on a clean light-oak desk; a window with soft daylight and a softly blurred city behind. Calm, precise and tidy.
+
+## process-test
+A clean device-testing lab. On a white bench, a neat row of smartphones and tablets stand upright in simple matching holders, every screen lit and showing the same clean app screen (soft, out of focus, nothing readable), cables routed neatly out of sight behind. A white wall with soft daylight; shallow depth of field with the nearest devices in crisp focus. Precise, orderly and calm.
+
+## process-launch
+A modern clinic reception desk at opening time, no people: a slim tablet on a swivel stand shows a clean check-in app (soft, out of focus, nothing readable), beside it a small card terminal and a vase with a single green stem; a light-oak counter, white walls, soft daylight; the waiting area behind softly blurred. Calm, bright and welcoming: software live in a real business.
+
+## process-support
+A tidy customer-support workstation by a window. A slim black headset rests on a light-oak desk beside an open laptop whose screen shows a soft, out-of-focus list of support conversations; a phone lying face down, a white coffee cup and a small green plant. Soft morning daylight; calm and welcoming.
+
 # Realistic photo set (business-first home page) — Codex briefs
 Shared style: Style: a photorealistic, candid documentary photograph of a real place, as if taken on a full-frame camera with a 35mm lens at f/2.8 using only the available light. True-to-life colours with neutral white balance and no colour grading, realistic materials and textures with small everyday imperfections (scuffs, dust, worn edges, cable clutter, uneven light), subtle sensor grain, natural vignetting and realistic depth of field, slightly off-centre unposed composition. It must look like an ordinary unedited photo taken at a real business in India, not a 3D render, not an illustration and not a glossy stock photo: no cinematic lighting, no neon, no lens flare, no blue colour cast. No people, no faces, no hands. No readable text, letters, numbers or logos anywhere; screens, labels and signs are out of focus or blank. Landscape 1536x1024.
 

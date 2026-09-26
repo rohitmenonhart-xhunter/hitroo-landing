@@ -32,7 +32,7 @@ export function pageMetadata({
     // Only override keywords when given, so every page renders the same set of meta tags
     // (Next 13.5 reuses head tags by position during client navigation).
     ...(keywords ? { keywords } : {}),
-    alternates: { canonical: path, languages: { en: path, 'x-default': path } },
+    alternates: { canonical: path, languages: { en: path, 'x-default': path }, types: { 'application/rss+xml': [{ url: '/feed.xml', title: 'HITROO news, articles and blog' }] } },
     openGraph: { type, url: path, title, description, siteName: 'HITROO', locale: 'en_US', images },
     twitter: { card: 'summary_large_image', title, description, images: images.map((i) => i.url) },
   };
@@ -52,7 +52,7 @@ export const organizationLd = () => ({
   email: COMPANY.email,
   telephone: '+91-7550000805',
   foundingDate: '2024',
-  founder: [{ '@type': 'Person', name: 'Rohit' }],
+  founder: [{ '@type': 'Person', name: 'Rohit', jobTitle: 'Founder', image: abs('/people/rohit.webp'), worksFor: { '@id': ORG_ID } }],
   address: { '@type': 'PostalAddress', addressLocality: 'Chennai', addressRegion: 'Tamil Nadu', addressCountry: 'IN' },
   areaServed: 'Worldwide',
   contactPoint: [
@@ -72,7 +72,7 @@ export const organizationLd = () => ({
       availableLanguage: ['English'],
     },
   ],
-  sameAs: ['https://linkedin.com/company/hitroo', 'https://twitter.com/hitroo', 'https://github.com/hitroo'],
+  sameAs: [COMPANY.linkedin],
   knowsAbout: [
     'Custom software development',
     'Mobile app development',
@@ -151,7 +151,7 @@ export const faqLd = (qas: { q: string; a: string }[]) => ({
 });
 
 export const articleLd = (p: {
-  kind: 'article' | 'blog';
+  kind: 'article' | 'blog' | 'news';
   title: string;
   description: string;
   path: string;
@@ -160,9 +160,10 @@ export const articleLd = (p: {
   modified: Date;
   author: string;
   category?: string | null;
+  words?: number;
 }) => ({
   '@context': 'https://schema.org',
-  '@type': p.kind === 'blog' ? 'BlogPosting' : 'Article',
+  '@type': { article: 'Article', blog: 'BlogPosting', news: 'NewsArticle' }[p.kind],
   headline: p.title,
   description: p.description,
   url: abs(p.path),
@@ -173,5 +174,8 @@ export const articleLd = (p: {
   author: p.author === 'HITROO' ? { '@id': ORG_ID, '@type': 'Organization', name: 'HITROO' } : { '@type': 'Person', name: p.author },
   publisher: { '@id': ORG_ID },
   articleSection: p.category ?? undefined,
+  keywords: p.category ?? undefined,
+  wordCount: p.words,
+  isAccessibleForFree: true,
   inLanguage: 'en',
 });

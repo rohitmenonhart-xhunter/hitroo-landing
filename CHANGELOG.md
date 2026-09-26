@@ -2,6 +2,37 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
+## 2026-09-26 — Newsroom, brand kit, policy pages, SEO and a richer home
+
+### SEO and answer engines
+- FAQPage data everywhere it's honest: five questions on each service page (built from that service's own facts, shown as an open-in-place list), five on `/services`, and on any post with a `## Questions` section.
+- RSS feed at `/feed.xml` (all posts), linked from every page's head. Article data now carries word count and topic; the Organization's founder has a name, role and photo.
+- New posts: a trending blog post (Supabase data exposures and the AI-agent breach at Hugging Face, with a security checklist), an article on modernizing legacy software (from this week's Hacker News thread), the first news item (the new website), and five more blog posts scheduled daily at 09:00 IST through 1 October.
+
+### Home
+- A word from Rohit, the founder: the quote large, signed with a small round photo (`public/people/rohit.webp`).
+- The Research story card has a new photo (a robot arm with a wrist camera in a lab at night).
+
+### Added
+- **Newsroom** at `/news` and `/news/[slug]`: company news written in the admin (a third post kind, `news`), a press contact, the standard "About HITROO" paragraph and a link to the brand kit. Each news item ends with that paragraph and the press email. Old `/news/<numeric id>` links still redirect to `/blog`.
+- **Brand kit** at `/brand`: logo and mark downloads (SVG with the name as outlines, PNG, and a ZIP with a notes file), clear space and minimum size, colours with copyable hex and RGB, type, and don'ts.
+- **Policy pages**: `/terms`, `/cookies` (lists all three stored items, including the consented session ID), `/accessibility`, `/security` with `/.well-known/security.txt`, and an HTML `/site-map`. All sit in the footer's legal row and the sitemap.
+- **Careers**: a note on fake job offers.
+- Menus: a Resources menu with Learn, Company (Newsroom, Brand kit) and Support; a Services mega menu grouped Build / AI / Run with a featured story. All menu and service icons are a Codex duotone set (`public/icons/`).
+- Home: story cards (Our story, Our view on AI, Research) as cinematic full-bleed photos, and "Fast, by design" as six photo panels (`process-*.webp`).
+
+### Changed
+- The footer's navy strip with a reversed logo is gone; the footer ends with the © line and the legal links, with the blue-and-black logo at its top. The footer lists every company and policy page, and LinkedIn is the only social link.
+- Inner pages sit closer under the header (their opener lost about 64 px of top space and no longer drops when its right column is taller); the home page keeps its spacing.
+- One brand blue across menus and icons (no multi-colour groups).
+- `/privacy` now names the consented session ID and links to the cookie policy (last updated 26 September 2026).
+
+### Database
+- Migration `004_news_posts.sql` widens `web.posts.kind` to `article`, `blog` and `news`. Apply it before the admin's News option is used.
+
+### Admin (hitroo_admin_page)
+- Posts can be News (form, list, validation); site paths, the refresh call and read analytics know `/news/…`.
+
 ## 2026-09-26 — Professional photos for "Why your business needs it"
 
 ### Changed

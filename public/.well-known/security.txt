@@ -1,0 +1,5 @@
+Contact: mailto:info@hitroo.com
+Expires: 2027-09-26T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://www.hitroo.com/.well-known/security.txt
+Policy: https://www.hitroo.com/security

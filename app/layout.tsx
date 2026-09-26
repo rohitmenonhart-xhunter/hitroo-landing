@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import JsonLd from '@/components/seo/JsonLd';
-import { inter } from '@/components/corporate/fonts';
+import { inter, serif } from '@/components/corporate/fonts';
 import { OG_IMAGE, SITE_URL, organizationLd, websiteLd } from '@/lib/seo';
 
 const DESCRIPTION =
@@ -70,8 +70,6 @@ export const metadata: Metadata = {
     title: 'HITROO — Custom Software, Apps, Automation & AI',
     description: DESCRIPTION,
     images: [OG_IMAGE.url],
-    creator: '@hitroo',
-    site: '@hitroo',
   },
   // Canonical URLs are set per page (never here: a root canonical would be inherited by every page).
   verification: {
@@ -83,7 +81,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${serif.variable}`} suppressHydrationWarning>
       <head>
         <JsonLd data={organizationLd()} />
         <JsonLd data={websiteLd()} />

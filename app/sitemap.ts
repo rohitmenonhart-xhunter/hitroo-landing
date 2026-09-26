@@ -21,6 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     page('/insights', 0.8, 'daily'),
     page('/articles', 0.7, 'daily'),
     page('/blog', 0.7, 'daily'),
+    page('/news', 0.7, 'daily'),
     ...posts.map((p) => ({ url: abs(postUrl(p)), lastModified: new Date(p.updated_at), changeFrequency: 'monthly' as const, priority: 0.7 })),
     page('/ai-perspective', 0.7),
     page('/support', 0.7),
@@ -28,6 +29,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     page('/research', 0.6),
     page('/contact', 0.8),
     page('/careers', 0.5),
+    page('/brand', 0.4),
+    page('/site-map', 0.3),
+    page('/security', 0.3, 'yearly'),
+    page('/accessibility', 0.2, 'yearly'),
     page('/privacy', 0.2, 'yearly'),
+    page('/cookies', 0.2, 'yearly'),
+    page('/terms', 0.2, 'yearly'),
   ];
 }

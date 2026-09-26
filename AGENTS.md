@@ -79,6 +79,7 @@ Single source of truth: `services` (title, short `label`, `short`, `pain`, icon,
 - `track` — first-party page views, clicks and engagement (visible time, scroll/read depth); bot filter, rate limit, no IPs; a random in-memory visit ID groups one visit's pages; visitor/session IDs only with consent.
 - `consent` — records cookie decisions.
 - `revalidate` — refreshes post listings and pages; `x-revalidate-secret` header (constant-time compare, failed-attempt rate limit). Called by the admin app.
+- `indexnow` — Vercel Cron, daily 09:10 IST (`vercel.json`): submits posts that went live in the last day (scheduled posts appear at 09:00) to IndexNow. Needs `CRON_SECRET` (Vercel sends it as a bearer token); the value is in `_secrets/hitroo-web.env`.
 
 ### UI conventions
 - Import aliases (tsconfig `@/*` → repo root): `@/components`, `@/components/ui`, `@/lib/utils`, `@/hooks`.

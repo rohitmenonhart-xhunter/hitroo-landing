@@ -20,7 +20,7 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - `/insights` (latest articles and blog posts), `/articles`, `/blog`, `/articles/[slug]`, `/blog/[slug]`, `/news` (newsroom: news, press contact, About HITROO, brand kit link), `/news/[slug]` — content from `web.posts`, managed in the admin app. Old `/news/<numeric id>` links still redirect to `/blog`.
 - `/about`, `/research`, `/support`, `/careers` (role picker + application), `/contact` (details + form), `/ai-perspective` ("Is AI a threat to HITROO?"), `/brand` (brand kit: logo and mark downloads, space and size, colours, type, don'ts), `/privacy`, `/cookies`, `/terms`, `/accessibility`, `/security` (+ `/.well-known/security.txt`), `/site-map`, `app/not-found.tsx`.
 - **Admin:** a separate app, `../hitroo_admin_page`, live at https://admin.hitroo.com — analytics (visits, clicks, reads, world map, sources, audience, hours), leads and applications (status, notes, search, résumés), posts. One owner password, kept in `_secrets/hitroo-admin.env`.
-- API: `/api/lead`, `/api/careers`, `/api/track`, `/api/consent`, `/api/revalidate` (for the admin).
+- API: `/api/lead`, `/api/careers`, `/api/track`, `/api/consent`, `/api/revalidate` (for the admin), `/api/indexnow` (Vercel Cron, daily 09:10 IST: pushes the day's new posts to IndexNow).
 - Discovery: `/sitemap.xml`, `/robots.txt`, `/llms.txt`, `/llms-full.txt`, `/feed.xml` (RSS of all posts, linked from every page), IndexNow key file in `public/`.
 - Questions (FAQPage data): every service page and `/services` show short questions built from site facts; posts get FAQ data from their `## Questions` section.
 

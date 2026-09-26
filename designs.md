@@ -38,7 +38,8 @@ Inter (`font-corp`). Headlines `font-light`, tight tracking (-0.03 to -0.035em),
 - `StoryCarousel` — full-bleed cinematic photo cards on navy with a serif (Newsreader) headline; arrows and dots, no autoplay.
 - `ProcessAccordion` — the six delivery steps as photo panels in a row; the open one is wide with number, name and line on a navy shade, the others fold to tinted strips with upright names.
 - `LegalSections` — policy pages: short titled sections in one column.
-- `LeaderQuote` — a big light statement (last line cobalt when there are two) signed with name and role: a small round photo for HITROO's own people (About), the linked source for a public figure (home). Never a famous person's photo.
+- `FeaturedQuote` — a public figure's quote on a rounded ink card: black-and-white portrait left (square on phones), the words large in white, name, role and the linked source in cobalt-light; the photo credit sits under the card. Only freely licensed photos.
+- `LeaderQuote` — a big light statement (last line cobalt when there are two) signed with a small round photo, name and role, for HITROO's own people (About).
 - `FaqList` — questions that open in place, cobalt plus that turns into a cross; no lines.
 - `ContactBlock` / `LeadForm`, `CareersForm` — forms with the API's anti-spam fields.
 - Buttons: cobalt pill with arrow (primary); `ArrowLink` for secondary actions (no outlined buttons). Step numbers are large cobalt numerals, not circles.

@@ -1,3 +1,4 @@
+import type { FeaturedQuoteData } from '@/components/corporate/FeaturedQuote';
 import type { Leader } from '@/components/corporate/LeaderQuote';
 /** Service groups: the columns of the Services menu. */
 export type ServiceGroup = 'build' | 'ai' | 'run';
@@ -270,15 +271,24 @@ export const PROCESS_STEPS = [
 export const PROCESS = PROCESS_STEPS.map((s) => s.name);
 
 /**
- * The home page's quote: a public figure's exact words with the source linked, and no photo (a famous
- * face would read as an endorsement they never gave, and press photos are copyrighted). Checked against
- * the original essay on 2026-09-26.
+ * The home page's quote: a public figure's exact words, checked against the original (Google's own post,
+ * 22 April 2026), with a freely licensed photo whose credit is always shown. Exact sentence: "Through this
+ * rapid growth, we've seen how every employee in every organization can become a builder."
  */
-export const HOME_QUOTE: Leader = {
-  lines: ['Software is eating the world.'],
-  name: 'Marc Andreessen',
-  role: 'Co-founder, Andreessen Horowitz',
-  source: { label: 'The Wall Street Journal, 2011', href: 'https://a16z.com/why-software-is-eating-the-world/' },
+export const HOME_QUOTE: FeaturedQuoteData = {
+  quote: 'We’ve seen how every employee in every organization can become a builder.',
+  name: 'Sundar Pichai',
+  role: 'CEO, Google and Alphabet',
+  source: { label: 'Google Cloud Next, April 2026', href: 'https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/cloud-next-2026-sundar-pichai/' },
+  photo: {
+    src: '/people/sundar-pichai.webp',
+    alt: 'Sundar Pichai, CEO of Google and Alphabet',
+    credit: 'Lukasz Kobus / European Commission',
+    creditHref: 'https://commons.wikimedia.org/wiki/File:Sundar_Pichai_-_2023_(cropped).jpg',
+    license: 'CC BY 4.0',
+    licenseHref: 'https://creativecommons.org/licenses/by/4.0/',
+    changes: 'cropped, black and white',
+  },
 };
 
 /** The founder's own words and photo, on the About page (chosen by Rohit on 2026-09-26). */

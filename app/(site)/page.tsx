@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import ContactBlock from '@/components/corporate/ContactBlock';
 import PageHero from '@/components/corporate/PageHero';
-import LeaderQuote from '@/components/corporate/LeaderQuote';
+import FeaturedQuote from '@/components/corporate/FeaturedQuote';
 import ProcessAccordion from '@/components/corporate/ProcessAccordion';
 import ServiceGrid from '@/components/corporate/ServiceGrid';
 import StoryCarousel from '@/components/corporate/StoryCarousel';
@@ -88,7 +88,7 @@ export default function Home() {
         </div>
       </Section>
 
-      <LeaderQuote {...HOME_QUOTE} />
+      <FeaturedQuote {...HOME_QUOTE} />
 
       <Section labelledBy="support-title">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">

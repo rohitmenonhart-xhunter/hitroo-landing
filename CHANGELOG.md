@@ -5,7 +5,7 @@ All notable changes to the HITROO website and its infrastructure. Newest first. 
 ## 2026-09-26 — Home quote; founder on About
 
 ### Changed
-- The home page now quotes Marc Andreessen, "Software is eating the world." (The Wall Street Journal, 2011), with the source linked and no photo.
+- The home page quote is Sundar Pichai at Google Cloud Next (22 April 2026): "We’ve seen how every employee in every organization can become a builder." It sits on an ink card with his portrait (Wikimedia Commons, CC BY 4.0, credit shown) and links to Google's post. It replaced a first try with Marc Andreessen's 2011 "Software is eating the world.", which the owner found dated.
 - Rohit's quote and small photo moved to the About page, after "What we believe".
 
 ### Decided

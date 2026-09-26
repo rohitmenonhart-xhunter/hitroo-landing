@@ -66,7 +66,7 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - Turn on Turnstile (a Cloudflare widget for hitroo.com, both keys on Vercel): the real bot gate; rate limits only blunt floods.
 - Remove the unused `@netlify/plugin-nextjs` dependency.
 - Enable continuous database backups (Tigris) or a scheduled `pg_dump`.
-- Publish regularly to `/blog` and `/articles` (the Blog is empty; Articles has one post).
+- Publish regularly to `/blog` and `/articles` (first blog post 2026-09-26; Articles is empty).
 - Real proof: 2–3 client stories, logos (with permission) and a testimonial — add after "Why HITROO" once provided.
 - `/terms` page; legal review of `/privacy`.
 - `@supabase/supabase-js` is installed but unused.

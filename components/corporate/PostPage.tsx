@@ -51,13 +51,13 @@ export default async function PostPage({ kind, slug }: { kind: PostKind; slug: s
       />
       <JsonLd data={breadcrumbLd([{ name: 'Insights', path: '/insights' }, { name: SECTION[kind], path: POST_PATH[kind] }, { name: post.title, path }])} />
       <article>
-        <Container className="pb-8 pt-16 sm:pt-24 lg:pt-32">
+        <Container className="pb-8 pt-8 sm:pt-12 lg:pt-16">
           <div className="mx-auto max-w-3xl">
             <Link href={POST_PATH[kind]} className="inline-flex items-center gap-2 text-[14px] font-medium text-cobalt hover:text-cobalt-dark">
               <ArrowLeft aria-hidden="true" className="h-4 w-4" />
               {SECTION[kind]}
             </Link>
-            {post.category && <Eyebrow className="mt-10">{post.category}</Eyebrow>}
+            {post.category && <Eyebrow className="mt-8">{post.category}</Eyebrow>}
             <h1 className="mt-5 text-[38px] font-light leading-[1.08] tracking-[-0.035em] text-ink [text-wrap:balance] sm:text-[50px] lg:text-[58px]">{post.title}</h1>
             <p className="mt-6 text-[15px] text-slate-500">
               {[post.author, formatDate(post.published_at), `${readingMinutes(post.body)} min read`].join(' · ')}

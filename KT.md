@@ -37,10 +37,10 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - **Analytics:** first-party and privacy-first (no Google Analytics, no third-party cookies). A visit is one page load and the pages it navigates to; a reload starts a new visit.
 - **Admin as its own app:** only the owner uses it (one password, no accounts). The website's database role cannot read leads, résumés or analytics — if the public site were ever compromised, nobody's details could be read through it.
 - **Products removed** earlier (Capsona, Attyn, Belecure, Mockello, AI Marketing Agent) — don't reintroduce.
-- **Photos:** realistic Codex photos only (glossy 3D sets and staged "notebook diagram" shots looked fake).
+- **Photos:** realistic Codex photos only (glossy 3D sets and staged "notebook diagram" shots looked fake). The gritty documentary set then looked unprofessional, so new photos use the professional style line in `docs/art/photos-briefs.md` (2026-09-26).
 
 ## Assets
-- `public/photos/` — realistic WebP photos (hero, why-*, svc-*, audience, support, research, about, ai-view). Briefs: `docs/art/photos-briefs.md`.
+- `public/photos/` — realistic WebP photos (hero, need-* for "Why your business needs it", svc-* including svc-vision, audience, support, research, about, ai-view). Briefs: `docs/art/photos-briefs.md`.
 - `public/brand/` — logo SVGs; `public/favicon.svg` + `public/favicon/*` + `public/favicon.ico` — rings favicon set.
 - `public/og-image.png` — 1200×675 social card; `public/new_logo/logo_whitebg.png` — square logo for the Organization JSON-LD.
 

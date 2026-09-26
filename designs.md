@@ -9,7 +9,7 @@ A global enterprise software firm (think Capgemini, Cognizant, Zoho) — profess
 1. **White everywhere, no lines.** No tinted or dark section bands and no divider lines (between sections, list items or grid cells). Separate everything with generous whitespace; interior pages should feel spacious and complete.
 2. **Minimal words.** One-line ledes, two-line statements, short labels. Draft, then cut it in half again. No lists of reasons — one strong statement instead.
 3. **Business first.** Lead with the business problem and outcome; every block ends in one step forward (a link or button). Careers stay in the footer.
-4. **Real-looking photos.** Documentary-style photos of real Indian workplaces — never glossy, never 3D, never brand-colour graded. No people, no readable text.
+4. **Professional, real-looking photos.** Clean, bright, modern corporate photography that shows the outcome (a tidy office, automation, a data centre), like a global consultancy's site — never gritty or cluttered, never 3D or CGI, never brand-colour graded. No people, no readable text.
 5. **Honest claims only.** No invented clients, numbers or case studies.
 
 ## Tokens (tailwind.config.ts)
@@ -45,4 +45,4 @@ Two linked rings, cobalt and navy, rising 10° (`components/brand/Logo.tsx`). Al
 Almost none: colour and arrow nudges on hover, a gentle photo zoom on service cards. Respect `prefers-reduced-motion`.
 
 ## Imagery
-Codex-generated, 1536×1024, converted with `cwebp -q 82–84 -m 6 -sharp_yuv`. Briefs (including the shared realism style line) in `docs/art/photos-briefs.md` — reuse that style line for any new photo so the set stays consistent.
+Codex-generated at 1536×1024, converted to 1200×800 WebP with `cwebp -q 84 -m 6 -sharp_yuv -resize 1200 800`. Briefs are in `docs/art/photos-briefs.md`; reuse the "Professional photo set" style line for any new photo so the set stays consistent. Older photos (hero, support, audience, research, about) still use the documentary style.

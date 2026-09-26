@@ -2,6 +2,12 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
+## 2026-09-26 — Professional photos for "Why your business needs it"
+
+### Changed
+- The Software, Automation and AI photos on the home page are now clean, professional Codex photos (a bright office with the business app on a laptop and a monitor, robotic arms placing boxes on a conveyor, a data-centre aisle) instead of the gritty documentary set. Briefs and the new style line are in `docs/art/photos-briefs.md`.
+- The Vision Systems service keeps its factory-inspection photo, now in its own file (`svc-vision.webp`).
+
 ## 2026-09-26 — Form rate limits; AI chat route removed
 
 ### Security

@@ -1,16 +1,24 @@
+# Professional photo set (home "Why your business needs it") — Codex briefs, 2026-09-26
+The documentary set below looked unprofessional on the home page, so these three use a clean corporate style. Reuse this style line for new photos.
+
+Shared style: Style: a professional commercial photograph for the website of a global technology consultancy such as Accenture or Capgemini, shot by a corporate photographer on a full-frame camera with a 35mm lens at f/2.8 in natural light. Photorealistic: it must look like a real, high-end photograph, not a 3D render, not CGI, not an illustration. Clean, modern, premium and orderly: no clutter, no mess, no dirt, no wear. Soft, bright, even daylight with gentle natural shadows; true-to-life neutral colours (white, light grey, pale natural wood, glass, brushed steel) with at most a subtle hint of cool blue; crisp focus on the subject and a gentle natural background blur; calm, balanced composition with generous empty space. No people, no faces, no hands. No readable text, letters, numbers or logos anywhere; screens show soft, out-of-focus interfaces. No neon, no glowing holograms, no lens flare, no dramatic cinematic lighting, no heavy colour grading, no vignette. Landscape 1536x1024, subject centred so it still reads well when cropped to 4:3.
+
+## need-software
+A modern, bright open-plan office in the morning. On a clean light-oak desk, a slim silver laptop and a large thin monitor stand side by side, both showing the same clean business application (soft, out-of-focus panels and simple charts). A wireless keyboard, a mouse, a white ceramic coffee cup and a small green plant. Behind: a white wall and floor-to-ceiling windows with soft daylight and a softly blurred city. The desk and devices are the focus; everything is tidy.
+
+## need-automation
+Inside a modern, spotless automated fulfilment centre: two white-and-grey industrial robotic arms beside a motorised roller conveyor carrying neat, identical plain cardboard boxes; tidy steel racking and more conveyors softly out of focus behind; bright, even daylight from high skylights; a polished light-grey concrete floor with clean, muted floor markings. Calm, precise and orderly.
+
+## need-ai
+A modern data centre aisle seen straight down its centre: two rows of sleek matte-black server racks with small white status lights and neatly routed cables, clean white raised-floor tiles and a white ceiling with soft, even light, receding in calm one-point perspective. Cool, neutral and precise; bright, not dark, and not blue-tinted.
+
 # Realistic photo set (business-first home page) — Codex briefs
 Shared style: Style: a photorealistic, candid documentary photograph of a real place, as if taken on a full-frame camera with a 35mm lens at f/2.8 using only the available light. True-to-life colours with neutral white balance and no colour grading, realistic materials and textures with small everyday imperfections (scuffs, dust, worn edges, cable clutter, uneven light), subtle sensor grain, natural vignetting and realistic depth of field, slightly off-centre unposed composition. It must look like an ordinary unedited photo taken at a real business in India, not a 3D render, not an illustration and not a glossy stock photo: no cinematic lighting, no neon, no lens flare, no blue colour cast. No people, no faces, no hands. No readable text, letters, numbers or logos anywhere; screens, labels and signs are out of focus or blank. Landscape 1536x1024.
 
 ## hero
 A company meeting room right after a planning meeting: a long wooden table with two open laptops, printed reports, a notebook, a pen, coffee cups and a water bottle; a wall-mounted TV at the far end shows a softly out-of-focus sales dashboard; glass wall, office plants and window light behind; chairs pushed back unevenly.
 
-## why-software
-The cluttered back-office desk of a small distribution business: tall stacks of printed spreadsheets and invoices, ring binders with worn spines, sticky notes stuck around an older desktop monitor, a calculator, a rubber stamp and ink pad, a landline phone and a steel tumbler of tea; late-afternoon light through half-open blinds.
-
-## why-automation
-Inside a working mid-sized warehouse: a long aisle of metal shelving with cardboard boxes and plastic bins carrying barcode labels, a handheld barcode scanner and a clipboard with paper pick lists on a trolley in the foreground, a pallet jack and stretch-wrapped pallets further back, mixed daylight and industrial LED light, a scuffed concrete floor.
-
-## why-ai
+## svc-vision (was why-ai on the home page)
 A factory quality-inspection station on a production line: an industrial machine-vision camera on a metal arm above a running conveyor belt carrying machined aluminium parts, a ring light around the lens, a small industrial monitor beside the line showing an out-of-focus camera feed, yellow safety floor markings, realistic factory lighting and some oil stains.
 
 ## companies

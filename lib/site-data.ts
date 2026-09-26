@@ -270,10 +270,19 @@ export const PROCESS_STEPS = [
 export const PROCESS = PROCESS_STEPS.map((s) => s.name);
 
 /**
- * The home page's word from HITROO's leadership: a real person's own photo, name, role and words
- * (chosen by Rohit on 2026-09-26) — never a generated face or an invented quote. `null` hides it.
+ * The home page's quote: a public figure's exact words with the source linked, and no photo (a famous
+ * face would read as an endorsement they never gave, and press photos are copyrighted). Checked against
+ * the original essay on 2026-09-26.
  */
-export const LEADER: Leader | null = {
+export const HOME_QUOTE: Leader = {
+  lines: ['Software is eating the world.'],
+  name: 'Marc Andreessen',
+  role: 'Co-founder, Andreessen Horowitz',
+  source: { label: 'The Wall Street Journal, 2011', href: 'https://a16z.com/why-software-is-eating-the-world/' },
+};
+
+/** The founder's own words and photo, on the About page (chosen by Rohit on 2026-09-26). */
+export const FOUNDER: Leader = {
   lines: ['The software a business runs on can’t be a demo.', 'We build it to work on day one and keep it working for years.'],
   name: 'Rohit',
   role: 'Founder, HITROO',

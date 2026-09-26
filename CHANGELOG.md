@@ -2,6 +2,15 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
+## 2026-09-26 — Home quote; founder on About
+
+### Changed
+- The home page now quotes Marc Andreessen, "Software is eating the world." (The Wall Street Journal, 2011), with the source linked and no photo.
+- Rohit's quote and small photo moved to the About page, after "What we believe".
+
+### Decided
+- Page images stay on Vercel's image optimization. Cloudinary's Free plan serves WebP or JPEG XL instead of AVIF, which measured 43–105% heavier on the home page, so it wasn't adopted; the test uploads were removed from the Cloudinary account.
+
 ## 2026-09-26 — Newsroom, brand kit, policy pages, SEO and a richer home
 
 ### SEO and answer engines

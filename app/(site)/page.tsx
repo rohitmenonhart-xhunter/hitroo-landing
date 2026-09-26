@@ -6,7 +6,7 @@ import ProcessAccordion from '@/components/corporate/ProcessAccordion';
 import ServiceGrid from '@/components/corporate/ServiceGrid';
 import StoryCarousel from '@/components/corporate/StoryCarousel';
 import { ArrowLink, Button, Eyebrow, Section, SectionHeader, Statement } from '@/components/corporate/ui';
-import { AUDIENCE, LEADER, PROCESS_STEPS, STORIES, SUPPORT, WHY_HITROO_STATEMENT, WHY_NEED } from '@/lib/site-data';
+import { AUDIENCE, HOME_QUOTE, PROCESS_STEPS, STORIES, SUPPORT, WHY_HITROO_STATEMENT, WHY_NEED } from '@/lib/site-data';
 import type { Metadata } from 'next';
 import JsonLd from '@/components/seo/JsonLd';
 import { pageMetadata, webPageLd } from '@/lib/seo';
@@ -88,7 +88,7 @@ export default function Home() {
         </div>
       </Section>
 
-      {LEADER && <LeaderQuote {...LEADER} />}
+      <LeaderQuote {...HOME_QUOTE} />
 
       <Section labelledBy="support-title">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">

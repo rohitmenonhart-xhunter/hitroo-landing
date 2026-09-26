@@ -15,10 +15,10 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 
 ## Site structure
 - `app/(site)/layout.tsx` renders Header + `<main id="main">` + Footer + Analytics + CookieConsent for every marketing page.
-- `/` Home: hero (photo) → "Why HITROO" two-line statement (+ link to our AI view) → "Why your business needs it" (Software / Automation / AI) → "What we build" → story cards (Our story / Our view on AI / Research) → "Fast, by design" (six photo panels) → a word from Rohit, the founder (quote + small photo) → "Support in one app" → "Who we work with" → enquiry form.
+- `/` Home: hero (photo) → "Why HITROO" two-line statement (+ link to our AI view) → "Why your business needs it" (Software / Automation / AI) → "What we build" → story cards (Our story / Our view on AI / Research) → "Fast, by design" (six photo panels) → Marc Andreessen's "Software is eating the world." (WSJ, 2011; source linked, no photo) → "Support in one app" → "Who we work with" → enquiry form.
 - `/services` (photo cards) and `/services/[slug]` (hero photo → the problem → what you get → how we work + results → other services → CTA).
 - `/insights` (latest articles and blog posts), `/articles`, `/blog`, `/articles/[slug]`, `/blog/[slug]`, `/news` (newsroom: news, press contact, About HITROO, brand kit link), `/news/[slug]` — content from `web.posts`, managed in the admin app. Old `/news/<numeric id>` links still redirect to `/blog`.
-- `/about`, `/research`, `/support`, `/careers` (role picker + application), `/contact` (details + form), `/ai-perspective` ("Is AI a threat to HITROO?"), `/brand` (brand kit: logo and mark downloads, space and size, colours, type, don'ts), `/privacy`, `/cookies`, `/terms`, `/accessibility`, `/security` (+ `/.well-known/security.txt`), `/site-map`, `app/not-found.tsx`.
+- `/about` (hero photo → why we started → what we believe → Rohit's quote with his small photo → what we do → our view → CTA), `/research`, `/support`, `/careers` (role picker + application), `/contact` (details + form), `/ai-perspective` ("Is AI a threat to HITROO?"), `/brand` (brand kit: logo and mark downloads, space and size, colours, type, don'ts), `/privacy`, `/cookies`, `/terms`, `/accessibility`, `/security` (+ `/.well-known/security.txt`), `/site-map`, `app/not-found.tsx`.
 - **Admin:** a separate app, `../hitroo_admin_page`, live at https://admin.hitroo.com — analytics (visits, clicks, reads, world map, sources, audience, hours), leads and applications (status, notes, search, résumés), posts. One owner password, kept in `_secrets/hitroo-admin.env`.
 - API: `/api/lead`, `/api/careers`, `/api/track`, `/api/consent`, `/api/revalidate` (for the admin), `/api/indexnow` (Vercel Cron, daily 09:10 IST: pushes the day's new posts to IndexNow).
 - Discovery: `/sitemap.xml`, `/robots.txt`, `/llms.txt`, `/llms-full.txt`, `/feed.xml` (RSS of all posts, linked from every page), IndexNow key file in `public/`.
@@ -40,6 +40,8 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - **Products removed** earlier (Capsona, Attyn, Belecure, Mockello, AI Marketing Agent) — don't reintroduce.
 - **Logo:** always blue and black, on white or light backgrounds; no reversed version anywhere on the site (the footer's navy strip was removed for this, 2026-09-26).
 - **"Fast, by design":** six photo panels (2026-09-26). Rejected first: a scroll-lit icon stepper ("noob") and an animated code-drawn app mock with fake cursors ("AI slop").
+- **Images stay on Vercel's image optimization** (AVIF from `/_next/image`). Cloudinary was tried on 2026-09-26 and dropped: on its Free plan `f_auto` never serves AVIF (WebP to Chrome, JPEG XL/PNG to Safari), so the home page's images would have gone from 511 KB to 1,047 KB on desktop and from 894 KB to 1,276 KB on iPhone. Revisit only on a paid plan whose `f_auto` includes AVIF.
+- **Quotes:** a public figure's quote goes with their name and a linked source, never their photo (it would read as an endorsement, and press photos are copyrighted); only HITROO's own people get a photo.
 - **Photos:** realistic Codex photos only (glossy 3D sets and staged "notebook diagram" shots looked fake). The gritty documentary set then looked unprofessional, so new photos use the professional style line in `docs/art/photos-briefs.md` (2026-09-26).
 
 ## Assets

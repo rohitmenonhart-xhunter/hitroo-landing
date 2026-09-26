@@ -1,8 +1,10 @@
 import CtaBand from '@/components/corporate/CtaBand';
+import LeaderQuote from '@/components/corporate/LeaderQuote';
 import PageHero from '@/components/corporate/PageHero';
 import ServiceGrid from '@/components/corporate/ServiceGrid';
 import { ArrowLink, Section, SectionHeader, Statement } from '@/components/corporate/ui';
 import JsonLd from '@/components/seo/JsonLd';
+import { FOUNDER } from '@/lib/site-data';
 import { breadcrumbLd, webPageLd } from '@/lib/seo';
 
 const BELIEFS = [
@@ -41,6 +43,8 @@ export default function AboutPage() {
           ))}
         </ul>
       </Section>
+
+      <LeaderQuote {...FOUNDER} />
 
       <Section labelledBy="about-services-title">
         <SectionHeader id="about-services-title" title="What we do" />

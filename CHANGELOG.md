@@ -2,6 +2,12 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
+## 2026-09-26 — Clean under VS Code's TypeScript 6
+
+### Fixed
+- `tsconfig.json` no longer uses the deprecated `target: es5` (now `ES2017`); VS Code's bundled TypeScript 6 flagged it. Builds were unaffected: Next.js compiles with its own settings.
+- The two secret checks (`/api/revalidate`, `/api/indexnow`) share one constant-time `sameSecret()` in `lib/secret.ts`, with tests; `types/css.d.ts` declares the global stylesheet import. No errors under TypeScript 5.2 or 6.0.
+
 ## 2026-09-26 — Home quote; founder on About
 
 ### Changed

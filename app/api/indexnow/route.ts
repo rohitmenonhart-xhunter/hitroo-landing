@@ -1,6 +1,6 @@
-import { timingSafeEqual } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { listPosts, postUrl } from '@/lib/data/posts';
+import { sameSecret } from '@/lib/secret';
 import { abs, SITE_URL } from '@/lib/seo';
 
 // The IndexNow key is public by design (served at /<key>.txt); see scripts/indexnow.mjs.
@@ -11,10 +11,7 @@ export const dynamic = 'force-dynamic';
 
 function authorized(request: NextRequest) {
   const secret = process.env.CRON_SECRET;
-  if (!secret) return false;
-  const a = Buffer.from(`Bearer ${secret}`);
-  const b = Buffer.from(request.headers.get('authorization') ?? '');
-  return a.length === b.length && timingSafeEqual(a, b);
+  return !!secret && sameSecret(`Bearer ${secret}`, request.headers.get('authorization') ?? '');
 }
 
 /**

@@ -66,6 +66,7 @@ A software company (headquartered in Chennai, India; clients worldwide). It buil
 - Don't set `referrer` in page metadata: Next 13.5 briefly writes other tags' values into it during client navigation (console errors). The `Referrer-Policy` header does the job.
 - New `web` tables need explicit grants in their migration — `web_app` gets nothing by default (migration 003).
 - Vercel never ran the old `netlify.toml` edge rate limits (the file is gone). Every limit lives in code and counts per server instance.
+- VS Code checks the code with its own bundled TypeScript (6.x), newer than the project's 5.2.2. Keep both clean: `npx -y -p typescript@6 tsc -p . --noEmit` next to `npm run typecheck`. TypeScript 6 rejects `target: es5` (now `ES2017`), wants side-effect imports declared (`types/css.d.ts`) and rejects `Buffer` in `timingSafeEqual` with the old `@types/node` — compare secrets with `sameSecret()` in `lib/secret.ts`.
 - Vercel Functions reject request bodies over 4.5 MB (`413 FUNCTION_PAYLOAD_TOO_LARGE`, before our code runs). Uploads sent base64 in JSON must stay under about 3 MB; anything bigger needs a direct-to-storage upload.
 
 ## Open / next

@@ -1,9 +1,9 @@
-import { timingSafeEqual } from 'crypto';
 import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { rateLimited } from '@/lib/rate-limit';
 import { getClientIp, readLimitedJson } from '@/lib/request-security';
+import { sameSecret } from '@/lib/secret';
 
 // Pages that list posts, plus the discovery files (which also refresh on their own every 10 minutes).
 const ALWAYS = ['/insights', '/articles', '/blog', '/news', '/sitemap.xml', '/llms.txt'];
@@ -15,11 +15,7 @@ const schema = z
 const reply = (body: object, status = 200) => NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 
 function secretOk(provided: string) {
-  const secret = process.env.REVALIDATE_SECRET;
-  if (!secret) return false;
-  const a = Buffer.from(secret);
-  const b = Buffer.from(provided);
-  return a.length === b.length && timingSafeEqual(a, b);
+  return sameSecret(process.env.REVALIDATE_SECRET ?? '', provided);
 }
 
 /** Called by the admin app (hitroo_admin_page) after a post changes, so the site shows it at once. */

@@ -246,7 +246,7 @@ export const WHY_NEED = [
     href: '/services/ai-automation',
     cta: 'Explore automation',
     image: '/photos/need-automation.webp',
-    alt: 'Parcels streaming through an automated sorting hub under a scanning arch',
+    alt: 'A bright, empty metro platform as a driverless train glides in',
   },
   {
     title: 'AI',

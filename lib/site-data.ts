@@ -238,7 +238,7 @@ export const WHY_NEED = [
     href: '/services/custom-software',
     cta: 'Explore software',
     image: '/photos/need-software.webp',
-    alt: 'A bright office desk with a laptop and a monitor showing the same business app',
+    alt: 'A long, bright open-plan office where every desk runs the same business app',
   },
   {
     title: 'Automation',
@@ -246,7 +246,7 @@ export const WHY_NEED = [
     href: '/services/ai-automation',
     cta: 'Explore automation',
     image: '/photos/need-automation.webp',
-    alt: 'Robotic arms placing boxes on a conveyor in a modern fulfilment centre',
+    alt: 'Parcels streaming through an automated sorting hub under a scanning arch',
   },
   {
     title: 'AI',

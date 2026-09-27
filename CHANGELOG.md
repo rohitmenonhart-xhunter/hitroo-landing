@@ -2,6 +2,11 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
+## 2026-09-27 — New Software and Automation photos
+
+### Changed
+- "Why your business needs it": Software is now a long, bright open-plan office where every desk runs the same app, and Automation a parcel sorting hub with parcels streaming through a scanning arch. Both match the AI card's straight-down-the-aisle look, so the three read as one series. They replace a stock-looking desk with a chart-filled monitor and two identical robot arms. Briefs are in `docs/art/photos-briefs.md`.
+
 ## 2026-09-26 — Clean under VS Code's TypeScript 6
 
 ### Fixed

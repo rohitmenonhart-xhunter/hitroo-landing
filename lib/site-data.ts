@@ -271,22 +271,24 @@ export const PROCESS_STEPS = [
 export const PROCESS = PROCESS_STEPS.map((s) => s.name);
 
 /**
- * The home page's quote: a public figure's exact words, checked against the original (Google's own post,
- * 22 April 2026), with a freely licensed photo whose credit is always shown. Exact sentence: "Through this
- * rapid growth, we've seen how every employee in every organization can become a builder."
+ * The home page's quote: a public figure's exact words, checked against the original (NVIDIA's announcement
+ * of GTC 2026, 3 March 2026), with a freely licensed photo whose credit is always shown. The full statement
+ * opens "GTC is the epicenter of the AI industrial era"; the card quotes the two sentences about every company.
+ * Chosen by the owner on 2026-09-28 after Pichai's "every employee … can become a builder" read as a case
+ * against hiring a software company.
  */
 export const HOME_QUOTE: FeaturedQuoteData = {
-  quote: 'We’ve seen how every employee in every organization can become a builder.',
-  name: 'Sundar Pichai',
-  role: 'CEO, Google and Alphabet',
-  source: { label: 'Google Cloud Next, April 2026', href: 'https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/cloud-next-2026-sundar-pichai/' },
+  quote: 'AI is no longer a single breakthrough or application — it is essential infrastructure. Every company will use it.',
+  name: 'Jensen Huang',
+  role: 'Founder and CEO, NVIDIA',
+  source: { label: 'NVIDIA, March 2026', href: 'https://nvidianews.nvidia.com/news/nvidia-ceo-jensen-huang-and-global-technology-leaders-to-showcase-age-of-ai-at-gtc-2026' },
   photo: {
-    src: '/people/sundar-pichai.webp',
-    alt: 'Sundar Pichai, CEO of Google and Alphabet',
-    credit: 'Lukasz Kobus / European Commission',
-    creditHref: 'https://commons.wikimedia.org/wiki/File:Sundar_Pichai_-_2023_(cropped).jpg',
-    license: 'CC BY 4.0',
-    licenseHref: 'https://creativecommons.org/licenses/by/4.0/',
+    src: '/people/jensen-huang.webp',
+    alt: 'Jensen Huang, founder and CEO of NVIDIA',
+    credit: 'Anderseidesvik',
+    creditHref: 'https://commons.wikimedia.org/wiki/File:Jensen_huang_stanford_2026-04-30_010.jpg',
+    license: 'CC BY-SA 4.0',
+    licenseHref: 'https://creativecommons.org/licenses/by-sa/4.0/',
     changes: 'cropped, black and white',
   },
 };

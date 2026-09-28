@@ -33,7 +33,8 @@ export default function FeaturedQuote({ quote, name, role, source, photo }: Feat
               cite={source.href}
               className="text-[28px] font-light leading-[1.2] tracking-[-0.02em] text-white [text-wrap:balance] sm:text-[36px] lg:text-[44px]"
             >
-              <p>“{quote}”</p>
+              {/* A dash never starts a line: it stays with the word before it. */}
+              <p>“{quote.replace(/ — /g, ' — ')}”</p>
             </blockquote>
             <figcaption className="mt-10">
               <span className="block text-[17px] font-medium text-white">{name}</span>

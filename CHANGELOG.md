@@ -2,6 +2,12 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
+## 2026-09-28 — Home quote: Jensen Huang
+
+### Changed
+- The home quote card now shows Jensen Huang, founder and CEO of NVIDIA: "AI is no longer a single breakthrough or application — it is essential infrastructure. Every company will use it." (NVIDIA's GTC 2026 announcement, 3 March 2026), with a black-and-white portrait from Stanford, April 2026 (Wikimedia Commons, Anderseidesvik, CC BY-SA 4.0, credit shown). Chosen by the owner from three verified options. It replaces Sundar Pichai's "every employee in every organization can become a builder", which read as a case against hiring a software company.
+- A dash in a quote never starts a line on phones.
+
 ## 2026-09-27 — New Software and Automation photos
 
 ### Changed

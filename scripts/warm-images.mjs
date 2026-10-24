@@ -2,6 +2,8 @@
 // than WebP to encode, 25–45% smaller). Requests every /_next/image variant in each sitemap page's HTML at the widths
 // devices really ask for. The Creatives library is static (no optimizer), so it needs no warming. Each variant warmed
 // for the first time is one image transformation (Hobby allows 5,000 a month; cached ones cost nothing for 31 days).
+// Also requests every uploaded image (/media/img/…, plain WebP proxied from Tigris) so Vercel's CDN holds them; those
+// cost no transformations.
 // Run after each production deploy, next to IndexNow:
 //   node scripts/warm-images.mjs            (defaults to https://www.hitroo.com)
 //   SITE_URL=http://localhost:3100 node scripts/warm-images.mjs
@@ -20,6 +22,7 @@ for (const path of pages) {
     const u = m[0].replace(/&amp;/g, '&');
     if (WIDTHS.has(Number(new URLSearchParams(u.split('?')[1]).get('w')))) urls.add(u);
   }
+  for (const m of html.matchAll(/\/media\/img\/[^"'\s,?\\]+/g)) urls.add(m[0]);
 }
 const list = [...urls];
 let done = 0;
@@ -39,4 +42,4 @@ async function worker() {
   }
 }
 await Promise.all(Array.from({ length: 6 }, worker));
-console.log(`Warmed ${done} image variants from ${pages.length} pages in ${Math.round((Date.now() - started) / 1000)} s (${failed} failed).`);
+console.log(`Warmed ${done} images and variants from ${pages.length} pages in ${Math.round((Date.now() - started) / 1000)} s (${failed} failed).`);

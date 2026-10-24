@@ -4,6 +4,11 @@ All notable changes to the HITROO website and its infrastructure. Newest first. 
 
 ## 2026-10-25 — Page content and media in the database
 
+### Deployed
+- Live on www.hitroo.com, with the admin revamp on admin.hitroo.com. **Division subdomains:** software., automation., ai. and creatives.hitroo.com are on the site project and redirect (307) to their page on www (`next.config.js`, by host); any other path goes to the same path on www.
+- **Fast media on the free plan:** uploaded images load from `/media/img/*` (a rewrite to Tigris, cached on Vercel's CDN for a year; requests with a `Range` header are passed through uncached so a partial response can never be stored as the image). The Creatives video streams from Tigris directly: on the first deploy the CDN had cached a 1 KB range of it and served that to everyone.
+- Next.js 13.5.11 (patch release; the remaining advisories need a major upgrade).
+
 ### Changed
 - **Content is edited in the admin, no deploy needed:** every marketing page's copy (except the legal pages, brand page and site map) now comes from `web.content` (migration 005), 22 keys from `company` to `division:ai` and `page:support`; images and the Creatives video come from object storage (Tigris bucket `hitroo-media`, each file a `web.media` row). The site reads them through `getContent()` (`lib/content.ts`), cached five minutes; `/api/revalidate` also accepts `{ "content": [keys] }` and refreshes every page showing them. Marketing pages are ISR (`revalidate = 300` in the `(warm)` layout).
 - **Never blank:** without `DATABASE_URL`, when the database can't be read, when a key is missing or when its shape is wrong, pages use the built-in copy (the old data modules, now the defaults in `lib/content-defaults.ts`; each page's own lines moved to `lib/page-content.ts`). Checked with a build against an unreachable database: every content page matched the old site exactly.

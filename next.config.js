@@ -29,13 +29,10 @@ const nextConfig = {
       },
     ];
   },
-  // Uploaded media is served from our own origin, then cached on Vercel's CDN for a year (see vercel.json). Only the
-  // pre-sized folders are exposed; uploads in progress (orig/) are not.
+  // Uploaded images are served from our own origin, then cached on Vercel's CDN for a year (see vercel.json). Only the
+  // pre-sized folder is exposed; uploads in progress (orig/) are not. Videos stream from the bucket (lib/media.ts).
   async rewrites() {
-    return [
-      { source: '/media/img/:path*', destination: 'https://hitroo-media.fly.storage.tigris.dev/img/:path*' },
-      { source: '/media/vid/:path*', destination: 'https://hitroo-media.fly.storage.tigris.dev/vid/:path*' },
-    ];
+    return [{ source: '/media/img/:path*', destination: 'https://hitroo-media.fly.storage.tigris.dev/img/:path*' }];
   },
   async redirects() {
     return [

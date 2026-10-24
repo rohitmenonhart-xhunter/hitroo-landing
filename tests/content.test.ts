@@ -3,6 +3,7 @@ import test from 'node:test';
 import { CONTENT_KEY_RE, CONTENT_KEYS, forEachMedia, isContentKey, resolveContent } from '../lib/content-core.ts';
 import { CONTENT_DEFAULTS } from '../lib/content-defaults.ts';
 import { CONTENT_SCHEMAS, checkContent } from '../lib/content-schema.ts';
+import { MEDIA_ORIGIN, mediaUrl } from '../lib/media.ts';
 
 const FALLBACK = { title: 'Built-in' };
 const check = (data: unknown) => (data && typeof (data as { title?: unknown }).title === 'string' ? null : 'title: required');
@@ -118,4 +119,12 @@ test('media slots are found anywhere in the content', () => {
   const all = new Set<string>();
   for (const key of CONTENT_KEYS) forEachMedia(CONTENT_DEFAULTS[key], (slot) => all.add(slot.src.split('?')[0]));
   for (const src of all) assert.match(src, /^\/(photos|people|video)\//, src);
+});
+
+test('storage images load from our origin; videos and other files load as they are', () => {
+  assert.equal(mediaUrl(`${MEDIA_ORIGIN}/img/abc-hero-960.webp`), '/media/img/abc-hero-960.webp');
+  // Videos are fetched in byte ranges, which Vercel's cache would store as the whole file.
+  assert.equal(mediaUrl(`${MEDIA_ORIGIN}/vid/abc-myth.mp4`), `${MEDIA_ORIGIN}/vid/abc-myth.mp4`);
+  assert.equal(mediaUrl(`${MEDIA_ORIGIN}/orig/abc.png`), `${MEDIA_ORIGIN}/orig/abc.png`);
+  assert.equal(mediaUrl('/photos/home.webp?v=1'), '/photos/home.webp?v=1');
 });

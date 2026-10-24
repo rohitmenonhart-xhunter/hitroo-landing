@@ -11,7 +11,13 @@
   ],
   "headers": [
     {
-      "source": "/media/:path*",
+      "source": "/media/img/:path*",
+      "missing": [
+        {
+          "type": "header",
+          "key": "range"
+        }
+      ],
       "headers": [
         {
           "key": "x-vercel-enable-rewrite-caching",
@@ -20,6 +26,21 @@
         {
           "key": "CDN-Cache-Control",
           "value": "max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/media/img/:path*",
+      "has": [
+        {
+          "type": "header",
+          "key": "range"
+        }
+      ],
+      "headers": [
+        {
+          "key": "x-vercel-enable-rewrite-caching",
+          "value": "0"
         }
       ]
     }

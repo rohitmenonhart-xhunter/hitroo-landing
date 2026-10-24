@@ -37,12 +37,12 @@ export interface MediaVideo {
 }
 
 /**
- * Where the browser loads a storage file from: our own origin (`/media/img/…`, `/media/vid/…`), which next.config.js
- * rewrites to the bucket and vercel.json caches on Vercel's CDN for a year. Same origin, HTTP/2 and the edge cache
- * make it several times faster than fetching from the bucket directly. Other URLs are returned unchanged.
+ * Where the browser loads a storage file from. Images: our own origin (`/media/img/…`), which next.config.js rewrites
+ * to the bucket and vercel.json caches on Vercel's CDN for a year. Same origin, HTTP/2 and the edge cache make it
+ * several times faster than fetching from the bucket directly. Videos stream from the bucket itself: browsers fetch
+ * them in byte ranges, and Vercel's cache would store the first range as the whole file. Other URLs are unchanged.
  */
-export const mediaUrl = (url: string) =>
-  url.startsWith(`${MEDIA_ORIGIN}/img/`) || url.startsWith(`${MEDIA_ORIGIN}/vid/`) ? `/media${url.slice(MEDIA_ORIGIN.length)}` : url;
+export const mediaUrl = (url: string) => (url.startsWith(`${MEDIA_ORIGIN}/img/`) ? `/media${url.slice(MEDIA_ORIGIN.length)}` : url);
 
 /** True for a file in object storage (or anywhere off-site); false for a file in public/. */
 export const isRemote = (src: string) => /^https?:\/\//i.test(src);

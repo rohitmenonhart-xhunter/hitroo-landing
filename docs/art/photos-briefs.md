@@ -1,113 +1,111 @@
-# Professional photo set (home "Why your business needs it") — Codex briefs, 2026-09-26
-The documentary set below looked unprofessional on the home page, so these three use a clean corporate style. Reuse this style line for new photos.
+# Images — Codex briefs (archive)
 
-Shared style: Style: a professional commercial photograph for the website of a global technology consultancy such as Accenture or Capgemini, shot by a corporate photographer on a full-frame camera with a 35mm lens at f/2.8 in natural light. Photorealistic: it must look like a real, high-end photograph, not a 3D render, not CGI, not an illustration. Clean, modern, premium and orderly: no clutter, no mess, no dirt, no wear. Soft, bright, even daylight with gentle natural shadows; true-to-life neutral colours (white, light grey, pale natural wood, glass, brushed steel) with at most a subtle hint of cool blue; crisp focus on the subject and a gentle natural background blur; calm, balanced composition with generous empty space. No people, no faces, no hands. No readable text, letters, numbers or logos anywhere; screens show soft, out-of-focus interfaces. No neon, no glowing holograms, no lens flare, no dramatic cinematic lighting, no heavy colour grading, no vignette. Landscape 1536x1024, subject centred so it still reads well when cropped to 4:3.
+**Since 2026-10-24 the site uses no page photography:** glass is the imagery (`public/glass/`, see [designs.md](../../designs.md)). The page photos and division renders these briefs produced were removed. Post covers under `public/photos/{articles,blog,news}/` keep their database paths and always render in warm monochrome on the site, so a new cover can use the style line below; the colours don't matter.
 
-## need-software
-Replaced 2026-09-27 (the desk with a laptop and a chart-filled monitor looked like stock). Made to match need-ai's one-point perspective, with this style line: "an architectural commercial photograph for the annual report of a global technology company, shot on a medium-format camera with a 45mm tilt-shift lens (perfectly straight verticals), f/5.6, natural light … real materials and textures, believable scale, slight natural variation and imperfection … not a stock-photo cliché. Bright, clean and premium, with rich contrast … any screen shows only a soft, out-of-focus interface, never a chart as the focal point." Brief:
-A long, modern open-plan office in bright morning light, seen straight down its central aisle in a strong one-point perspective: two rows of matching light-oak desks, each with a slim black monitor showing the same clean, simple business app (soft and out of focus); white ceiling with long linear lights; polished light-grey concrete floor; tall windows along one side with soft daylight. One system running the whole business.
+How to make a cover: run Codex with the brief below followed by the shared style line, at 1536×1024, then `cwebp -q 84 -m 6 -sharp_yuv -resize 1200 800` into `public/photos/<kind>/<name>.webp` and set that path in the admin.
 
-## need-automation
-Replaced twice on 2026-09-27. Two identical robot arms, then a busy parcel sorting hub, both read as AI-made: crowds of identical objects, everything equally sharp, machinery everywhere. Top firms (Accenture, Capgemini, Cognizant; see `research/inspiration/NOTES.md`) don't show a service literally, so this one shows automation as movement in a real space. Brief (take "metro-a" of six; escalators and a moving walkway were the other ideas):
-A spotless, bright modern metro station platform seen straight down its length in one-point perspective; a sleek white driverless train glides in along one side as a soft streak of motion blur, while the platform, glass screen doors and white ceiling stay crisp; daylight from skylights. Reliable, automatic, on time.
-Style line: "a real architectural photograph for a global company's website, shot on a full-frame camera with a 24mm tilt-shift lens (straight verticals) on a tripod, a long exposure so that only moving things blur. It must look like an unretouched real photo, not AI-generated and not a 3D render: natural light, soft natural contrast (no HDR look, no oversharpening), true-to-life slightly muted colours, subtle grain, real materials with honest wear … Calm, uncluttered, one clear subject … No people, no silhouettes. No readable text, signs, numbers or logos."
+## Shared style line
 
-## need-ai
-A modern data centre aisle seen straight down its centre: two rows of sleek matte-black server racks with small white status lights and neatly routed cables, clean white raised-floor tiles and a white ceiling with soft, even light, receding in calm one-point perspective. Cool, neutral and precise; bright, not dark, and not blue-tinted.
+Style: a photorealistic premium 3D render for the website of a modern technology company, one image in a consistent series. The subject is made of thick, perfectly clear or softly tinted glass (with polished chrome details only where described), smooth bevelled edges, real refraction and slight rainbow dispersion at the edges, crisp specular highlights; it floats a little above the ground, turned slightly towards the viewer, with a soft coloured shadow and reflection beneath. Background: a clean white studio with one large soft radial gradient behind the subject (orange core #F0773F, red #EF514B, hot pink #E8467F, magenta #D84DB0, violet #A96DDE, periwinkle blue #759DEF towards the edges, fading to white at the borders), seen through four or five wide vertical fluted-glass strips with hard edges between them. No people, no hands, no text, no letters, no numbers, no logos, no brand names, no app interfaces, no watermark, no border. Landscape 1536x1024; the subject centred and about 45% of the image height, so it still reads when cropped to a wide band through the middle or to a narrow vertical strip through the centre.
 
-# Cinematic story set (home story cards) — Codex briefs, 2026-09-26
-Full-bleed backgrounds for `StoryCarousel`; the text sits on a navy shade on the left, so each subject is in the right half. The first set (a watch movement, a laptop at night, a lab bench) didn't make sense for the stories; these are literal instead of metaphors. Two takes each; the "b" takes were used.
+## Pages
 
-Shared style: Style: a cinematic still photograph, like a frame from a premium brand film, shot on a full-frame cinema camera with a 40mm lens at T2 and shallow depth of field. Photorealistic and believable, not CGI, not a 3D render, not an illustration. Moody but clean: deep navy-blue shadows and soft cool ambient light with a few warm practical lights; subtle film grain; rich contrast without crushed blacks; modern, tidy and premium, no clutter. No people, no faces, no hands. No readable text, letters, numbers or logos anywhere; screens show soft, out-of-focus interfaces. No neon, no sci-fi holograms, no lens-flare streaks, no glowing particles. Wide landscape 1536x1024 composed for a 21:9 crop through the middle: the subject sits in the right half of the frame; the left 45% is dark, calm negative space where text will be overlaid.
+- `public/photos/about.webp` — Four different glass objects, a cube, a sphere, a cone and a small torus, resting together on one wide, thick slab of clear glass that is their shared foundation.
+- `public/photos/research.webp` — A clear glass triangular prism on a small polished chrome stand, splitting a single beam of white light into a fan of the gradient's colours.
+- `public/photos/support.webp` — Two rounded glass speech bubbles, one slightly overlapping the other, one clear and one tinted soft pink, as if in conversation.
+- `public/photos/ai-view.webp` — A clear glass cube with softly rounded edges holding glowing filaments of violet and blue light inside it, like a living idea kept safely inside a structure.
 
-## story-business (Our story: "Built with care. Built to last.")
-A modern distribution warehouse at night, after hours: tall shelving with neat boxes recedes into deep blue shadow; in the right half of the frame, a tidy packing station under a single warm work lamp, with a rugged tablet on a stand showing a clean orders app (soft, out of focus), a label printer and a few sealed parcels. The software a business runs on, quietly working.
+## Services
 
-## story-ai (Our view on AI: "AI makes us faster. We make it right.")
-A software engineer's workstation at night in a dark, modern office: in the right half of the frame, a large monitor shows code on the left and a narrow AI-assistant chat panel on the right (soft, out of focus, nothing readable), with a keyboard and a closed notebook lit by the cool glow of the screen and a small warm desk lamp; city lights as soft bokeh through the window behind.
+- `public/photos/svc-software.webp` — A floating cluster of interlocking glass building blocks, rounded cubes, bars and L-shapes snapping together, some clear, some tinted coral and violet.
+- `public/photos/svc-mobile.webp` — A thick frosted-glass slab shaped like a modern smartphone, standing upright at a gentle angle, its screen area glowing softly with the gradient from inside, with no interface.
+- `public/photos/svc-desktop.webp` — A thick clear glass laptop, open at about 110 degrees, its screen area a soft glowing gradient with no interface, its keys suggested by subtle frosted squares; generic, not any real brand's design.
+- `public/photos/svc-ai.webp` — A clear glass sphere with a dense bloom of fine glowing filaments in blue, violet and pink inside it, like a neural network made of light.
+- `public/photos/svc-automation.webp` — Three interlocking gears made of clear glass with polished chrome hubs, meshing together, one tinted coral, one violet and one clear.
+- `public/photos/svc-vision.webp` — A thick clear glass camera lens with concentric polished chrome rings, seen at a slight angle, the gradient refracted in its glass elements like an iris.
+- `public/photos/svc-managed.webp` — A neat stack of four thick rounded glass slabs separated by thin chrome spacers, like a server rack reimagined in glass, with a few tiny soft white lights glowing inside.
 
-## story-research (Research: "Hard problems in. Real products out.")
-Replaced the same day: the first take (a camera rig over a part, all cool light) looked rendered next to the other two. Used take (robot "a", with the realism line "It must look like a real photograph of a real working lab: real materials, believable scale, slight everyday imperfection; nothing plastic, nothing too perfect."):
-An applied-AI research lab at night: in the right half of the frame, a compact white collaborative robot arm with a small camera on its wrist is lifting a machined aluminium part from a tray on a lab bench, caught mid-motion; a warm desk lamp at the edge of the bench and a cool overhead work light; two monitors behind show soft, out-of-focus camera feeds; the rest of the lab falls away into deep blue shadow.
+## How we work (process panels)
 
-# Icon set (menus, service grid) — Codex, 2026-09-26
-Drawn as sheets on a transparent background and cut apart into 256 px PNGs in `public/icons/`. Style (sheet B, chosen): "refined line-and-fill duotone icons: confident 3px navy outlines with rounded caps and joins, filled with cobalt and pale periwinkle areas, like the product icons on an enterprise software website." Colours: only cobalt #2451FF and navy #0A1B4A with pale periwinkle #D6DEFF as the single tint; no shadows, gradients, 3D or glow. New icons: attach an existing sheet (or a few icons on white) as the reference image and ask for "exactly the same style". Newsroom and Brand kit were made that way: "(1) news: a folded newspaper with a headline bar and a small photo block, and a small megaphone at its corner. (2) brand kit: a colour palette card with three round swatches beside a pen nib."
+- `public/photos/process-discover.webp` — A clear glass compass with a polished chrome needle, lying slightly tilted.
+- `public/photos/process-design.webp` — A design study of glass primitives, a sphere, a cube and a cone, arranged in a balanced composition: one clear, one tinted pink, one tinted violet.
+- `public/photos/process-build.webp` — Glass building blocks being stacked into a small tower, the top block caught in mid-air just before it lands.
+- `public/photos/process-test.webp` — A thick clear glass shield with softly bevelled edges and a subtle check-shaped highlight of light running across it.
+- `public/photos/process-launch.webp` — A glass paper plane in flight, leaving a soft ribbon of gradient-coloured light behind it.
+- `public/photos/process-support.webp` — A clear glass lifebuoy ring, softly tinted pink and violet, floating at a slight angle.
 
-# Process photo set (home "Fast, by design") — Codex briefs, 2026-09-26
-One photo per delivery step, shown as the six photo panels of the steps (`components/corporate/ProcessAccordion.tsx`; the open panel crops to about 6:5, folded strips show a thin slice). Same shared style as the Professional photo set above, with "Landscape 1536x1024, subject centred so it still reads well when cropped to 5:4", plus this realism line for the second takes: "It must be indistinguishable from a real photograph taken on an ordinary working day: natural, slightly imperfect arrangement of objects, real materials, real light falloff; nothing too symmetrical, nothing too perfect." Rejected takes: a perfectly gridded sticky-note wall and a wall of dashboards in an operations room (both read as generated).
+## Who we help
 
-## process-discover
-Close, angled view along a glass wall in a bright meeting room, used for a discovery workshop: rows of blank square sticky notes in white and pale blue, placed by hand with slightly uneven gaps and a few at small angles, a strip of blue masking tape, and a hand-drawn marker arrow leading between two groups; the nearest notes in crisp focus, the rest of the wall falling off into soft focus. A light-oak table edge with a black marker lying on it in the foreground. Soft daylight.
+- `public/photos/aud-founders.webp` — A single glass building block with a small, bright glowing spark of light resting on top of it, the very start of something.
+- `public/photos/aud-growing.webp` — Glass blocks arranged as a short staircase, each step a little higher than the last, the top step tinted coral.
+- `public/photos/aud-enterprise.webp` — A tall, elegant tower of many stacked rounded glass layers, perfectly aligned, softly tinted from pink at the base to violet at the top.
 
-## process-design
-A product designer's desk in a bright studio: a large monitor shows a design tool canvas with many small app screens arranged in rows, soft and slightly out of focus; in the foreground in crisp focus, a tablet with a stylus showing a rough wireframe sketch and a few printed phone-screen sketches with pencil marks, loosely overlapping on a light-oak desk. Soft daylight from a window at the side.
+## Post covers (paths stored in web.posts)
 
-## process-build
-A software engineer's workstation in a bright modern office. Two large thin monitors on slim arms, both showing code in a dark editor theme: rows of small coloured code lines, too soft and out of focus to read. A low-profile keyboard, a mouse and a closed notebook on a clean light-oak desk; a window with soft daylight and a softly blurred city behind. Calm, precise and tidy.
+- `public/photos/articles/modernize-legacy-software.webp` — On the left a chunky, old-fashioned frosted glass box with rounded corners; on the right a sleek, thin clear glass slab; a ribbon of gradient light flows from the old shape into the new one.
+- `public/photos/blog/ai-app-security-checklist.webp` — A clear glass padlock with a polished chrome shackle.
+- `public/photos/blog/automate-first.webp` — A row of glass dominoes toppling one after another, each tipping the next, the first one tinted coral.
+- `public/photos/blog/build-or-buy.webp` — On the left a neat stack of identical frosted glass boxes; on the right a single custom-shaped clear glass piece fitting exactly into a matching slot in a glass block.
+- `public/photos/blog/mvp.webp` — A small glass seedling with two clear glass leaves sprouting from the top of a glass cube.
+- `public/photos/blog/pc-games-on-iphone.webp` — A generic glass game controller resting beside a thick frosted-glass smartphone slab, both glowing softly from inside; no brand, no game imagery.
+- `public/photos/blog/private-ai.webp` — A glowing sphere of light filaments sitting inside an open clear glass vault box with a polished chrome door edge.
+- `public/photos/blog/software-brief.webp` — A short stack of clear glass sheets like the pages of a document, the top sheet slightly lifted, soft gradient light between the sheets, with no writing.
+- `public/photos/news/new-website.webp` — A large thick glass panel shaped like a browser window with rounded corners, floating at an angle and glowing with the gradient from within, with no interface and no text.
 
-## process-test
-A clean device-testing lab. On a white bench, a neat row of smartphones and tablets stand upright in simple matching holders, every screen lit and showing the same clean app screen (soft, out of focus, nothing readable), cables routed neatly out of sight behind. A white wall with soft daylight; shallow depth of field with the nearest devices in crisp focus. Precise, orderly and calm.
+## Division renders (`public/orbs/`)
 
-## process-launch
-A modern clinic reception desk at opening time, no people: a slim tablet on a swivel stand shows a clean check-in app (soft, out of focus, nothing readable), beside it a small card terminal and a vase with a single green stem; a light-oak counter, white walls, soft daylight; the waiting area behind softly blurred. Calm, bright and welcoming: software live in a real business.
+Style: "a premium 3D render like the orb visuals on a high-end creative studio website: glossy, physically based materials, soft studio lighting, crisp detail, gentle depth of field, rich but clean colour. No text. Square 1024x1024, the subject centred and filling about 70% of the frame."
+- software: a floating cluster of interlocking mirror-chrome building blocks; teal to blush gradient.
+- automation: a chrome flower whose petals are interlocking gears; lavender gradient.
+- ai: electric blue and violet light filaments blooming upward; black.
+- creatives: glossy glass shapes (spheres, rounded squares, play-button triangles) pouring out of a glass camera lens; peach to pink gradient.
 
-## process-support
-A tidy customer-support workstation by a window. A slim black headset rests on a light-oak desk beside an open laptop whose screen shows a soft, out-of-focus list of support conversations; a phone lying face down, a white coffee cup and a small green plant. Soft morning daylight; calm and welcoming.
+## Social card
 
-# Realistic photo set (business-first home page) — Codex briefs
-Shared style: Style: a photorealistic, candid documentary photograph of a real place, as if taken on a full-frame camera with a 35mm lens at f/2.8 using only the available light. True-to-life colours with neutral white balance and no colour grading, realistic materials and textures with small everyday imperfections (scuffs, dust, worn edges, cable clutter, uneven light), subtle sensor grain, natural vignetting and realistic depth of field, slightly off-centre unposed composition. It must look like an ordinary unedited photo taken at a real business in India, not a 3D render, not an illustration and not a glossy stock photo: no cinematic lighting, no neon, no lens flare, no blue colour cast. No people, no faces, no hands. No readable text, letters, numbers or logos anywhere; screens, labels and signs are out of focus or blank. Landscape 1536x1024.
+`public/og-image.png` is a screenshot of `/preview/brand?og=1` at 1200×675 (the fluted gradient, the glass rings and the line "One foundation for software, automation, AI and creative growth.").
 
-## hero
-A company meeting room right after a planning meeting: a long wooden table with two open laptops, printed reports, a notebook, a pen, coffee cups and a water bottle; a wall-mounted TV at the far end shows a softly out-of-focus sales dashboard; glass wall, office plants and window light behind; chairs pushed back unevenly.
+## Division images (2026-10-24, approved by the owner)
 
-## svc-vision (was why-ai on the home page)
-A factory quality-inspection station on a production line: an industrial machine-vision camera on a metal arm above a running conveyor belt carrying machined aluminium parts, a ring light around the lens, a small industrial monitor beside the line showing an out-of-focus camera feed, yellow safety floor markings, realistic factory lighting and some oil stains.
+Each division's look comes from references the owner chose (Dribbble, Higgsfield); we recreate the direction, never their images. Files in `public/photos/divisions/`, wired through `visual` and `gallery` in `lib/division-pages.ts`. Every new image is shown to the owner before it goes on the site.
 
-## companies
-The main entrance plaza of a large corporate office campus in an Indian city early in the morning before people arrive: a glass-and-concrete office building, landscaped trees and planters, a security cabin and a few parked scooters and cars in the distance, soft overcast light, slightly damp paving.
+**Creatives** (after the Treza agency landing page on Dribbble and Higgsfield's campaigns): bold, surreal fashion-campaign photography, ember wardrobe against a cobalt sky. The blue stays inside these photos, never in the page design; the models are campaign art, never presented as clients or team. Codex, then `scripts/art/edit-photo.py colour`.
+- Style line: Shot like a high-fashion advertising campaign, the bold surreal editorial style of a modern creative agency: real photographic detail (skin pores, fabric weave, creases, stray hairs), bright midday sun plus a touch of on-camera flash fill, a saturated deep cobalt-blue sky with real cumulus clouds, colour on Fujifilm Pro 400H film with fine grain, crisp focus on the subject. The wardrobe is tailored and textured in burnt ember orange (#F5502F), warm sand (#F3EEE8) and deep char (#12110B). Surreal but completely photographic, never illustrated, never 3D-looking, never plastic. No readable text, no logos, no brand names, nothing on any screen except a soft blur. Generous clear sky around the subject for headline type.
+- `creatives-leap.webp`: Low-angle shot from almost ground level on a Hasselblad X2D with a 21mm lens at f/8: a young man in a burnt-orange ember corduroy suit, white T-shirt and white sneakers, mid-leap across the frame with his legs split wide and arms flung out, clutching a smartphone in one hand, glasses on, a determined grin. Nothing but deep cobalt sky and clouds behind him. He fills the right half of the frame; the left half is open sky. Landscape 1536x1024.
+- `creatives-prism.webp`: Tight portrait shot with direct on-camera flash on a Contax T2 at 38mm: a young woman with freckles, in an ember-orange turtleneck, holds up a small clear glass prism right in front of one eye, the prism splitting light across her cheek; plain cobalt-blue paper backdrop behind her. Skin texture fully visible, a hard short flash shadow on the backdrop. Portrait 1024x1536.
+- `creatives-market.webp`: Shot on a Sony A7 IV with a 24mm lens at f/4, from just below waist height: a young content creator in an ember-orange oversized shirt films herself on a smartphone held at arm's length while walking briskly through a sun-drenched open-air produce market, crates of tomatoes, lemons and leafy greens on both sides, striped awnings overhead and a slice of cobalt sky. Real motion in her stride, a slight motion blur on her free hand. Portrait 1024x1536.
 
-## businesses
-The front counter of a busy independent hardware and electrical shop: a card payment terminal, a receipt printer and a tablet on a stand showing an out-of-focus inventory screen, a ledger notebook, a jar of pens; shelves of tools, switches and boxed stock behind, warm indoor light.
+**AI** (after the "Creative AI Website UI" shot on Dribbble): real photographs of fluted glass bending light into jagged ribbons. Codex, then `edit-photo.py colour`.
+- Style line: A real photograph of a pane of thick fluted (reeded) glass with tall vertical ribs, standing in front of a vivid light source; behind the glass the light is broken by the ribs into sharp vertical ribbons, with a jagged sawtooth edge where a soft shape behind the glass is refracted, and fine prism fringes on the rib edges. Pure glass and light, photographed in a studio with a macro lens: true caustics, tiny dust specks and one or two micro-scratches on the glass. No objects, no people, no text, no numbers, no logos, no frame or border.
+- `ai-glass.webp`: The light behind the glass is a warm gradient: a deep ember orange (#F5502F) core fading through coral and peach into warm off-white paper (#FCF8F6) at the edges, with one soft dark char shape behind the glass that the ribs break into a jagged sawtooth ribbon. Landscape 1536x1024, the strongest colour in the right two thirds.
+- `ai-glass-tall.webp`: The light behind the glass is a warm gradient from ember orange (#F5502F) at the bottom through coral pink into pale lilac and paper white at the top; the ribs bend it into tall flame-like jagged ribbons rising up the frame. Portrait 1024x1536.
 
-## founders
-A desk at a co-working space in the evening: an open laptop with an out-of-focus app design on screen, a paper notebook with pencil sketches of phone screens (no writing), a phone, a coffee cup, headphones and a desk lamp that is on; other empty desks, plants and a window with city lights softly out of focus behind.
+**Automation** (after the "AI-Powered Business Automation Website" shot on Dribbble): twisted ribbons of fine dotted strands, ember on paper, drawn in code, not by an image model: `python3 scripts/art/ribbons.py hero|arc|wide|tall <out.png> --w 2400 --h 1600`, then `cwebp -q 72 -m 6`. `automation-ribbons.webp` is `hero`, `automation-wave.webp` is `wide`.
 
+**Software** (after the Cleary logo shot and the topdevs "AI Software Agency" identity on Dribbble): the code symbol in clear glass grown over with vines and ember poppies, and a night studio. Codex, then `edit-photo.py colour`.
+- Style line: A real photograph, not a 3D render and not an illustration: true optics, real depth of field, physically correct refraction and caustics through glass, natural textures with small imperfections (dust, a bent leaf, a fingerprint), Kodak Portra film colour with fine grain. The palette is warm and quiet: warm off-white paper (#FCF8F6), sand (#F3EEE8), deep char shadows (#12110B), natural greens, and ember orange (#F5502F) as the only strong colour. No readable text, no letters except the code symbol where asked, no logos, no brand names, no watermark, no border, no glow, no bloom, no lens flare.
+- `software-code.webp` (opening card, division cards): Shot on a Hasselblad X2D with the XCD 90mm lens at f/8, slightly from below at a three-quarter angle: a large sculpture of the code symbol </> made of thick, perfectly clear optical glass with softly rounded edges, standing upright on a seamless warm sand paper sweep. Living green vines with curling tendrils twist around both angle brackets and climb the slash; a few blooming ember-orange poppies, two small white chamomile flowers and fresh leaves grow out of the vines. Soft late-morning daylight from the left throws long shadows and bright refraction caustics onto the paper. The sculpture sits in the right half; the left 40% is empty paper. Landscape 1536x1024.
+- `software-night.webp` (behind the standards card): Shot on a Leica Q3 with its 28mm lens at f/1.7, from behind and slightly to the side at shoulder height, late at night: a software engineer's silhouette at a wide desk in a dark studio, two monitors glowing softly with out-of-focus blocks of colour, a warm ember-orange desk lamp pooling light on the desk, a ceramic mug and a notebook, the city at night through a tall window in soft bokeh. Deep warm char shadows. Kodak Portra 800, grain. The person sits in the right third; the left two thirds are the window and the room. Landscape 1536x1024.
 
-Shared style: Style: a photorealistic, candid documentary photograph of a real place, as if taken on a full-frame camera with a 35mm lens at f/2.8 using only the available light. True-to-life colours with neutral white balance and no colour grading, realistic materials and textures with small everyday imperfections (scuffs, dust, worn edges, cable clutter, uneven light), subtle sensor grain, natural vignetting and realistic depth of field, slightly off-centre unposed composition. It must look like an ordinary unedited photo taken at a real business in India, not a 3D render, not an illustration and not a glossy stock photo: no cinematic lighting, no neon, no lens flare, no blue colour cast. No people, no faces, no hands. No readable text, letters, numbers or logos anywhere; screens, labels and signs are out of focus or blank. Landscape 1536x1024.
+**Creatives reels** (`public/photos/reels/`, 720×1080, after usefastlane.ai): one campaign series in the Creatives style line above, each a vertical 9:16 still with its format on a chip.
+- `drop.webp`: Shot straight down with direct on-camera flash on a Contax T2: two hands lifting a small ribbed ceramic bottle out of crumpled ember-orange tissue paper inside a sand-coloured box on a cobalt-blue paper surface; a hard short flash shadow, real skin texture, chipped nail polish. Portrait 1024x1536, the bottle in the centre.
+- `studio.webp`: Shot on a Sony A7 IV with a 24mm lens at f/2, behind the scenes from slightly behind a creator: a young woman in an ember-orange boiler suit framing a shot on a smartphone mounted on a small tripod, a ring light and a softbox on stands, a sand paper backdrop with a ceramic vase being filmed; window light mixing with the ring light, cables on the floor. Portrait 1024x1536.
+- `noodles.webp`: Shot from directly above with flash on a Fujifilm X100V: chopsticks lifting a tangle of glossy noodles out of an ember-orange ceramic bowl of broth with chilli oil, sesame and spring onions, steam rising, on a cobalt-blue tabletop; one hand in frame. Portrait 1024x1536.
+- `sneaker.webp`: Shot from ground level on a Sony A1 with a 16mm lens at 1/2000s: an ember-orange sneaker stepping hard into a shallow puddle on a sunlit street, water exploding outward in frozen droplets, the cobalt sky reflected in the puddle; a crisp sock and the hem of sand-coloured trousers. Portrait 1024x1536.
+- `maker.webp`: Shot on a Leica Q3 at 28mm, eye level, candid: a ceramicist in an ember-orange work apron talking to a phone camera propped on a shelf, mid-sentence with expressive hands, in a bright pottery workshop with clay-dusted wooden shelves of sand-coloured pots behind her; daylight from a big window. Portrait 1024x1536.
+- `florist.webp`: Shot on a Canon EOS R5 with a 50mm lens at f/2.8, close-up: hands wrapping a bunch of ember-orange poppies in brown kraft paper with twine on a wooden florist's bench, petals and stems scattered, cobalt-blue painted wall behind; soft daylight. Portrait 1024x1536.
+- `coffee.webp`: Shot on a Fujifilm X-T5 with a 35mm lens at f/2, close and slightly from above: a barista pouring steamed milk into an ember-orange ceramic cup, a tulip of latte art forming, the stainless jug tilted, coffee-stained fingers; a cobalt-blue tiled counter, morning light. Portrait 1024x1536.
+- `rooftop.webp`: Shot on a Contax T2 with direct flash at dusk: two friends laughing on a rooftop, one in an ember-orange jacket mid-spin with arms out, the other holding up a phone to film her, a cobalt dusk sky with the last light, string lights blurred behind. Portrait 1024x1536.
 
-## svc-software
-A software developer's desk in a working office: two monitors showing out-of-focus code editor windows, a laptop on a stand, a mechanical keyboard, a notebook with hand-drawn boxes and arrows (no writing), a coffee mug and tangled cables; a whiteboard with faint diagrams behind.
+## Creatives library (2026-10-24)
 
-## svc-mobile
-A smartphone in a small stand on the billing counter of a busy neighbourhood restaurant, its screen showing an out-of-focus food-ordering app, next to a card payment terminal, a bell and a stack of takeaway boxes; warm tungsten light.
+The Creatives page shows 155 reels in six styles (Vox-style explainers, faceless videos, product ads, characters, trends, stop-motion; podcast clips, local businesses and campaigns were cut on 2026-10-24 and stay in `spec.py` behind `SKIP`) and 36 square posts, so its strips run over a minute before repeating (owner: "20+ unique variations on each style"; "should be colourful, not only one style"). Files: `public/photos/library/<style>/*.webp` (450×800; the first few of each style and the campaign reels are 600×1067) and `public/photos/library/posts/` (480 or 600 square). They are display-sized and served as static files (`unoptimized`), with a content fingerprint in each URL, so they use none of Vercel's image transformations and can be cached for a year. Data and captions: `lib/creatives-library.ts`, generated.
 
-## svc-desktop
-An engineering office workstation: two large monitors showing an out-of-focus desktop application with toolbars and panels, printed technical drawings and a steel ruler on the desk, a calculator and a mug; overcast window light.
+Pipeline (`scripts/art/creatives-library/`, run in a work folder; raw grids are not kept in the repo):
+1. `spec.py` holds every subject and its on-screen caption (24 per style) and the style lines.
+2. `make_briefs.py` writes one brief per 2×2 grid (four separate pictures, white gutters), and `manifest.json`.
+3. `gen.sh <grid>` runs Codex for one grid (stdin closed); about 100 s each, seven in parallel was fine.
+4. `cut.py` finds the white gutters and cuts each grid into four pictures.
+5. `build_library.py` converts them to WebP and writes `lib/creatives-library.ts`.
 
-## svc-ai
-A machine-learning workstation in a small lab: a tower PC with its side panel off showing two large graphics cards and bundled cables, a monitor beside it showing out-of-focus training charts, an external drive and a notebook on the bench.
-
-## svc-automation
-An accounts office desk mid-task: a compact document scanner feeding a stack of paper invoices, a laptop with an out-of-focus spreadsheet, trays of processed and unprocessed paperwork, a stapler and a pen stand; fluorescent office light.
-
-## svc-managed
-A small server room in an office: an open network rack with servers, switches and neatly bundled patch cables, a UPS unit on the floor, a laptop on a cart plugged into the rack, a wall-mounted air conditioner and a fire extinguisher.
-
-## support
-A smartphone lying on an office desk next to a laptop, the phone screen showing an out-of-focus chat-style support app, a coffee cup and a notebook nearby; soft window light.
-
-## research
-An R&D lab bench: a machine-vision camera on an aluminium frame pointed at a metal test part under a ring light, a laptop showing an out-of-focus image, a multimeter, loose cables and small tools; mixed daylight and lab lighting.
-
-
-Shared style: Style: a photorealistic, candid documentary photograph of a real place, as if taken on a full-frame camera with a 35mm lens at f/2.8 using only the available light. True-to-life colours with neutral white balance and no colour grading, realistic materials and textures with small everyday imperfections (scuffs, dust, worn edges, cable clutter, uneven light), subtle sensor grain, natural vignetting and realistic depth of field, slightly off-centre unposed composition. It must look like an ordinary unedited photo taken at a real business in India, not a 3D render, not an illustration and not a glossy stock photo: no cinematic lighting, no neon, no lens flare, no blue colour cast. No people, no faces, no hands. No readable text, letters, numbers or logos anywhere; screens, labels and signs are out of focus or blank. Landscape 1536x1024.
-
-# Realistic photo set, part 3 (About and AI pages) — Codex briefs
-Shared style: Style: a photorealistic, candid documentary photograph of a real place, as if taken on a full-frame camera with a 35mm lens at f/4 using only the available light. True-to-life colours with neutral white balance and no colour grading, realistic materials and textures with small everyday imperfections, subtle sensor grain, natural vignetting and realistic depth of field. Calm, professional and understated, like a photograph in a large company's annual report. It must look like an ordinary unedited photo, not a 3D render, not an illustration and not a glossy stock photo: no cinematic lighting, no neon, no lens flare, no blue colour cast, nothing staged or cute. No people, no faces, no hands. No readable text, letters, numbers or logos anywhere; screens and signs are out of focus or blank. Wide landscape 1536x1024, composed so it still reads well when cropped to a wide 21:9 band through the middle.
-
-## about (public/photos/about.webp)
-A real open-plan software company office early in the morning before anyone arrives, seen from eye level down a row of desks: monitors and closed laptops, office chairs at slightly different angles, a few water bottles and notebooks, cable trays, potted plants, glass-walled meeting rooms at the side, large windows with soft morning daylight and a hazy city beyond.
-
-## ai-view (public/photos/ai-view.webp)
-A software engineer's workstation in an office in the evening: a large monitor showing an out-of-focus code editor with a narrow chat panel along one side, a second smaller screen, a keyboard and mouse, a desk lamp that is on and a cup of tea; office windows with dusk light and city buildings behind, the rest of the office dim.
+Captions are HTML, not part of the images (image models garble text). `lib/reels.ts` gives each style a rotation of trending caption looks (subtitle, black or white boxes, an uppercase line with one key word coloured, word highlight, coloured pills, serif, typewriter strip, stickers, a two-tone title, meme top text, Vox highlight and paper label) and rotates highlight colours, so neighbouring reels never match. The looks are in `components/warm/reels/ReelCaption.tsx`; `/preview/captions` shows every style's first reels side by side.
 

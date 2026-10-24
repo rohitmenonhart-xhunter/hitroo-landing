@@ -2,12 +2,17 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { Check, Loader2 } from 'lucide-react';
-import { COMPANY, services } from '@/lib/site-data';
 import Turnstile from './Turnstile';
-import { FIELD, LABEL, SUBMIT } from './form';
+import { FIELD, LABEL, SENT_ICON, SENT_TEXT, SUBMIT } from './form';
+
+/** One group of "Interested in" choices: a division and what it offers. */
+export interface InterestGroup {
+  label: string;
+  options: string[];
+}
 
 /** Project enquiry → /api/lead (honeypot, timing and optional Turnstile, as the API expects). */
-export default function LeadForm({ idPrefix = 'lead' }: { idPrefix?: string }) {
+export default function LeadForm({ idPrefix = 'lead', companyEmail, groups }: { idPrefix?: string; companyEmail: string; groups: InterestGroup[] }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -23,6 +28,12 @@ export default function LeadForm({ idPrefix = 'lead' }: { idPrefix?: string }) {
   const [checkingVerification, setCheckingVerification] = useState(true);
   const formStartedAt = useRef(Date.now());
 
+  // Arriving from the home page's "I need…" picker: start the message with what they picked.
+  useEffect(() => {
+    const need = new URLSearchParams(window.location.search).get('need');
+    if (need) setMessage((m) => m || `I need: ${need.slice(0, 300)}.\n\n`);
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
     fetch('/api/lead/config', { cache: 'no-store' })
@@ -34,7 +45,7 @@ export default function LeadForm({ idPrefix = 'lead' }: { idPrefix?: string }) {
         if (!cancelled) setTurnstileSiteKey(configuration.turnstileSiteKey || '');
       })
       .catch(() => {
-        if (!cancelled) setError(`Verification could not load. Please refresh, or email ${COMPANY.email}.`);
+        if (!cancelled) setError(`Verification could not load. Please refresh, or email ${companyEmail}.`);
       })
       .finally(() => {
         if (!cancelled) setCheckingVerification(false);
@@ -42,7 +53,7 @@ export default function LeadForm({ idPrefix = 'lead' }: { idPrefix?: string }) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [companyEmail]);
 
   const resetVerification = () => {
     if (turnstileSiteKey) setTurnstileResetSignal((signal) => signal + 1);
@@ -77,11 +88,11 @@ export default function LeadForm({ idPrefix = 'lead' }: { idPrefix?: string }) {
         setSubmitted(true);
       } else {
         const data = await res.json().catch(() => ({}));
-        setError(data.error || `Something went wrong. Please email ${COMPANY.email}.`);
+        setError(data.error || `Something went wrong. Please email ${companyEmail}.`);
         resetVerification();
       }
     } catch {
-      setError(`Could not connect. Please email ${COMPANY.email}.`);
+      setError(`Could not connect. Please email ${companyEmail}.`);
       resetVerification();
     } finally {
       setSubmitting(false);
@@ -91,10 +102,10 @@ export default function LeadForm({ idPrefix = 'lead' }: { idPrefix?: string }) {
   if (submitted) {
     return (
       <div role="status" className="flex flex-col items-start gap-5 py-6">
-        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-cobalt-soft text-cobalt">
+        <span className={SENT_ICON}>
           <Check aria-hidden="true" className="h-5 w-5" />
         </span>
-        <p className="text-[22px] font-light tracking-[-0.02em] text-ink">Thanks. We’ll reply within a day.</p>
+        <p className={SENT_TEXT}>Thanks. We’ll reply within a day.</p>
       </div>
     );
   }
@@ -128,10 +139,14 @@ export default function LeadForm({ idPrefix = 'lead' }: { idPrefix?: string }) {
           </label>
           <select id={id('interest')} name="interest" value={interest} onChange={(e) => setInterest(e.target.value)} className={FIELD}>
             <option value="">Choose one</option>
-            {services.map((s) => (
-              <option key={s.slug} value={s.label}>
-                {s.label}
-              </option>
+            {groups.map((g) => (
+              <optgroup key={g.label} label={g.label}>
+                {g.options.map((o) => (
+                  <option key={o} value={o}>
+                    {o}
+                  </option>
+                ))}
+              </optgroup>
             ))}
             <option value="Not sure yet">Not sure yet</option>
           </select>
@@ -178,7 +193,7 @@ export default function LeadForm({ idPrefix = 'lead' }: { idPrefix?: string }) {
             'Send'
           )}
         </button>
-        <p className="text-[13px] text-slate-500">Email or phone, either works.</p>
+        <p className="text-[14px] font-medium text-stone">Email or phone, either works.</p>
       </div>
       {error && (
         <p role="alert" className="text-[14px] text-red-600">

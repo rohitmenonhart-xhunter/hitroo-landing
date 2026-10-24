@@ -11,7 +11,10 @@
     "typecheck": "tsc --noEmit",
     "db:migrate": "node --env-file=.env.local scripts/db-migrate.mjs",
     "db:seed-posts": "node --env-file=.env.local scripts/db-seed-posts.mjs",
-    "indexnow": "node scripts/indexnow.mjs"
+    "media:upload": "node --env-file=.env.local scripts/media-upload.mjs",
+    "content:seed": "node --no-warnings=MODULE_TYPELESS_PACKAGE_JSON --env-file=.env.local scripts/content-seed.ts",
+    "indexnow": "node scripts/indexnow.mjs",
+    "warm-images": "node scripts/warm-images.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -56,10 +59,10 @@
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.3.0",
     "eslint": "8.49.0",
-    "eslint-config-next": "13.5.1",
+    "eslint-config-next": "^13.5.11",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.446.0",
-    "next": "13.5.1",
+    "next": "^13.5.11",
     "next-themes": "^0.3.0",
     "nodemailer": "^7.0.12",
     "pg": "^8.23.0",
@@ -79,6 +82,8 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/pg": "^8.23.1"
+    "@aws-sdk/client-s3": "^3.1156.0",
+    "@types/pg": "^8.23.1",
+    "sharp": "^0.34.5"
   }
 }

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { listPosts, postUrl } from '@/lib/data/posts';
-import { services } from '@/lib/site-data';
+import { getContent } from '@/lib/content';
 import { abs } from '@/lib/seo';
 
 export const revalidate = 600;
@@ -13,9 +13,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency,
     priority,
   });
-  const posts = await listPosts(undefined, 1000);
+  const [posts, DIVISIONS, services] = await Promise.all([listPosts(undefined, 1000), getContent('divisions'), getContent('services')]);
   return [
     page('/', 1, 'weekly'),
+    ...DIVISIONS.map((d) => page(`/${d.slug}`, 0.95)),
     page('/services', 0.9),
     ...services.map((s) => page(`/services/${s.slug}`, 0.9)),
     page('/insights', 0.8, 'daily'),

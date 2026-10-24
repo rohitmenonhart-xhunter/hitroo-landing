@@ -1,0 +1,312 @@
+{
+  "/photos/divisions/software-code.webp": {
+    "id": "2a6248bf-fab5-466f-aaf6-81a58b5c98dd",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/93cc0e22-software-code-1536.webp",
+    "width": 1536,
+    "height": 1024,
+    "tone": "#c3ad8f",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/93cc0e22-software-code-480.webp"
+      },
+      {
+        "w": 960,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/93cc0e22-software-code-960.webp"
+      },
+      {
+        "w": 1536,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/93cc0e22-software-code-1536.webp"
+      }
+    ]
+  },
+  "/photos/divisions/software-night.webp": {
+    "id": "58905727-0f0b-462e-99c6-29479355cbe5",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/0f362e9f-software-night-1536.webp",
+    "width": 1536,
+    "height": 1024,
+    "tone": "#2c231b",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/0f362e9f-software-night-480.webp"
+      },
+      {
+        "w": 960,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/0f362e9f-software-night-960.webp"
+      },
+      {
+        "w": 1536,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/0f362e9f-software-night-1536.webp"
+      }
+    ]
+  },
+  "/photos/divisions/automation-wave.webp": {
+    "id": "00a8cec7-a0f4-441e-8b01-89589be97783",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/d67e0ca2-automation-wave-2400.webp",
+    "width": 2400,
+    "height": 1600,
+    "tone": "#f6e6e1",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/d67e0ca2-automation-wave-480.webp"
+      },
+      {
+        "w": 960,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/d67e0ca2-automation-wave-960.webp"
+      },
+      {
+        "w": 1600,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/d67e0ca2-automation-wave-1600.webp"
+      },
+      {
+        "w": 2400,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/d67e0ca2-automation-wave-2400.webp"
+      }
+    ]
+  },
+  "/photos/divisions/automation-ribbons.webp": {
+    "id": "f9a5f6d1-7fa9-439a-8566-18b24f562b66",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/999939d3-automation-ribbons-2400.webp",
+    "width": 2400,
+    "height": 1600,
+    "tone": "#f1dad4",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/999939d3-automation-ribbons-480.webp"
+      },
+      {
+        "w": 960,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/999939d3-automation-ribbons-960.webp"
+      },
+      {
+        "w": 1600,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/999939d3-automation-ribbons-1600.webp"
+      },
+      {
+        "w": 2400,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/999939d3-automation-ribbons-2400.webp"
+      }
+    ]
+  },
+  "/photos/divisions/ai-glass.webp": {
+    "id": "ef9f1205-4bf2-45be-b45f-21ccbed1d9fd",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/608e6a2e-ai-glass-1536.webp",
+    "width": 1536,
+    "height": 1024,
+    "tone": "#c37548",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/608e6a2e-ai-glass-480.webp"
+      },
+      {
+        "w": 960,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/608e6a2e-ai-glass-960.webp"
+      },
+      {
+        "w": 1536,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/608e6a2e-ai-glass-1536.webp"
+      }
+    ]
+  },
+  "/photos/divisions/ai-glass-tall.webp": {
+    "id": "bbc0cc14-a6d1-4ed4-91f4-bc557422e036",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/f50ac56c-ai-glass-tall-1024.webp",
+    "width": 1024,
+    "height": 1536,
+    "tone": "#c57154",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/f50ac56c-ai-glass-tall-480.webp"
+      },
+      {
+        "w": 960,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/f50ac56c-ai-glass-tall-960.webp"
+      },
+      {
+        "w": 1024,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/f50ac56c-ai-glass-tall-1024.webp"
+      }
+    ]
+  },
+  "/photos/divisions/creatives-leap.webp": {
+    "id": "9efafb90-5625-4c23-9741-f3956b5c4269",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/0b808df9-creatives-leap-1536.webp",
+    "width": 1536,
+    "height": 1024,
+    "tone": "#5f7fa9",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/0b808df9-creatives-leap-480.webp"
+      },
+      {
+        "w": 960,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/0b808df9-creatives-leap-960.webp"
+      },
+      {
+        "w": 1536,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/0b808df9-creatives-leap-1536.webp"
+      }
+    ]
+  },
+  "/people/jensen-huang.webp": {
+    "id": "2bac05a0-bf92-4b15-a599-5d49ad2e14ec",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/902875d3-jensen-huang-960.webp",
+    "width": 960,
+    "height": 1200,
+    "tone": "#707070",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/902875d3-jensen-huang-480.webp"
+      },
+      {
+        "w": 960,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/902875d3-jensen-huang-960.webp"
+      }
+    ]
+  },
+  "/people/rohit.webp": {
+    "id": "43cba59c-2220-46b0-83ee-834f80b8f89b",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/31fec9d4-rohit-480.webp",
+    "width": 480,
+    "height": 480,
+    "tone": "#978479",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/31fec9d4-rohit-480.webp"
+      }
+    ]
+  },
+  "/photos/library/trends/s1.webp": {
+    "id": "4900ae7b-d97d-427e-81f5-f5d971ad8b66",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/482baf79-reel-trends-s1-600.webp",
+    "width": 600,
+    "height": 1067,
+    "tone": "#a48166",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/482baf79-reel-trends-s1-480.webp"
+      },
+      {
+        "w": 600,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/482baf79-reel-trends-s1-600.webp"
+      }
+    ]
+  },
+  "/photos/library/faceless/s1.webp": {
+    "id": "fb1c0b0c-a33f-4395-bf30-4ecdf450e198",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/5e40bfc4-reel-faceless-s1-600.webp",
+    "width": 600,
+    "height": 1067,
+    "tone": "#8f7b5d",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/5e40bfc4-reel-faceless-s1-480.webp"
+      },
+      {
+        "w": 600,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/5e40bfc4-reel-faceless-s1-600.webp"
+      }
+    ]
+  },
+  "/photos/library/ads/s1.webp": {
+    "id": "dee46896-04b0-4e6e-ad25-bc06753731e1",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/919a08db-reel-ads-s1-600.webp",
+    "width": 600,
+    "height": 1067,
+    "tone": "#e45582",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/919a08db-reel-ads-s1-480.webp"
+      },
+      {
+        "w": 600,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/919a08db-reel-ads-s1-600.webp"
+      }
+    ]
+  },
+  "/photos/library/characters/s2.webp": {
+    "id": "918adc21-075a-47d3-844f-3086bb0d21e2",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/c3cb949a-reel-characters-s2-600.webp",
+    "width": 600,
+    "height": 1067,
+    "tone": "#9d8f8c",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/c3cb949a-reel-characters-s2-480.webp"
+      },
+      {
+        "w": 600,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/c3cb949a-reel-characters-s2-600.webp"
+      }
+    ]
+  },
+  "/photos/library/animation/s1.webp": {
+    "id": "cbc3f2bd-6701-44ab-b1ed-ebef01c2af5f",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/83e6a560-reel-animation-s1-600.webp",
+    "width": 600,
+    "height": 1067,
+    "tone": "#9e6e4c",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/83e6a560-reel-animation-s1-480.webp"
+      },
+      {
+        "w": 600,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/83e6a560-reel-animation-s1-600.webp"
+      }
+    ]
+  },
+  "/photos/library/ads/s2.webp": {
+    "id": "e8331fa8-4818-4885-8f71-5b9248774b71",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/703afe34-reel-ads-s2-600.webp",
+    "width": 600,
+    "height": 1067,
+    "tone": "#d5c26e",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/703afe34-reel-ads-s2-480.webp"
+      },
+      {
+        "w": 600,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/703afe34-reel-ads-s2-600.webp"
+      }
+    ]
+  },
+  "/video/myth-attention.mp4": {
+    "id": "de466ad2-013b-43a6-b9ed-2f57c82d4715",
+    "src": "https://hitroo-media.fly.storage.tigris.dev/vid/f89df513-myth-attention.mp4",
+    "poster": "https://hitroo-media.fly.storage.tigris.dev/img/9b4fb721-myth-attention-poster-720.webp",
+    "width": 720,
+    "height": 1280
+  },
+  "/video/myth-attention-poster.webp": {
+    "src": "https://hitroo-media.fly.storage.tigris.dev/img/9b4fb721-myth-attention-poster-720.webp",
+    "width": 720,
+    "height": 1280,
+    "tone": "#e1dad0",
+    "variants": [
+      {
+        "w": 480,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/9b4fb721-myth-attention-poster-480.webp"
+      },
+      {
+        "w": 720,
+        "url": "https://hitroo-media.fly.storage.tigris.dev/img/9b4fb721-myth-attention-poster-720.webp"
+      }
+    ]
+  }
+}

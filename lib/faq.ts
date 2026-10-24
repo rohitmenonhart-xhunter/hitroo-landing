@@ -62,17 +62,17 @@ export function serviceFaq(s: { title: string; approach: string[]; capabilities:
     },
     { q: `What does ${t} change for a business?`, a: `${list(s.outcomes.map((o, i) => (i ? lowerFirst(o) : o)))}.` },
     { q: `Which technology does HITROO use for ${t}?`, a: `Usually ${list(s.stack)}, chosen to fit your business and your team.` },
-    { q: `Is ${t} supported after launch?`, a: 'Yes. Support runs through the HITROO app, with a first reply within 24 hours and most fixes within 48.' },
+    { q: `Is ${t} supported after launch?`, a: 'Yes. The engineers who built it support it through the HITROO app, and you can follow every request from report to release.' },
   ];
 }
 
 /** The questions most people ask before they contact us. */
 export function generalFaq(email: string, contactUrl: string): Qa[] {
   return [
-    { q: 'What does HITROO build?', a: 'Custom software, mobile and desktop apps, AI models, AI automation, computer-vision systems and managed services.' },
-    { q: 'How does HITROO work?', a: 'In short iterations, with working software early: Discover, Design, Build, Test & secure, Launch and Support.' },
-    { q: 'Does HITROO support software after launch?', a: 'Yes. Through the HITROO app, with a first reply within 24 hours and most fixes within 48.' },
-    { q: 'Who does HITROO work with?', a: 'Enterprises, growing businesses, and founders and startups, worldwide.' },
-    { q: 'How do I start a project?', a: `Tell us what you need at ${contactUrl} or ${email}. We reply within a day.` },
+    { q: 'What does HITROO build?', a: 'Custom platforms, mobile and desktop apps, automated workflows, AI models, vision systems and social media content, all from one team.' },
+    { q: 'How does HITROO work?', a: 'In four stages: discovery, scope and design, delivery, then operations. You use working software early and steer every release.' },
+    { q: 'Does HITROO support software after launch?', a: 'Yes. The engineers who built it support it through the HITROO app, where you follow every request from report to release.' },
+    { q: 'Who does HITROO work with?', a: 'Founders turning an idea into a product, growing businesses replacing spreadsheets, and enterprises modernising systems they can’t switch off, worldwide.' },
+    { q: 'How do I start a project?', a: `Book a free call at ${contactUrl} or write to ${email}. After the call, you get a clear scope and estimate.` },
   ];
 }

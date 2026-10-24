@@ -9,6 +9,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        /* Laptop windows (about 760–860 px tall): tighter spacing so pinned sections fit. */
+        short: { raw: '(max-height: 860px)' },
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -20,18 +24,19 @@ const config: Config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        corp: ['var(--font-inter)', 'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
-        /* Story moments only (the home carousel, featured cards). */
-        serif: ['var(--font-serif)', 'Georgia', 'serif'],
+        /* Plus Jakarta Sans: the wordmark "hitroo" and headlines. */
+        jakarta: ['var(--font-jakarta)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-jakarta)', 'system-ui', 'sans-serif'],
+        /* Fustat: text and interface. */
+        body: ['var(--font-body)', 'system-ui', '-apple-system', 'Segoe UI', 'sans-serif'],
       },
       colors: {
-        /* Corporate white theme (home page) */
-        ink: '#0A1633',
-        cobalt: { DEFAULT: '#2451FF', dark: '#1A3ED9', soft: '#EEF2FF', light: '#9DB2FF' },
-        navy: '#0A1B4A',
-        cream: '#F5F0E6',
-        mist: '#F4F6FA',
-        line: '#E3E7EE',
+        /* The site: paper page, char text and dark cards, sand fills, stone secondary text, one ember accent. */
+        paper: '#FCF8F6',
+        sand: '#F3EEE8',
+        stone: '#6F6A61',
+        char: '#12110B',
+        ember: { DEFAULT: '#F5502F', dark: '#DE3F1F' },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -74,6 +79,20 @@ const config: Config = {
         },
       },
       keyframes: {
+        /* The marquee band: two identical rows slide left by one row's width, then repeat. */
+        marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' },
+        },
+        /* A reel playing: a slow push-in on the picture, and the story bar filling. */
+        kenburns: {
+          from: { transform: 'scale(1)' },
+          to: { transform: 'scale(1.09)' },
+        },
+        reelbar: {
+          from: { transform: 'scaleX(0)' },
+          to: { transform: 'scaleX(1)' },
+        },
         'accordion-down': {
           from: {
             height: '0',
@@ -92,6 +111,10 @@ const config: Config = {
         },
       },
       animation: {
+        marquee: 'marquee 48s linear infinite',
+        'marquee-slow': 'marquee 70s linear infinite',
+        kenburns: 'kenburns 9s ease-in-out infinite alternate',
+        reelbar: 'reelbar 6s linear infinite',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },

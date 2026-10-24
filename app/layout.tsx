@@ -1,7 +1,8 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import JsonLd from '@/components/seo/JsonLd';
-import { inter, serif } from '@/components/corporate/fonts';
+import { body, jakarta } from '@/components/warm/fonts';
+import { getContent } from '@/lib/content';
 import { OG_IMAGE, SITE_URL, organizationLd, websiteLd } from '@/lib/seo';
 
 const DESCRIPTION =
@@ -9,7 +10,7 @@ const DESCRIPTION =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  themeColor: '#ffffff',
+  themeColor: '#FCF8F6',
   title: {
     default: 'HITROO — Custom Software, Apps, Automation & AI',
     template: '%s | HITROO',
@@ -56,7 +57,7 @@ export const metadata: Metadata = {
     shortcut: ['/favicon.ico'],
   },
   manifest: '/favicon/manifest.json',
-  other: { 'msapplication-config': '/favicon/browserconfig.xml', 'msapplication-TileColor': '#ffffff' },
+  other: { 'msapplication-config': '/favicon/browserconfig.xml', 'msapplication-TileColor': '#FCF8F6' },
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -79,14 +80,15 @@ export const metadata: Metadata = {
   category: 'technology',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const [company, divisions] = await Promise.all([getContent('company'), getContent('divisions')]);
   return (
-    <html lang="en" className={`${inter.variable} ${serif.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${jakarta.variable} ${body.variable}`} suppressHydrationWarning>
       <head>
-        <JsonLd data={organizationLd()} />
+        <JsonLd data={organizationLd(company, divisions)} />
         <JsonLd data={websiteLd()} />
       </head>
-      <body suppressHydrationWarning className="bg-white font-corp text-ink antialiased">
+      <body suppressHydrationWarning className="bg-paper font-body text-char antialiased">
         {children}
       </body>
     </html>

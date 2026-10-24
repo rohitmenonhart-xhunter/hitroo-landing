@@ -43,14 +43,14 @@ export default function CookieConsent() {
       role="dialog"
       aria-labelledby="cookie-title"
       aria-describedby="cookie-text"
-      className="fixed inset-x-4 bottom-4 z-[60] max-w-[380px] rounded-xl bg-white p-6 shadow-[0_24px_64px_-16px_rgba(10,22,51,0.32)] animate-in fade-in-0 slide-in-from-bottom-2 duration-300 sm:bottom-6 sm:left-6 sm:right-auto"
+      className="glass-warm fixed inset-x-4 bottom-4 z-[60] max-w-[380px] rounded-[24px] p-6 animate-in fade-in-0 slide-in-from-bottom-2 duration-300 sm:bottom-6 sm:left-6 sm:right-auto"
     >
-      <p id="cookie-title" className="text-[15px] font-medium text-ink">
+      <p id="cookie-title" className="font-display text-[18px] font-bold tracking-[-0.02em] text-char">
         Cookies
       </p>
-      <p id="cookie-text" className="mt-2 text-[14px] leading-relaxed text-slate-600">
+      <p id="cookie-text" className="mt-2 text-[15px] font-medium leading-relaxed text-char/75">
         We use cookies to understand how our site is used and to improve it. Read our{' '}
-        <Link href="/privacy" className="text-cobalt underline-offset-4 hover:underline">
+        <Link href="/privacy" className="text-char underline decoration-char/30 underline-offset-4 hover:decoration-char">
           privacy policy
         </Link>
         .
@@ -59,14 +59,14 @@ export default function CookieConsent() {
         <button
           type="button"
           onClick={() => decide('denied')}
-          className="h-10 rounded-full bg-mist text-[14px] font-medium text-ink transition-colors hover:bg-cobalt-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt"
+          className="h-11 rounded-full bg-white text-[15px] font-medium text-char ring-1 ring-char/10 transition-colors hover:bg-[#FFF8F5] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-char"
         >
           Decline
         </button>
         <button
           type="button"
           onClick={() => decide('granted')}
-          className="h-10 rounded-full bg-cobalt text-[14px] font-medium text-white transition-colors hover:bg-cobalt-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cobalt"
+          className="h-11 rounded-full bg-char text-[15px] font-medium text-white transition-colors hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-char"
         >
           Accept
         </button>

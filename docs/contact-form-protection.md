@@ -18,7 +18,7 @@ never applied the old Netlify edge rules, so every limit lives in the code.
    address at most once an hour and 30 an hour in all, so the forms can't be used to send
    HITROO emails to someone else's inbox in bulk. Team notifications stop at 60 an hour.
    Past a cap the submission is still stored and shows in the admin.
-5. **Cloudflare Turnstile** (optional, recommended): server-verified bot detection. Tokens
+5. **Cloudflare Turnstile** (on in production since 2026-09-30, Managed mode): server-verified bot detection. Tokens
    are checked for the `contact` or `careers` action, expire after Cloudflare's validity
    window and cannot be reused.
 

@@ -3,9 +3,8 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Check, Loader2, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { COMPANY } from '@/lib/site-data';
 import Turnstile from './Turnstile';
-import { FIELD, LABEL, SUBMIT } from './form';
+import { FIELD, LABEL, SENT_ICON, SENT_TEXT, SUBMIT } from './form';
 
 const POSITIONS = [
   { id: 'fullstack', title: 'Full Stack Developer' },
@@ -21,7 +20,7 @@ const MAX_RESUME_BYTES = 3 * 1024 * 1024;
 const EMPTY = { name: '', email: '', phone: '', linkedin: '', portfolio: '', whyHitroo: '', whyPosition: '', experience: '', availability: '' };
 
 /** Role picker + application → /api/careers (same payload and protections as before). */
-export default function CareersForm() {
+export default function CareersForm({ email }: { email: string }) {
   const [position, setPosition] = useState('');
   const [form, setForm] = useState(EMPTY);
   const [resume, setResume] = useState<File | null>(null);
@@ -46,7 +45,7 @@ export default function CareersForm() {
         if (!cancelled) setTurnstileSiteKey(configuration.turnstileSiteKey || '');
       })
       .catch(() => {
-        if (!cancelled) setError(`Verification could not load. Please refresh, or email ${COMPANY.email}.`);
+        if (!cancelled) setError(`Verification could not load. Please refresh, or email ${email}.`);
       })
       .finally(() => {
         if (!cancelled) setCheckingVerification(false);
@@ -54,7 +53,7 @@ export default function CareersForm() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [email]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -109,11 +108,11 @@ export default function CareersForm() {
         setSubmitted(true);
       } else {
         const data = await response.json().catch(() => ({}));
-        setError(data.error || `Could not submit. Please email ${COMPANY.email}.`);
+        setError(data.error || `Could not submit. Please email ${email}.`);
         resetVerification();
       }
     } catch {
-      setError(`Could not connect. Please email ${COMPANY.email}.`);
+      setError(`Could not connect. Please email ${email}.`);
       resetVerification();
     } finally {
       setSubmitting(false);
@@ -123,10 +122,10 @@ export default function CareersForm() {
   if (submitted) {
     return (
       <div role="status" className="flex flex-col items-start gap-5 py-6">
-        <span className="flex h-11 w-11 items-center justify-center rounded-full bg-cobalt-soft text-cobalt">
+        <span className={SENT_ICON}>
           <Check aria-hidden="true" className="h-5 w-5" />
         </span>
-        <p className="text-[22px] font-light tracking-[-0.02em] text-ink">Application received. We’ll be in touch within 7 days.</p>
+        <p className={SENT_TEXT}>Application received. We’ll be in touch within 7 days.</p>
       </div>
     );
   }
@@ -134,19 +133,19 @@ export default function CareersForm() {
   return (
     <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
       <fieldset className="lg:col-span-4">
-        <legend className="mb-4 text-[13px] font-medium text-slate-500">Choose a role</legend>
+        <legend className="mb-4 text-[14px] font-medium text-stone">Choose a role</legend>
         <div className="grid gap-2">
           {POSITIONS.map((p) => (
             <label
               key={p.id}
               className={cn(
-                'flex cursor-pointer items-center justify-between rounded-md border px-4 py-3 text-[15px] transition-colors',
-                position === p.id ? 'border-cobalt bg-cobalt-soft/60 text-ink' : 'border-line text-slate-700 hover:border-slate-400'
+                'flex cursor-pointer items-center justify-between rounded-[14px] border px-4 py-3 text-[16px] font-medium transition-colors',
+                position === p.id ? 'border-char bg-white text-char' : 'border-char/10 bg-paper text-char/80 hover:text-char'
               )}
             >
               <input type="radio" name="position" value={p.id} checked={position === p.id} onChange={() => setPosition(p.id)} className="sr-only" />
               {p.title}
-              {position === p.id && <Check aria-hidden="true" className="h-4 w-4 text-cobalt" />}
+              {position === p.id && <Check aria-hidden="true" className="h-4 w-4" />}
             </label>
           ))}
         </div>
@@ -205,11 +204,11 @@ export default function CareersForm() {
           <span className={LABEL}>Resume (PDF, up to 3 MB)</span>
           <label
             className={cn(
-              'flex cursor-pointer items-center gap-3 rounded-md border border-dashed px-4 py-4 text-[15px] transition-colors',
-              resume ? 'border-cobalt text-ink' : 'border-line text-slate-500 hover:border-slate-400'
+              'flex cursor-pointer items-center gap-3 rounded-[14px] border border-dashed px-4 py-4 text-[16px] font-medium transition-colors',
+              resume ? 'border-char bg-white text-char' : 'border-char/20 bg-paper text-stone hover:text-char'
             )}
           >
-            {resume ? <Check aria-hidden="true" className="h-5 w-5 text-cobalt" /> : <Upload aria-hidden="true" className="h-5 w-5" />}
+            {resume ? <Check aria-hidden="true" className="h-5 w-5" /> : <Upload aria-hidden="true" className="h-5 w-5" />}
             {resume ? resume.name : 'Upload your resume'}
             <input type="file" accept="application/pdf,.pdf" onChange={onFile} className="sr-only" />
           </label>
@@ -271,7 +270,7 @@ export default function CareersForm() {
               'Apply'
             )}
           </button>
-          <p className="text-[13px] text-slate-500">{position ? `Applying for ${POSITIONS.find((p) => p.id === position)?.title}.` : 'Choose a role first.'}</p>
+          <p className="text-[14px] font-medium text-stone">{position ? `Applying for ${POSITIONS.find((p) => p.id === position)?.title}.` : 'Choose a role first.'}</p>
         </div>
         {error && (
           <p role="alert" className="text-[14px] text-red-600">

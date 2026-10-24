@@ -10,21 +10,21 @@ function inline(text: string): ReactNode[] {
   let m: RegExpExecArray | null;
   while ((m = re.exec(text))) {
     if (m.index > last) out.push(text.slice(last, m.index));
-    if (m[1]) out.push(<strong key={key++} className="font-semibold text-ink">{m[1]}</strong>);
+    if (m[1]) out.push(<strong key={key++} className="font-bold text-char">{m[1]}</strong>);
     else if (m[2]) {
       const href = m[3];
       out.push(
         href.startsWith('/') ? (
-          <Link key={key++} href={href} className="text-cobalt underline underline-offset-4">
+          <Link key={key++} href={href} className="text-char underline decoration-char/30 underline-offset-4 hover:decoration-char">
             {m[2]}
           </Link>
         ) : (
-          <a key={key++} href={href} target="_blank" rel="noopener noreferrer" className="text-cobalt underline underline-offset-4">
+          <a key={key++} href={href} target="_blank" rel="noopener noreferrer" className="text-char underline decoration-char/30 underline-offset-4 hover:decoration-char">
             {m[2]}
           </a>
         )
       );
-    } else if (m[4]) out.push(<code key={key++} className="rounded bg-mist px-1.5 py-0.5 text-[0.9em]">{m[4]}</code>);
+    } else if (m[4]) out.push(<code key={key++} className="rounded-md bg-sand px-1.5 py-0.5 text-[0.9em]">{m[4]}</code>);
     last = m.index + m[0].length;
   }
   if (last < text.length) out.push(text.slice(last));
@@ -41,7 +41,7 @@ export default function PostBody({ body }: { body: string }) {
   const flush = () => {
     if (!list.length) return;
     blocks.push(
-      <ul key={key++} className="grid list-disc gap-2 pl-6 marker:text-cobalt">
+      <ul key={key++} className="grid list-disc gap-2 pl-6 marker:text-ember">
         {list.map((item, i) => (
           <li key={i}>{inline(item)}</li>
         ))}
@@ -60,11 +60,11 @@ export default function PostBody({ body }: { body: string }) {
       continue;
     }
     flush();
-    if (line.startsWith('### ')) blocks.push(<h3 key={key++} className="mt-6 text-[22px] font-medium tracking-[-0.015em] text-ink">{inline(line.slice(4))}</h3>);
-    else if (line.startsWith('## ')) blocks.push(<h2 key={key++} className="mt-8 text-[28px] font-light tracking-[-0.025em] text-ink">{inline(line.slice(3))}</h2>);
-    else if (line.startsWith('> ')) blocks.push(<blockquote key={key++} className="pl-6 text-[22px] font-light italic text-ink">{inline(line.slice(2))}</blockquote>);
+    if (line.startsWith('### ')) blocks.push(<h3 key={key++} className="mt-6 font-display text-[22px] font-bold tracking-[-0.025em] text-char">{inline(line.slice(4))}</h3>);
+    else if (line.startsWith('## ')) blocks.push(<h2 key={key++} className="mt-8 font-display text-[30px] font-extrabold tracking-[-0.04em] text-char">{inline(line.slice(3))}</h2>);
+    else if (line.startsWith('> ')) blocks.push(<blockquote key={key++} className="border-l-2 border-ember pl-6 font-display text-[22px] font-bold tracking-[-0.02em] text-char">{inline(line.slice(2))}</blockquote>);
     else blocks.push(<p key={key++}>{inline(line)}</p>);
   }
   flush();
-  return <div className="grid gap-6 text-[18px] leading-[1.75] text-slate-700">{blocks}</div>;
+  return <div className="grid gap-6 text-[18px] font-medium leading-[1.75] text-char/80">{blocks}</div>;
 }

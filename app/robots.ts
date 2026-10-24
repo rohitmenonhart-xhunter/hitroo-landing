@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { SITE_URL } from '@/lib/seo';
 
-/** Search and AI answer engines are welcome everywhere except the admin and API. */
+/** Search and AI answer engines are welcome everywhere except the API and the internal review pages. */
 const AI_AND_SEARCH_BOTS = [
   'Googlebot',
   'Bingbot',
@@ -27,7 +27,7 @@ const AI_AND_SEARCH_BOTS = [
 ];
 
 export default function robots(): MetadataRoute.Robots {
-  const disallow = ['/api/'];
+  const disallow = ['/api/', '/preview'];
   return {
     rules: [
       { userAgent: '*', allow: '/', disallow },

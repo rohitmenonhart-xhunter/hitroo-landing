@@ -1,16 +1,10 @@
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
-import { z } from 'zod';
+import { getContent } from '@/lib/content';
 import { rateLimited } from '@/lib/rate-limit';
 import { getClientIp, readLimitedJson } from '@/lib/request-security';
+import { pathsToRevalidate, revalidateSchema } from '@/lib/revalidate';
 import { sameSecret } from '@/lib/secret';
-
-// Pages that list posts, plus the discovery files (which also refresh on their own every 10 minutes).
-const ALWAYS = ['/insights', '/articles', '/blog', '/news', '/sitemap.xml', '/llms.txt'];
-
-const schema = z
-  .object({ paths: z.array(z.string().regex(/^\/(articles|blog|news)\/[a-z0-9]+(-[a-z0-9]+)*$/)).max(10).optional().default([]) })
-  .strict();
 
 const reply = (body: object, status = 200) => NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 
@@ -18,7 +12,10 @@ function secretOk(provided: string) {
   return sameSecret(process.env.REVALIDATE_SECRET ?? '', provided);
 }
 
-/** Called by the admin app (hitroo_admin_page) after a post changes, so the site shows it at once. */
+/**
+ * Called by the admin app (hitroo_admin_page) after a post or page content changes, so the site shows it at once:
+ * { "paths": ["/blog/a-post"] } for posts, { "content": ["division:ai"] } for content keys (lib/revalidate.ts).
+ */
 export async function POST(request: NextRequest) {
   if (!secretOk(request.headers.get('x-revalidate-secret') ?? '')) {
     console.warn('revalidate: rejected a request without the right secret');
@@ -31,9 +28,15 @@ export async function POST(request: NextRequest) {
   } catch {
     return reply({ error: 'Invalid body' }, 400);
   }
-  const parsed = schema.safeParse(raw ?? {});
-  if (!parsed.success) return reply({ error: 'Invalid paths' }, 400);
-  const paths = [...ALWAYS, ...parsed.data.paths];
+  const parsed = revalidateSchema.safeParse(raw ?? {});
+  if (!parsed.success) return reply({ error: 'Invalid paths or content keys' }, 400);
+
+  const body = parsed.data;
+  const slugs = body.content.length ? (await getContent('services')).map((s) => s.slug) : [];
+  const { paths, tags, all } = pathsToRevalidate(body, slugs);
+  for (const tag of tags) revalidateTag(tag);
+  // A shared key: every page, through the root layout's implicit tag, as well as each path by name.
+  if (all) revalidatePath('/', 'layout');
   for (const path of paths) revalidatePath(path);
-  return reply({ revalidated: paths });
+  return reply({ revalidated: paths, tags });
 }

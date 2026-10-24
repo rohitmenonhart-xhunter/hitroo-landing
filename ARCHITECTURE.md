@@ -7,7 +7,7 @@ The apps live side by side in `Hitroo_internal_Apps/hitroo/`:
 | Folder | What | Stack |
 | --- | --- | --- |
 | `hitroo_landing` (this repo) | The public website, www.hitroo.com. Also home of the shared database's schema (`db/`). | Next.js 13, Vercel |
-| `hitroo_admin_page` | The owner's admin: website analytics, leads, applications, posts. | Next.js 16, Vercel |
+| `hitroo_admin_page` | The owner's admin: website analytics, leads, applications, posts, page content and media. | Next.js 16, Vercel |
 | later internal apps | Each gets its own folder, database role and schema. | — |
 
 ## System overview
@@ -16,7 +16,9 @@ The apps live side by side in `Hitroo_internal_Apps/hitroo/`:
 flowchart LR
   V[Visitors and crawlers] -->|HTTPS| E[Vercel CDN<br/>static pages, ISR]
   E --> F[Website functions<br/>hitroo_landing, sin1]
-  F -->|TLS · role web_app<br/>write-only + read posts| DB[(Postgres 18<br/>Fly app hitroo-db<br/>region sin)]
+  F -->|TLS · role web_app<br/>write-only + read posts, content| DB[(Postgres 18<br/>Fly app hitroo-db<br/>region sin)]
+  V -->|page images, video| S[(Tigris bucket<br/>hitroo-media)]
+  AD -->|uploads| S
   F -->|SMTP| G[Gmail / Google Workspace]
   F -->|verify| T[Cloudflare Turnstile<br/>optional]
   O[Owner] -->|password + session cookie| AD[Admin<br/>hitroo_admin_page, sin1]
@@ -32,6 +34,7 @@ flowchart LR
 | Admin | Vercel project `hitroo_admin`, live at admin.hitroo.com, Next.js 16 | One owner password; everything server-rendered; no public pages. See `../hitroo_admin_page/README.md`. |
 | Database | Fly.io app `hitroo-db` | Fly Postgres (flex), PostgreSQL 18, 1 machine `shared-cpu-1x` / 1 GB, 10 GB encrypted volume, region `sin`. |
 | Public DB endpoint | `hitroo-db.fly.dev:5432` | Dedicated IPv4 `149.248.221.16` ($2/month) with Fly's `pg_tls` handler; connect with `sslmode=verify-full`. Fly apps can use `hitroo-db.internal` over the private network. |
+| Media storage | Tigris (Fly.io) bucket `hitroo-media`, public at `https://hitroo-media.fly.storage.tigris.dev` | Editable page images (pre-sized WebP) and the Creatives video, served straight to browsers with a one-year `immutable` cache (never through Vercel's image optimizer). Written by the admin and `npm run media:upload`; keys in `_secrets/hitroo-media.env`. Plain HTTP/1.1, about 0.3–0.45 s per request from India in our tests (Vercel's CDN: about 0.06 s). |
 | Email | Gmail SMTP (`nodemailer`) | Lead and application notifications plus acknowledgments. |
 | Spam protection | Per-visitor rate limits, honeypot, timing, email caps, optional Turnstile | Limits live in code (`lib/lead-protection.ts`, per server instance); Turnstile only when both keys are set. See [docs/contact-form-protection.md](docs/contact-form-protection.md). |
 
@@ -43,7 +46,7 @@ One database, `hitroo`, split into segments by schema. Each consumer gets its ow
 
 | Schema | Owner | Role | Access |
 | --- | --- | --- | --- |
-| `web` | `postgres` | `web_app` (the website) | **Write-only** for forms, analytics and consent (`INSERT`), plus `SELECT (id)` / `UPDATE (emailed)` on leads and applications to mark notifications sent; `SELECT` on `posts`. Cannot read anyone's details back. |
+| `web` | `postgres` | `web_app` (the website) | **Write-only** for forms, analytics and consent (`INSERT`), plus `SELECT (id)` / `UPDATE (emailed)` on leads and applications to mark notifications sent; `SELECT` on `posts`, `content` and `media`. Cannot read anyone's details back, never writes content. |
 | `web` | `postgres` | `admin_app` (the admin) | `SELECT/INSERT/UPDATE/DELETE` on rows. No DDL, no `internal`. |
 | `internal` | `internal_app` | `internal_app` (internal apps) | Owns the schema and manages its own tables. |
 | `public` | — | — | `public.schema_migrations` only; `PUBLIC` has no access. |
@@ -58,6 +61,9 @@ One database, `hitroo`, split into segments by schema. Each consumer gets its ow
 | `web.events` | Clicks (link or button text and target) and engagement (visible seconds since the last report, furthest scroll %) per view. |
 | `web.consents` | Cookie decisions (`granted`/`denied`, policy version, country) as proof of consent. |
 | `web.posts` | Articles, blog posts and news (kind `article`/`blog`/`news` — news since migration 004; slug, title, excerpt, body, category, cover, status, dates, SEO fields, `legacy_id`). |
+| `web.content` | Page content (migration 005): one row per key (`company`, `home`, `division:ai`, `page:support`, …; list in `lib/content-core.ts`), `data` is JSON in the shape the site renders, plus `updated_at`, `updated_by`. |
+| `web.content_history` | Every saved version of a key (for undo in the admin). |
+| `web.media` | Uploaded images and videos: public `url` (largest variant, or the video), `width`, `height`, `bytes`, `tone` (average colour), `variants` (`[{ w, url, bytes }]`, ascending), `poster_url`, `alt`, `tags`. |
 
 **Credentials** live outside the repos in `Hitroo_internal_Apps/_secrets/hitroo-db.env` (chmod 600): superuser URL, `hitroo` admin URL, `web_app`, `internal_app` and `admin_app` URLs. The website only ever gets `DATABASE_URL` = the `web_app` URL; the admin gets the `admin_app` URL. The admin's sign-in password, session secret and the shared revalidate key are in `_secrets/hitroo-admin.env`. Store these in a password manager too.
 
@@ -84,7 +90,8 @@ Then give the app `postgres://app_example:…@hitroo-db.fly.dev:5432/hitroo?sslm
    A random `visit_id` (one per page load, in memory only, so a reload starts a new visit) groups a visit's pages; `view_id` ties engagement to its view. Country, region and city come from Vercel's edge headers (`x-vercel-ip-*`); the IP itself is never stored. Visitor and session IDs are attached only when the `hitroo_consent` cookie is `granted`. A post counts as **read** at 75% of the article.
 4. **Consent** — `CookieConsent` (bottom-left) sets `hitroo_consent` (1 year) and, on accept, `hitroo_vid` (random UUID, 1 year) → `POST /api/consent` → `INSERT web.consents`. "Cookie settings" in the footer reopens it. Policy text: `/privacy` and `/cookies` (which also lists `hitroo_sid`, the consented session ID in session storage).
 5. **Posts** — admin → `web.posts` → the admin calls `POST /api/revalidate` on the website (header `x-revalidate-secret`, constant-time compare) → `revalidatePath` refreshes `/insights`, `/articles`, `/blog`, `/news` and the post page at once (ISR every 5 minutes otherwise). The sitemap and `llms.txt` refresh every 10 minutes.
-6. **Admin** — owner signs in with `ADMIN_PASSWORD` → HMAC-signed session cookie (`hitroo_admin`, httpOnly, 12 hours; 5 failed tries per 15 minutes) → the proxy sends anyone without a session to `/login`, and every page, Server Action and route handler checks the session again → reads and updates `web.*` as `admin_app`.
+6. **Content** — admin → `web.content` (and `web.content_history`), images and video → Tigris (`img/<sha8>-<slug>-<w>.webp` at 480/960/1600/2400 px, `vid/<sha8>-<slug>.mp4`) and `web.media` → the admin calls `POST /api/revalidate` with `{ "content": ["division:ai"] }` → the site drops its cached copy (tag `content:<key>`) and refreshes the pages that show the key (a shared key such as `company` or `divisions`, which the footer shows, refreshes every page). Pages read content through `getContent()` (`lib/content.ts`), cached five minutes; if the database can't be read, a row is missing or its shape is wrong, the page uses the built-in copy (`lib/content-defaults.ts`), so the site never breaks over content. The built-in copy seeded the table (`npm run content:seed`).
+7. **Admin** — owner signs in with `ADMIN_PASSWORD` → HMAC-signed session cookie (`hitroo_admin`, httpOnly, 12 hours; 5 failed tries per 15 minutes) → the proxy sends anyone without a session to `/login`, and every page, Server Action and route handler checks the session again → reads and updates `web.*` as `admin_app`.
 
 ## SEO and GEO (answer engines)
 
@@ -92,7 +99,7 @@ Then give the app `postgres://app_example:…@hitroo-db.fly.dev:5432/hitroo?sslm
 - **Structured data** (JSON-LD): `Organization` (with an `OfferCatalog` of services, contact points, `areaServed: Worldwide`) and `WebSite` on every page; `WebPage`/`AboutPage`/`ContactPage`/`CollectionPage` per page; `Service` per service; `Article`/`BlogPosting` per post; `FAQPage` on `/ai-perspective`; `BreadcrumbList` on interior pages.
 - **Discovery**: `/sitemap.xml` (pages, services, posts), `/robots.txt` (every search and AI crawler allowed — GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, PerplexityBot, Google-Extended, Bingbot, Applebot and more — with `/api/` disallowed for all), `/llms.txt` and `/llms-full.txt` (live summaries for AI assistants), `/feed.xml` (RSS of all posts), and IndexNow (`public/<key>.txt` + `npm run indexnow`), which pushes URLs to Bing — Bing's index also feeds ChatGPT search and Copilot.
 - **Measuring it**: the admin's Channels report separates **AI assistants** (ChatGPT, Perplexity, Gemini, Claude, Copilot — by referrer or `utm_source`, e.g. ChatGPT's `utm_source=chatgpt.com`) from search, social, email, paid, campaigns and referrals.
-- **Performance**: server components with small client islands (~91–107 kB first-load JS), `next/image` AVIF/WebP on Vercel, Inter via `next/font`, static pages on the CDN.
+- **Performance**: server components with small client islands (~91–118 kB first-load JS; content reaches client islands as props, so no copy ships in JavaScript), `next/image` AVIF/WebP on Vercel for files in `public/`, pre-sized WebP from Tigris for uploaded media (plain `<img srcset>`, preconnected in the root layout), Plus Jakarta Sans and self-hosted Fustat via `next/font`, static pages on the CDN. Live WebGL runs only in the home hero; every other glass element is a still image.
 - **Verification**: `GOOGLE_SITE_VERIFICATION` and `BING_SITE_VERIFICATION` env vars render the meta tags.
 
 ## Security
@@ -111,7 +118,9 @@ Then give the app `postgres://app_example:…@hitroo-db.fly.dev:5432/hitroo?sslm
 | New migration | Add `db/migrations/NNN_name.sql` → `npm run db:migrate` (uses `DATABASE_ADMIN_URL`; each file once, in a transaction). Grant rights explicitly: new `web` tables are not readable by `web_app` by default, only by `admin_app`. |
 | First-time setup | [db/bootstrap.sql](db/bootstrap.sql) (roles, database, schemas), then [db/roles/admin_app.sql](db/roles/admin_app.sql), each run once as `postgres`. |
 | Import old CMS posts | `npm run db:seed-posts` (idempotent). |
-| After a production deploy | `npm run indexnow`. |
+| Upload site media | `npm run media:upload`: the division photos, the two portraits, the six Creatives reels and the video (with its poster) → Tigris + `web.media`; idempotent by content hash; writes `db/seeds/media-map.json`. Needs `_secrets/hitroo-media.env` and `DATABASE_ADMIN_URL`. |
+| Seed page content | `npm run content:seed` writes each key's built-in copy (media swapped for the storage files) to `web.content` with a history row; keys already saved are kept (`-- --force` overwrites, `-- --dry-run` only checks). |
+| After a production deploy | `npm run indexnow`, then `npm run warm-images` (requests every image variant the pages use, so visitors never wait for a first AVIF encode; encoded images are cached 30 days). |
 | Database health | `fly status -a hitroo-db`, `fly checks list -a hitroo-db`. |
 | Backups | Fly takes daily volume snapshots (`fly volumes snapshots list -a hitroo-db`, 5-day retention). Recommended: turn on continuous backups to Tigris (needs you to accept Tigris's terms) and/or a scheduled `pg_dump`. |
 | Grow storage | `fly volumes extend <vol-id> -s <GB> -a hitroo-db`. |
@@ -126,13 +135,20 @@ Then give the app `postgres://app_example:…@hitroo-db.fly.dev:5432/hitroo?sslm
 
 | Path | What |
 | --- | --- |
-| `app/(site)/` | Marketing pages; `layout.tsx` adds Header, Footer, Analytics and CookieConsent. |
+| `app/(warm)/` | Marketing pages, including the four divisions (`/software`, `/automation`, `/ai`, `/creatives`); `layout.tsx` wraps them in `WarmShell` (skip link, header, footer, Analytics, CookieConsent). |
+| `app/preview/` | Internal tools, not linked (`robots.txt` disallows them): `glass-render` renders the still glass images, `og` the social card. |
 | `app/api/` | `lead`, `careers`, `track`, `consent`, `revalidate`. |
 | `app/sitemap.ts`, `app/robots.ts`, `app/llms.txt/`, `app/llms-full.txt/` | Discovery files. |
-| `components/corporate/` | Design system and page blocks; `components/seo/JsonLd.tsx`. |
+| `components/warm/` | The site's components: page openings, sections, cards, the division template, header, footer and shell (see [designs.md](designs.md)). |
+| `components/corporate/` | Client islands and shared pieces: forms, Analytics, CookieConsent, Turnstile, PostBody, CoverImage, LegalSections; `components/seo/JsonLd.tsx`. |
+| `components/clear/` | The WebGL glass engine: `GlassWordmark` (the home hero; also renders the still glass images), `gl.ts`, `field.ts`. |
+| `lib/content.ts`, `lib/content-core.ts`, `lib/content-schema.ts`, `lib/content-defaults.ts` | Page content from `web.content`: cached reads, the key list and fallback rule, each key's shape, and the built-in copy per key. |
+| `lib/site-data.ts`, `lib/division-pages.ts`, `lib/page-content.ts`, `lib/creatives-video.ts` | The built-in copy: shared content, the four division pages, each page's own lines, the Creatives video. |
+| `lib/media.ts`, `components/warm/Media.tsx` | Media slots in content (local or storage) and the image component that renders both. |
+| `lib/revalidate.ts` | What `/api/revalidate` accepts and which pages each content key touches. |
 | `lib/db.ts`, `lib/data/*` | Postgres pool and write-only data access (forms, analytics) plus post reads. |
 | `lib/track.ts`, `lib/track-schema.ts` | Click/scroll helpers for the browser; the `/api/track` payload schema. |
 | `lib/seo.ts`, `lib/llms.ts` | Metadata and structured-data builders; llms.txt content. |
 | `lib/visitor.ts`, `lib/rate-limit.ts`, `lib/request-security.ts`, `lib/lead-protection.ts` | Request helpers and protections. |
-| `db/`, `scripts/` | Bootstrap SQL, roles, migrations, migration/seed/IndexNow scripts. |
+| `db/`, `scripts/` | Bootstrap SQL, roles, migrations, `db/seeds/media-map.json`; migration, seed, media upload, content seed and IndexNow scripts. |
 | `../hitroo_admin_page` | The admin app (its own README). |

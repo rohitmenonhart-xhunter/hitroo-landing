@@ -3,36 +3,37 @@
 @tailwind utilities;
 
 /* ============================================
-   Corporate white theme — tokens for shadcn/ui primitives.
-   Page styling uses the Tailwind colours in tailwind.config.ts
-   (ink, cobalt, navy, mist, line) and Inter via `font-corp`.
+   Site theme — tokens for shadcn/ui primitives, pointed at the
+   warm palette. Page styling uses the Tailwind colours in
+   tailwind.config.ts (paper, char, ember, sand, stone) and the
+   glass surfaces below.
    ============================================ */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 67% 12%;
+    --background: 20 60% 98%;
+    --foreground: 55 24% 6%;
     --card: 0 0% 100%;
-    --card-foreground: 222 67% 12%;
+    --card-foreground: 55 24% 6%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 67% 12%;
-    --primary: 228 100% 57%;
+    --popover-foreground: 55 24% 6%;
+    --primary: 55 24% 6%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 38% 97%;
-    --secondary-foreground: 222 67% 12%;
-    --muted: 220 38% 97%;
-    --muted-foreground: 215 19% 35%;
-    --accent: 226 100% 97%;
-    --accent-foreground: 222 67% 12%;
+    --secondary: 33 33% 93%;
+    --secondary-foreground: 55 24% 6%;
+    --muted: 33 33% 93%;
+    --muted-foreground: 39 7% 41%;
+    --accent: 10 91% 57%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 218 24% 91%;
-    --input: 218 24% 91%;
-    --ring: 228 100% 57%;
-    --chart-1: 228 100% 57%;
-    --chart-2: 224 76% 17%;
-    --chart-3: 198 100% 61%;
-    --chart-4: 215 19% 35%;
-    --chart-5: 218 24% 91%;
+    --border: 55 24% 6% / 0.1;
+    --input: 55 24% 6% / 0.1;
+    --ring: 55 24% 6%;
+    --chart-1: 10 91% 57%;
+    --chart-2: 55 24% 6%;
+    --chart-3: 33 33% 85%;
+    --chart-4: 39 7% 41%;
+    --chart-5: 33 33% 93%;
     --radius: 0.5rem;
   }
 
@@ -45,14 +46,14 @@
   }
 
   body {
-    @apply bg-white text-ink;
+    @apply bg-paper text-char;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {
-    background: rgba(36, 81, 255, 0.16);
+    background: rgba(245, 80, 47, 0.2);
   }
 }
 
@@ -61,3 +62,26 @@
     scroll-behavior: auto;
   }
 }
+
+@layer components {
+  /* Post covers in warm monochrome: the SVG filter is defined once in components/warm/WarmShell. */
+  .duotone-warm {
+    filter: url(#duotone-warm);
+  }
+  /* Glass surfaces: frosted, with a lit top edge; no drop shadows. */
+  .glass-warm {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(252, 248, 246, 0.56));
+    border: 1px solid rgba(18, 17, 11, 0.06);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 0 rgba(18, 17, 11, 0.03);
+    -webkit-backdrop-filter: blur(20px) saturate(170%);
+    backdrop-filter: blur(20px) saturate(170%);
+  }
+  .glass-ink {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+}
+

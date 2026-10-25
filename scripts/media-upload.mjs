@@ -8,6 +8,9 @@
 // - Idempotent by content hash: files already in the bucket are not sent again, rows already in web.media are reused.
 // - Writes db/seeds/media-map.json (public/ path → storage object) for `npm run content:seed`.
 // Credentials: Hitroo_internal_Apps/_secrets/hitroo-media.env (never printed or copied); rows via DATABASE_ADMIN_URL.
+//
+// One video on its own (e.g. a new film): prints its storage object as JSON and leaves media-map.json alone.
+//   node --env-file=.env.local scripts/media-upload.mjs --video <file.mp4> --poster <image> --slug <slug> [--tags site,film]
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -100,7 +103,7 @@ function variantWidths(original) {
 
 /** Encodes and uploads an image's variants; returns its storage object. */
 async function storeImage(file, slug) {
-  const buf = readFileSync(path.join(ROOT, file));
+  const buf = readFileSync(path.resolve(ROOT, file));
   const hash = sha8(buf);
   const meta = await sharp(buf).metadata();
   const variants = [];
@@ -133,7 +136,44 @@ function probe(file) {
   }
 }
 
+const arg = (name) => {
+  const i = process.argv.indexOf(`--${name}`);
+  return i > 0 ? process.argv[i + 1] : undefined;
+};
+
+/** Uploads one video and its poster and records it (idempotent, like the rest); returns what content needs. */
+async function storeVideo({ file, slug, poster: posterFile, tags }) {
+  const buf = readFileSync(path.resolve(ROOT, file));
+  const hash = sha8(buf);
+  const key = `vid/${hash}-${slug}.mp4`;
+  await put(key, buf, 'video/mp4');
+  const poster = await storeImage(posterFile, `${slug}-poster`);
+  const size = probe(path.resolve(ROOT, file)) ?? { width: poster.width, height: poster.height };
+  let row = await existingRow('video', hash, slug);
+  if (!row) {
+    ({ rows: [row] } = await db.query(
+      `INSERT INTO web.media (kind, name, url, width, height, bytes, tone, poster_url, tags)
+       VALUES ('video', $1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
+      [path.basename(file), `${BASE}/${key}`, size.width, size.height, buf.length, poster.tone, poster.url, tags]
+    ));
+    console.error(`recorded ${file} → ${row.url}`);
+  } else {
+    console.error(`already recorded ${file}`);
+  }
+  return { row, poster };
+}
+
 await db.connect();
+if (arg('video')) {
+  try {
+    const { row, poster } = await storeVideo({ file: arg('video'), slug: arg('slug'), poster: arg('poster'), tags: (arg('tags') ?? 'site,film').split(',') });
+    console.log(JSON.stringify({ id: row.id, src: row.url, width: row.width, height: row.height, poster: poster.url, posterTone: poster.tone, posterVariants: poster.variants.map(({ w, url }) => ({ w, url })) }, null, 2));
+  } finally {
+    await db.end();
+  }
+  console.error(`${sent} objects uploaded, ${kept} already in the bucket.`);
+  process.exit(0);
+}
 const map = {};
 try {
   for (const img of IMAGES) {
@@ -160,23 +200,7 @@ try {
   }
 
   for (const v of VIDEOS) {
-    const buf = readFileSync(path.join(ROOT, v.file));
-    const hash = sha8(buf);
-    const key = `vid/${hash}-${v.slug}.mp4`;
-    await put(key, buf, 'video/mp4');
-    const poster = await storeImage(v.poster, `${v.slug}-poster`);
-    const size = probe(path.join(ROOT, v.file)) ?? { width: poster.width, height: poster.height };
-    let row = await existingRow('video', hash, v.slug);
-    if (!row) {
-      ({ rows: [row] } = await db.query(
-        `INSERT INTO web.media (kind, name, url, width, height, bytes, tone, poster_url, tags)
-         VALUES ('video', $1, $2, $3, $4, $5, $6, $7, $8) RETURNING *`,
-        [path.basename(v.file), `${BASE}/${key}`, size.width, size.height, buf.length, poster.tone, poster.url, v.tags]
-      ));
-      console.log(`recorded ${v.file} → ${row.url}`);
-    } else {
-      console.log(`already recorded ${v.file}`);
-    }
+    const { row, poster } = await storeVideo(v);
     map['/' + v.file.replace(/^public\//, '')] = { id: row.id, src: row.url, poster: row.poster_url, width: row.width, height: row.height };
     map['/' + v.poster.replace(/^public\//, '')] = { src: poster.url, width: poster.width, height: poster.height, tone: poster.tone, variants: poster.variants.map(({ w, url }) => ({ w, url })) };
   }

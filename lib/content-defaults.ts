@@ -1,6 +1,7 @@
 import type { ContentKey } from './content-core';
 import { MYTH_VIDEO, type ShowcaseVideoContent } from './creatives-video.ts';
 import { DIVISION_PAGES, type DivisionPageContent } from './division-pages.ts';
+import { FILMS, type FilmContent } from './films.ts';
 import { generalFaq, type Qa } from './faq.ts';
 import {
   ABOUT_PAGE,
@@ -60,6 +61,11 @@ export interface ContentMap {
   'page:contact': ContactContent;
   'page:careers': CareersContent;
   'video:creatives': ShowcaseVideoContent;
+  'film:home': FilmContent;
+  'film:software': FilmContent;
+  'film:automation': FilmContent;
+  'film:ai': FilmContent;
+  'film:creatives': FilmContent;
 }
 
 /**
@@ -89,4 +95,9 @@ export const CONTENT_DEFAULTS: { [K in ContentKey]: ContentMap[K] } = {
   'page:contact': CONTACT_PAGE,
   'page:careers': CAREERS_PAGE,
   'video:creatives': MYTH_VIDEO,
+  'film:home': FILMS.home,
+  'film:software': FILMS.software,
+  'film:automation': FILMS.automation,
+  'film:ai': FILMS.ai,
+  'film:creatives': FILMS.creatives,
 };

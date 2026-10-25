@@ -217,6 +217,23 @@ const video = z
   })
   .passthrough();
 
+const film = z
+  .object({
+    src: z.string().min(1),
+    poster: z.string().min(1),
+    width: num,
+    height: num,
+    seconds: num,
+    caption: str,
+    heading: str,
+    title: str,
+    description: str,
+    uploadDate: str,
+    transcript: str,
+    credits: str,
+  })
+  .passthrough();
+
 const uniqueSlugs = (items: { slug: string }[]) => new Set(items.map((i) => i.slug)).size === items.length;
 
 export const CONTENT_SCHEMAS: Record<ContentKey, z.ZodTypeAny> = {
@@ -243,6 +260,11 @@ export const CONTENT_SCHEMAS: Record<ContentKey, z.ZodTypeAny> = {
   'page:contact': contact,
   'page:careers': careers,
   'video:creatives': video,
+  'film:home': film,
+  'film:software': film,
+  'film:automation': film,
+  'film:ai': film,
+  'film:creatives': film,
 };
 
 /** Null when `data` has the shape `key` needs, otherwise a short description of the first problems. */

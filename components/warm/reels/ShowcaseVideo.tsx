@@ -7,7 +7,7 @@ import { mediaUrl } from '@/lib/media';
 import { cn } from '@/lib/utils';
 
 /**
- * The showcase video in a 9:16 frame (a file in public/ or in object storage; either plays as is). It loads nothing until it nears the screen, then plays muted on a loop while
+ * A video in a frame of its own shape (9:16 reels, 16:9 films; a file in public/ or in object storage, either plays as is). It loads nothing until it nears the screen, then plays muted on a loop while
  * on screen (its on-screen type carries the story) and pauses when it leaves. The sound button restarts it with
  * sound. With reduced motion it never autoplays: the poster waits for a press of play.
  */
@@ -66,7 +66,7 @@ export default function ShowcaseVideo({ video, className }: { video: Pick<Showca
   };
 
   return (
-    <figure className={cn('relative aspect-[9/16] overflow-hidden rounded-[28px] bg-sand ring-1 ring-char/10', className)}>
+    <figure className={cn('relative overflow-hidden rounded-[28px] bg-sand ring-1 ring-char/10', className)} style={{ aspectRatio: `${video.width} / ${video.height}` }}>
       <video
         ref={ref}
         className="h-full w-full object-cover"

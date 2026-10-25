@@ -273,12 +273,15 @@ Submitted: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
                     to: email,
                     subject: 'We\'ve received your application — HITROO',
                     html: acknowledgmentEmail({
-                        heading: `Thanks${name ? `, ${esc(name)}` : ''} — your application<br/>is <span style="color:#2451FF;">in</span>.`,
-                        intro: `We&rsquo;ve received your application${positionTitle ? ` for <strong style="color:#0A1633;">${esc(positionTitle)}</strong>` : ''}. Our team reviews every application within 7 days and we&rsquo;ll be in touch.`,
+                        caption: 'Application received',
+                        name,
+                        promise: 'We’ll be in touch.',
+                        intro: `We’ve received your application${positionTitle ? ` for <strong style="color:#12110B;">${esc(positionTitle)}</strong>` : ''}. Our team reviews every application within 7 days.`,
                         recapLabel: 'Applied for',
                         recapBody: esc(positionTitle || 'HITROO'),
+                        preheader: 'Our team reviews every application within 7 days.',
                     }),
-                    text: `Thanks${name ? `, ${name}` : ''} — we've received your application${positionTitle ? ` for ${positionTitle}` : ''}. Our team reviews every application within 7 days and we'll be in touch.\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nHITROO — Intelligence, Unbound · Chennai, Tamil Nadu, India`,
+                    text: `Thanks${name ? `, ${name}` : ''}. We've received your application${positionTitle ? ` for ${positionTitle}` : ''}. Our team reviews every application within 7 days and we'll be in touch.\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nHITROO · Chennai, Tamil Nadu, India`,
                 });
             } catch (ackErr) {
                 console.error('Careers acknowledgment email failed (non-fatal):', ackErr);

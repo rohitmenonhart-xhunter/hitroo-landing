@@ -118,7 +118,7 @@ test('media slots are found anywhere in the content', () => {
   assert.equal(found.length, 6, 'five fan reels and the winner');
   const all = new Set<string>();
   for (const key of CONTENT_KEYS) forEachMedia(CONTENT_DEFAULTS[key], (slot) => all.add(slot.src.split('?')[0]));
-  for (const src of all) assert.match(src, /^\/(photos|people|video)\//, src);
+  for (const src of all) assert.match(src, /^(\/(photos|people|video)\/|https:\/\/hitroo-media\.fly\.storage\.tigris\.dev\/vid\/)/, src);
 });
 
 test('storage images load from our origin; videos and other files load as they are', () => {

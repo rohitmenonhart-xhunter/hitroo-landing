@@ -198,12 +198,20 @@ export async function POST(request: NextRequest) {
                     to: data.email,
                     subject: 'We\'ve received your message — HITROO',
                     html: acknowledgmentEmail({
-                        heading: `Thanks${data.name ? `, ${esc(data.name)}` : ''} — your message<br/>is <span style="color:#2451FF;">in</span>.`,
-                        intro: 'A member of the HITROO team will get back to you within a day. Here&rsquo;s a copy of what you sent us.',
+                        caption: 'Message received',
+                        name: data.name,
+                        promise: 'We’ll reply within a day.',
+                        intro: 'Your message is with the HITROO team. Here’s what happens next, and a copy of what you sent.',
+                        steps: [
+                            { title: 'We read your message', text: 'It’s with our team now.' },
+                            { title: 'We reply within a day', text: 'To set up your free call.' },
+                            { title: 'You get a clear plan', text: 'A clear scope and a plan, before anything is built.' },
+                        ],
                         recapLabel: 'Your message',
                         recapBody: esc(context),
+                        preheader: 'We’ll reply within a day. Here’s what happens next.',
                     }),
-                    text: `Thanks${data.name ? `, ${data.name}` : ''} — we've received your message and will get back to you within a day.\n\nYour message:\n${context}\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nHITROO — Intelligence, Unbound · Chennai, Tamil Nadu, India`,
+                    text: `Thanks${data.name ? `, ${data.name}` : ''}. We'll reply within a day.\n\nWhat happens next\n01  We read your message\n02  We reply within a day to set up your free call\n03  You get a clear scope and a plan, before anything is built\n\nYour message:\n${context}\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nHITROO · Chennai, Tamil Nadu, India`,
                 });
             } catch (ackErr) {
                 console.error('Acknowledgment email failed (non-fatal):', ackErr);

@@ -29,6 +29,11 @@ export const CONTENT_KEYS = [
   'page:contact',
   'page:careers',
   'video:creatives',
+  'film:home',
+  'film:software',
+  'film:automation',
+  'film:ai',
+  'film:creatives',
 ] as const;
 
 export type ContentKey = (typeof CONTENT_KEYS)[number];

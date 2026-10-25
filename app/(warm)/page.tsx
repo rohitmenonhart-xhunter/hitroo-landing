@@ -4,6 +4,7 @@ import JsonLd from '@/components/seo/JsonLd';
 import ContactPanel from '@/components/warm/ContactPanel';
 import DivisionsScroller from '@/components/warm/DivisionsScroller';
 import FaqSection from '@/components/warm/FaqSection';
+import FilmSection from '@/components/warm/FilmSection';
 import QuoteBlock from '@/components/warm/QuoteBlock';
 import Glass from '@/components/warm/Glass';
 import Marquee from '@/components/warm/Marquee';
@@ -29,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 /** The home page: its own copy is the `home` key; the divisions, steps, promises, quote and questions are shared keys. */
 export default async function Home() {
-  const [home, posts, showcase, divisions, visuals, steps, promises, quote, faq] = await Promise.all([
+  const [home, posts, showcase, divisions, visuals, steps, promises, quote, faq, film] = await Promise.all([
     getContent('home'),
     listPosts(undefined, 4),
     getContent('showcase'),
@@ -39,6 +40,7 @@ export default async function Home() {
     getContent('promises'),
     getContent('quote'),
     getContent('faq:general'),
+    getContent('film:home'),
   ]);
   const cards = showcase.map((s) => ({ ...s, isNew: findDivision(divisions, s.slug)?.isNew, visual: visuals[s.slug] }));
   return (
@@ -47,9 +49,10 @@ export default async function Home() {
       <JsonLd data={faqLd(faq)} />
       <WarmHero title={home.hero.title} lede={home.hero.lede} action={home.hero.action} tags={home.hero.tags} />
 
-      <div className="pt-20 lg:pt-28">
-        <ScrollStatement id="why-title" caption={home.why.caption} text={home.why.text} />
-      </div>
+      {/* The HITROO film, right under the opening */}
+      <FilmSection film={film} className="pt-20 lg:pt-28" />
+
+      <ScrollStatement id="why-title" caption={home.why.caption} text={home.why.text} />
 
       {/* The four divisions, as large cards that move with the scroll */}
       <DivisionsScroller items={cards} names={divisions.map((d) => d.name)} copy={home.divisions} />

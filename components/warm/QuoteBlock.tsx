@@ -21,8 +21,7 @@ export default function QuoteBlock({ quote: q }: { quote: Quote }) {
         <figure>
           <div className="relative aspect-[4/5] max-w-[460px] overflow-hidden rounded-[28px] bg-sand">
             <Media image={photo} sizes="(min-width: 768px) 460px, 100vw" className="object-cover" />
-            <span className="absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-2 text-[15px] font-medium text-char backdrop-blur">
-              <span aria-hidden="true" className="h-2 w-2 rounded-full bg-ember" />
+            <span className="absolute bottom-4 left-4 inline-flex items-center rounded-full bg-white/90 px-4 py-2 text-[15px] font-medium text-char backdrop-blur">
               {name}, {roleWithoutCompany(role)}
             </span>
           </div>

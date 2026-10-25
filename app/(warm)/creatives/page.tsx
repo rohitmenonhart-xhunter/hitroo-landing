@@ -2,6 +2,7 @@ import CapabilityExplorer from '@/components/warm/CapabilityExplorer';
 import ClosingCta from '@/components/warm/ClosingCta';
 import { DivisionLd, ICONS, divisionMetadata, getDivisionContent } from '@/components/warm/DivisionPage';
 import FaqSection from '@/components/warm/FaqSection';
+import FilmSection from '@/components/warm/FilmSection';
 import OtherDivisions from '@/components/warm/OtherDivisions';
 import { TouchPill } from '@/components/warm/WarmHeader';
 import { SplitCards, StandardsCard } from '@/components/warm/blocks';
@@ -20,12 +21,15 @@ export const generateMetadata = () => divisionMetadata('creatives');
  * scroll; the frame stays HITROO. Copy: `division:creatives`; reels and the page's own lines: `page:creatives`; the video: `video:creatives`.
  */
 export default async function CreativesPage() {
-  const [{ p, d }, c, video] = await Promise.all([getDivisionContent('creatives'), getContent('page:creatives'), getContent('video:creatives')]);
+  const [{ p, d }, c, video, film] = await Promise.all([getDivisionContent('creatives'), getContent('page:creatives'), getContent('video:creatives'), getContent('film:creatives')]);
   return (
     <>
       <DivisionLd p={p} d={d} />
 
       <ReelsHero title={p.title} lede={p.lede} action={<TouchPill label={c.action} />} reels={c.fan} isNew={d.isNew ?? undefined} />
+
+      {/* The Creatives film, right under the opening */}
+      <FilmSection film={film} />
 
       <VideoShowcase video={video} copy={c.showcase} />
 

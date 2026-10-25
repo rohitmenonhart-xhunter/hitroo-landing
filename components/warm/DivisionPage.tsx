@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import FilmSection from './FilmSection';
 import {
   Activity,
   BarChart3,
@@ -83,7 +84,7 @@ export async function divisionMetadata(slug: DivisionSlug): Promise<Metadata> {
  * divisions, and one closing action.
  */
 export default async function DivisionPage({ slug }: { slug: DivisionSlug }) {
-  const { p, d } = await getDivisionContent(slug);
+  const [{ p, d }, film] = await Promise.all([getDivisionContent(slug), getContent(`film:${slug}`)]);
   return (
     <>
       <DivisionLd p={p} d={d} />
@@ -96,6 +97,9 @@ export default async function DivisionPage({ slug }: { slug: DivisionSlug }) {
           <DivisionGallery gallery={p.gallery} />
         </>
       )}
+
+      {/* The division's film, right under the opening */}
+      <FilmSection film={film} />
 
       <WSection id="signs-title" caption="When to call us" title={p.signs.title} lede={p.signs.lede}>
         <PointCards items={p.signs.items} icons={ICONS[slug].signs} />

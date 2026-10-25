@@ -126,22 +126,23 @@ export default function WarmHeader() {
             {open ? 'Close' : 'Menu'}
           </button>
         </div>
-        {open && (
-          <div id="mobile-menu" className="fixed inset-x-0 bottom-0 top-[76px] overflow-y-auto bg-paper px-5 pb-10 pt-6 md:hidden">
-            <ul>
-              {NAV.map((l) => (
-                <li key={l.href} className="border-b border-char/10">
-                  <Link href={l.href} className="flex items-center justify-between py-5 font-display text-[32px] font-extrabold tracking-[-0.04em] text-char">
-                    {l.label}
-                    <ArrowUpRight aria-hidden="true" className="h-6 w-6 text-stone" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <TouchPill className="mt-8" />
-          </div>
-        )}
       </header>
+      {/* Outside the header: its slide-away transform would make a fixed child the bar's size, not the screen's. */}
+      {open && (
+        <div id="mobile-menu" className="fixed inset-x-0 bottom-0 top-[76px] z-[49] overflow-y-auto bg-paper px-5 pb-10 pt-6 md:hidden">
+          <ul>
+            {NAV.map((l) => (
+              <li key={l.href} className="border-b border-char/10">
+                <Link href={l.href} className="flex items-center justify-between py-5 font-display text-[32px] font-extrabold tracking-[-0.04em] text-char">
+                  {l.label}
+                  <ArrowUpRight aria-hidden="true" className="h-6 w-6 text-stone" />
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <TouchPill className="mt-8" />
+        </div>
+      )}
     </>
   );
 }

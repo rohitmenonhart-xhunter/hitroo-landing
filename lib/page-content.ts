@@ -47,9 +47,9 @@ export interface HomeContent {
 
 export const HOME: HomeContent = {
   meta: {
-    title: 'HITROO — Software, Automation, AI & Social Media',
+    title: 'hitroo — Software, Automation, AI & Social Media',
     description:
-      'HITROO engineers custom software, automation and AI around how your business actually works, and runs your social media for you. One team designs, builds and keeps it running.',
+      'HITROO engineers custom software, automation and AI around how your business actually works, and runs your social media for you. We design it, build it and keep it running.',
   },
   hero: {
     title: 'The quiet machinery behind ambitious businesses.',
@@ -70,7 +70,7 @@ export const HOME: HomeContent = {
     partner: {
       caption: 'One partner',
       title: 'Start with one division. Grow into the rest.',
-      text: 'Every division shares one team, one standard and one support line, so your second project starts where the first one ended.',
+      text: 'Every division shares one standard and one support line, so your second project starts where the first one ended.',
       action: 'Book a free call',
     },
   },
@@ -128,7 +128,7 @@ export interface AboutContent {
 export const ABOUT_PAGE: AboutContent = {
   meta: {
     title: 'About us',
-    description: 'HITROO is a software company building custom software, automation and AI for businesses of every size — one team, fast delivery and support long after launch.',
+    description: 'HITROO is a software company building custom software, automation and AI for businesses of every size — fast delivery and support long after launch.',
   },
   intro: {
     caption: 'About HITROO',
@@ -136,12 +136,12 @@ export const ABOUT_PAGE: AboutContent = {
     lede: 'HITROO is where software, automation, AI and creatives are built under one roof, to one standard.',
   },
   story: { caption: 'Why we started', lines: ['Advanced technology became too costly and too complex.', 'We make it simple, and within reach.'] },
-  divisions: { caption: 'Our divisions', title: 'Four divisions, one team.' },
+  divisions: { caption: 'Our divisions', title: 'Four divisions, one standard.' },
   beliefs: {
     caption: 'What we believe',
     title: 'Four things we won’t compromise on.',
     items: [
-      { title: 'One team, end to end', text: 'The people who build your software also support it.' },
+      { title: 'End to end', text: 'The people who build your software also support it.' },
       { title: 'Made with taste', text: 'Software people enjoy using. Brands people remember.' },
       { title: 'Curious by default', text: 'We study hard problems, then ship the answers.' },
       { title: 'We stay after launch', text: 'Support in one app, long after go-live.' },

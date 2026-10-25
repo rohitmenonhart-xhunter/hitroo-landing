@@ -4,7 +4,7 @@ import { WHY_HITROO_STATEMENT, type Company, type Division, type Service } from 
 import { abs } from '@/lib/seo';
 
 const SUMMARY =
-  'HITROO is one foundation for software, automation, AI and creative growth, with four divisions: Software (our own products, custom software, mobile and desktop apps, managed services), Automation (workflow automation and AI agents), AI (custom and in-house models, private LLMs, computer vision) and Creatives (social media, done for you: content, posting and analysis, with results in your dashboard). One team designs, builds, secures and supports everything it ships. Support comes from the engineers who built the software, through the HITROO app, where every request is followed from report to release.';
+  'HITROO is one foundation for software, automation, AI and creative growth, with four divisions: Software (our own products, custom software, mobile and desktop apps, managed services), Automation (workflow automation and AI agents), AI (custom and in-house models, private LLMs, computer vision) and Creatives (social media, done for you: content, posting and analysis, with results in your dashboard). HITROO designs, builds, secures and supports everything it ships. Support comes from the engineers who built the software, through the HITROO app, where every request is followed from report to release.';
 
 /** The facts every summary opens with, from the live content. */
 async function content() {
@@ -71,7 +71,15 @@ export async function llmsTxt() {
 
 /** /llms-full.txt — full service details and common questions, in plain text. */
 export async function llmsFullTxt() {
-  const { DIVISIONS, services, support, faq, FACTS } = await content();
+  const [{ DIVISIONS, services, support, faq, FACTS }, ...films] = await Promise.all([
+    content(),
+    getContent('film:home'),
+    getContent('film:software'),
+    getContent('film:ai'),
+    getContent('film:automation'),
+    getContent('film:creatives'),
+  ]);
+  const filmPages = ['/', '/software', '/ai', '/automation', '/creatives'];
   const lines = [
     '# HITROO — full details',
     '',
@@ -112,6 +120,8 @@ export async function llmsFullTxt() {
     '## Common questions',
     ...faq.map((f) => `Q: ${f.q} A: ${f.a}`),
     '',
+    '## Films',
+    ...films.flatMap((f, i) => [`### ${f.title}`, `URL: ${abs(filmPages[i])}`, `${f.description}`, `Transcript: ${f.transcript}`, '']),
   ];
   return text(lines.join('\n'));
 }

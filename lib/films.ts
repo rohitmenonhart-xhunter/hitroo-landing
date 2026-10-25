@@ -35,14 +35,14 @@ const film = (f: Omit<FilmContent, 'width' | 'height' | 'caption' | 'uploadDate'
 
 export const FILMS = {
   home: film({
-    src: `${MEDIA}/vid/a849154c-hitroo-film.mp4`,
-    poster: `${MEDIA}/img/24419c2a-hitroo-film-poster-1920.webp`,
+    src: `${MEDIA}/vid/60452fb6-hitroo-film.mp4`,
+    poster: `${MEDIA}/img/6486176e-hitroo-film-poster-1920.webp`,
     seconds: 46,
     heading: 'HITROO in 46 seconds.',
     title: 'HITROO in 46 seconds',
-    description: 'One team for software, AI, automation and creatives: how HITROO takes the work that costs your business time and money off your plate.',
+    description: 'Software, AI, automation and creatives: how HITROO takes the work that costs your business time and money off your plate.',
     transcript:
-      'Every business hits the same wall. Work that eats your time. Costs that eat your money. And problems that hold the whole business back. Meet HITROO. Tell us what’s slowing you down. Software, built around how you work. AI that learns your business. Automation that clears the busywork, all day, all night. And with Creatives, we grow your social presence. Content made and posted for you, with the results in your dashboard. All through one team. It starts with a free call. Then we plan it, build it, and keep it running. Book yours at hitroo.com.',
+      'Every business hits the same wall. Work that eats your time. Costs that eat your money. And problems that hold the whole business back. Meet HITROO. Tell us what’s slowing you down. Software, built around how you work. AI that learns your business. Automation that clears the busywork, all day, all night. And with Creatives, we grow your social presence. Content made and posted for you, with the results in your dashboard. It starts with a free call. Then we plan it, build it, and keep it running. Book yours at hitroo.com.',
   }),
   software: film({
     src: `${MEDIA}/vid/daa385e6-hitroo-software-film.mp4`,

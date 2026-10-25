@@ -49,7 +49,6 @@ export default function VideoShowcase({ video: v, copy }: { video: ShowcaseVideo
                 </li>
               ))}
             </ul>
-            <p className="mt-4 text-[13px] font-medium text-stone">{v.credits}</p>
           </details>
         </div>
         <div className="order-1 flex justify-center md:order-2">

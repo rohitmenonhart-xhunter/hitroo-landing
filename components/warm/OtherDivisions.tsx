@@ -10,7 +10,7 @@ import { Caption, H_L, Tight, WContainer } from './ui';
 export default async function OtherDivisions({
   current,
   caption = 'Other divisions',
-  title = 'One team behind every division.',
+  title = 'Explore the other divisions.',
 }: {
   current?: DivisionSlug;
   caption?: string;

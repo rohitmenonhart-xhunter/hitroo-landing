@@ -53,7 +53,7 @@ export const COMPANY: Company = {
   location: 'Chennai, Tamil Nadu, India',
   oneLiner: 'One foundation for software, automation, AI and creative growth.',
   about:
-    'HITROO is a technology company built as one foundation with four divisions: Software (our products, custom software, mobile and desktop apps, managed services), Automation (workflows and AI agents), AI (custom models and computer vision) and Creatives (social media, done for you). One team designs, builds, secures and supports everything it ships.',
+    'HITROO is a technology company built as one foundation with four divisions: Software (our products, custom software, mobile and desktop apps, managed services), Automation (workflows and AI agents), AI (custom models and computer vision) and Creatives (social media, done for you). HITROO designs, builds, secures and supports everything it ships.',
   linkedin: 'https://www.linkedin.com/company/hitroo',
 };
 
@@ -261,7 +261,7 @@ export const DIVISIONS: Division[] = [
     name: 'Software',
     line: 'Products and custom builds your business runs on.',
     overview:
-      'HITROO Software builds custom software, mobile and desktop apps and our own software products, and runs them as managed services. One team designs, builds, secures and supports it all.',
+      'HITROO Software builds custom software, mobile and desktop apps and our own software products, and runs them as managed services. We design, build, secure and support it all.',
     statement: ['Off-the-shelf tools make you work their way.', 'We build software that works yours.'],
     offers: [
       serviceOffer('custom-software'),
@@ -491,7 +491,7 @@ export const SHOWCASE: Showcase[] = [
     slug: 'software',
     name: 'Software',
     title: 'Built for the day after launch.',
-    text: 'Platforms, mobile and desktop apps engineered by one team, from architecture and interface to testing and hosting. Nothing gets lost between hand-offs, because there aren’t any.',
+    text: 'Platforms, mobile and desktop apps engineered end to end, from architecture and interface to testing and hosting. Nothing gets lost between hand-offs, because there aren’t any.',
     capabilities: [
       { title: 'Web platforms', text: 'Products, portals and the internal tools teams live in.' },
       { title: 'Mobile applications', text: 'Native and cross-platform, made for one hand.' },

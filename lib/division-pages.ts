@@ -110,9 +110,9 @@ export const DIVISION_PAGES: Record<DivisionSlug, DivisionPageContent> = {
     standardsImage: { src: '/photos/divisions/software-night.webp', alt: '', position: '50% 50%', dim: 0.35 },
     metaTitle: 'Software — Custom platforms, mobile and desktop apps',
     description:
-      'HITROO Software designs, engineers and operates custom web platforms, mobile and desktop applications, APIs and cloud infrastructure. One team from discovery to operations; you own the code.',
+      'HITROO Software designs, engineers and operates custom web platforms, mobile and desktop applications, APIs and cloud infrastructure. From discovery to operations, and you own the code.',
     title: 'From first sketch to production, and every release after.',
-    lede: 'Custom platforms, mobile and desktop applications, designed, engineered and run by one team.',
+    lede: 'Custom platforms, mobile and desktop applications, designed, engineered and kept running for you.',
     signs: {
       title: 'Off-the-shelf tools make you work their way.',
       lede: 'We build software that works yours.',
@@ -165,7 +165,7 @@ export const DIVISION_PAGES: Record<DivisionSlug, DivisionPageContent> = {
     },
     commitments: [
       { title: 'Working software early', text: 'You use a working build early, then a new version every iteration.' },
-      { title: 'One team, start to finish', text: 'The people who design and build it are the people who support it.' },
+      { title: 'Start to finish', text: 'The people who design and build it are the people who support it.' },
       { title: 'You own the code', text: 'Everything we write for you is yours to keep and run.' },
       { title: 'Tested at every step', text: 'Every change is tested before it reaches your users.' },
       { title: 'Security-checked before release', text: 'Security is reviewed as part of every release, not added later.' },
@@ -382,7 +382,7 @@ export const DIVISION_PAGES: Record<DivisionSlug, DivisionPageContent> = {
       { title: 'Deployed where you choose', text: 'In your cloud or on your own servers.' },
       { title: 'Evaluated before launch', text: 'Measured on your real cases, not on demos.' },
       { title: 'Monitored after release', text: 'Accuracy is tracked in production, not assumed.' },
-      { title: 'One team, start to finish', text: 'The people who train the model support it.' },
+      { title: 'Start to finish', text: 'The people who train the model support it.' },
     ],
     engagements: [
       { title: 'A model project', text: 'One defined use case, trained, evaluated and deployed.', fit: 'Best for a clear, specific problem.' },
@@ -475,7 +475,7 @@ export const DIVISION_PAGES: Record<DivisionSlug, DivisionPageContent> = {
       { title: 'Best posts analysed', text: 'We study what performs and make more of it.' },
       { title: 'Results in your dashboard', text: 'Every post and its numbers, visible any time.' },
       { title: 'People behind every post', text: 'AI helps us move fast; people make sure it’s right.' },
-      { title: 'One team, start to finish', text: 'The same team plans, creates and reports.' },
+      { title: 'Start to finish', text: 'The people who plan your content also make it and report on it.' },
     ],
     faq: [
       { q: 'Do we need to create any content?', a: 'No. We create the content and post it for you. You see every post and how it performs in your dashboard.' },

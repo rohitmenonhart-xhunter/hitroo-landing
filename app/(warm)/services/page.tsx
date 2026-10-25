@@ -64,8 +64,8 @@ export default async function ServicesPage() {
       <PageIntro
         word="services"
         caption="What we do"
-        title="Four divisions. One team behind them."
-        lede="Software, automation, AI and creatives, built and supported under one roof."
+        title="Four divisions. One standard across them."
+        lede="Software, automation, AI and creatives, built and supported end to end."
         action={<TouchPill label="Book a free call" />}
       />
 

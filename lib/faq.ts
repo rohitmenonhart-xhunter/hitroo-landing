@@ -69,7 +69,7 @@ export function serviceFaq(s: { title: string; approach: string[]; capabilities:
 /** The questions most people ask before they contact us. */
 export function generalFaq(email: string, contactUrl: string): Qa[] {
   return [
-    { q: 'What does HITROO build?', a: 'Custom platforms, mobile and desktop apps, automated workflows, AI models, vision systems and social media content, all from one team.' },
+    { q: 'What does HITROO build?', a: 'Custom platforms, mobile and desktop apps, automated workflows, AI models, vision systems and social media content.' },
     { q: 'How does HITROO work?', a: 'In four stages: discovery, scope and design, delivery, then operations. You use working software early and steer every release.' },
     { q: 'Does HITROO support software after launch?', a: 'Yes. The engineers who built it support it through the HITROO app, where you follow every request from report to release.' },
     { q: 'Who does HITROO work with?', a: 'Founders turning an idea into a product, growing businesses replacing spreadsheets, and enterprises modernising systems they can’t switch off, worldwide.' },

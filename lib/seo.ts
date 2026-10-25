@@ -33,7 +33,7 @@ export function pageMetadata({
     // (Next 13.5 reuses head tags by position during client navigation).
     ...(keywords ? { keywords } : {}),
     alternates: { canonical: path, languages: { en: path, 'x-default': path }, types: { 'application/rss+xml': [{ url: '/feed.xml', title: 'HITROO news, articles and blog' }] } },
-    openGraph: { type, url: path, title, description, siteName: 'HITROO', locale: 'en_US', images },
+    openGraph: { type, url: path, title, description, siteName: 'hitroo', locale: 'en_US', images },
     twitter: { card: 'summary_large_image', title, description, images: images.map((i) => i.url) },
   };
 }
@@ -44,11 +44,12 @@ export const organizationLd = (COMPANY: Company, DIVISIONS: Division[]) => ({
   '@type': 'Organization',
   '@id': ORG_ID,
   name: 'HITROO',
+  alternateName: ['hitroo', 'hitroo.com'],
   url: SITE_URL,
   logo: { '@type': 'ImageObject', url: abs('/brand/hitroo-wordmark.png'), width: 1200, height: 373 },
   image: abs('/og-image.png'),
   description:
-    'HITROO is one foundation for software, automation, AI and creative growth: custom software and our own products, workflow automation and AI agents, custom AI models and computer vision, and social media, done for you. One team designs, builds, secures and supports everything it ships.',
+    'HITROO is one foundation for software, automation, AI and creative growth: custom software and our own products, workflow automation and AI agents, custom AI models and computer vision, and social media, done for you. HITROO designs, builds, secures and supports everything it ships.',
   slogan: 'One foundation. Every way forward.',
   email: COMPANY.email,
   telephone: COMPANY.phone.replace(/\s+/g, '-'),
@@ -120,7 +121,9 @@ export const websiteLd = () => ({
   '@type': 'WebSite',
   '@id': SITE_ID,
   url: SITE_URL,
-  name: 'HITROO',
+  // The site name Google shows in results; the logo is lowercase "hitroo".
+  name: 'hitroo',
+  alternateName: ['HITROO', 'hitroo.com'],
   description: 'One foundation for software, automation, AI and creative growth.',
   publisher: { '@id': ORG_ID },
   inLanguage: 'en',

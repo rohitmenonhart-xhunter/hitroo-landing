@@ -10,6 +10,9 @@ All notable changes to the HITROO website and its infrastructure. Newest first. 
 ### Changed
 - **Acknowledgment email** (contact and careers forms) rebuilt in the site's look: warm paper, the glass wordmark with the ember "hi" (`public/email/hero.jpg`, rendered by the films' glass engine), Plus Jakarta Sans headlines, "What happens next" steps, a sand copy of the message, an ember button and the four divisions as photo cards (`public/email/*.jpg`; JPEG because Outlook shows no WebP). The old blue/red/yellow stripes and the "Intelligence, Unbound" line are gone.
 - The quote portrait's name pill has no ember dot.
+- **No "one team":** the owner felt it made HITROO sound small. Every "one team" line is rewritten (company summary, Software copy, FAQ, home and services headings, standards cards, structured data, llms.txt), and the HITROO film drops "All through one team." (v4: the reel wall holds through the music's peak instead). Database copy refreshed with `content:seed --force` (no admin edits existed).
+- **Tab titles and site name in lowercase:** "hitroo — …" and "… | hitroo"; WebSite structured data `name: hitroo` (alternate "HITROO"). Favicons get new addresses (`?v=hi`) so browsers that remember the old rings icon fetch the "hi".
+- **llms-full.txt** lists the five films with their transcripts. No credits line under the films or the Creatives video.
 
 ## 2026-10-25 — Page content and media in the database
 

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, Eye, Globe2, Languages, Layers, LifeBuoy, Lightbulb, MapPin, Palette, ShieldCheck, Users } from 'lucide-react';
+import { ArrowRight, Eye, Layers, LifeBuoy, Lightbulb, Palette, ShieldCheck, Users } from 'lucide-react';
 import JsonLd from '@/components/seo/JsonLd';
 import ClosingCta from '@/components/warm/ClosingCta';
 import FounderBlock from '@/components/warm/FounderBlock';
@@ -35,10 +35,6 @@ export default async function AboutPage() {
       </WSection>
 
       <StandardsCard id="count-title" caption={c.promises.caption} title={c.promises.title} items={promises} icons={[Users, Layers, ShieldCheck, Eye]} />
-
-      <WSection id="where-title" caption={c.where.caption} title={c.where.title}>
-        <PointCards items={c.where.items} icons={[MapPin, Globe2, Languages]} />
-      </WSection>
 
       <Statement
         id="ai-view-title"

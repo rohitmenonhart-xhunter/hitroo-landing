@@ -4,7 +4,15 @@ import type { Company, Division, Service } from '@/lib/site-data';
 /** Canonical origin. Override per deployment with NEXT_PUBLIC_SITE_URL (e.g. a Vercel preview). */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hitroo.com').replace(/\/$/, '');
 export const abs = (path = '/') => `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
-export const OG_IMAGE = { url: '/og-image.png', width: 1200, height: 675, alt: 'hitroo — one foundation for software, automation, AI and creative growth' };
+/** The link-preview card (WhatsApp, LinkedIn, X…): a small JPEG under its own name, so apps that cached an older card fetch this one. */
+export const OG_IMAGE = {
+  url: '/og-hitroo.jpg',
+  secureUrl: 'https://www.hitroo.com/og-hitroo.jpg',
+  type: 'image/jpeg',
+  width: 1200,
+  height: 675,
+  alt: 'hitroo, one foundation for software, automation, AI and creative growth',
+};
 
 export const ORG_ID = `${SITE_URL}/#organization`;
 export const SITE_ID = `${SITE_URL}/#website`;
@@ -49,7 +57,7 @@ export const organizationLd = (COMPANY: Company, DIVISIONS: Division[]) => ({
   alternateName: ['HITROO', 'hitroo.com'],
   url: SITE_URL,
   logo: { '@type': 'ImageObject', url: abs('/brand/hitroo-wordmark.png'), width: 1200, height: 373 },
-  image: abs('/og-image.png'),
+  image: abs(OG_IMAGE.url),
   description:
     'hitroo is one foundation for software, automation, AI and creative growth: custom software and our own products, workflow automation and AI agents, custom AI models and computer vision, and social media, done for you. hitroo designs, builds, secures and supports everything it ships.',
   slogan: 'One foundation. Every way forward.',
@@ -196,7 +204,7 @@ export const articleLd = (p: {
   description: p.description,
   url: abs(p.path),
   mainEntityOfPage: { '@type': 'WebPage', '@id': abs(p.path) },
-  image: [p.image ? (p.image.startsWith('http') ? p.image : abs(p.image)) : abs('/og-image.png')],
+  image: [p.image ? (p.image.startsWith('http') ? p.image : abs(p.image)) : abs(OG_IMAGE.url)],
   datePublished: p.published.toISOString(),
   dateModified: p.modified.toISOString(),
   author: p.author === 'hitroo' ? { '@id': ORG_ID, '@type': 'Organization', name: 'hitroo' } : { '@type': 'Person', name: p.author },

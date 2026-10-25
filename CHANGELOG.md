@@ -8,6 +8,7 @@ All notable changes to the HITROO website and its infrastructure. Newest first. 
 - **The brand is written in lowercase everywhere:** every visible "HITROO" on the site, in emails, structured data names, llms.txt and the admin now reads "hitroo" (178 places on the site); "HITROO" stays only as an `alternateName`.
 - **Rohit is Head of Technology** on the About page's block and in structured data (`employee`, `jobTitle`), not Founder.
 - **"Based in Chennai, India"** replaces "Headquarters" (About page, llms.txt). Email subjects use " | hitroo" (no long dash).
+- **Link previews (WhatsApp & co.):** the card is now `public/og-hitroo.jpg` (45 KB JPEG made from `og-image.png`) under a new name, with `og:image:type` and `og:image:secure_url`; hitroo.com → www is a permanent 308 (was a 307), set on the Vercel domain.
 - **Phone menu fixed:** it opened inside the header, whose slide-away transform made the fixed menu only as tall as the bar, so the page showed through; it now sits outside the header and covers the screen.
 
 ## 2026-10-25 — HITROO films, the new acknowledgment email

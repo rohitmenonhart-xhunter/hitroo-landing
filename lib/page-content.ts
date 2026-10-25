@@ -47,7 +47,7 @@ export interface HomeContent {
 
 export const HOME: HomeContent = {
   meta: {
-    title: 'hitroo — Software, Automation, AI & Social Media',
+    title: 'hitroo | Software, Automation, AI & Social Media',
     description:
       'HITROO engineers custom software, automation and AI around how your business actually works, and runs your social media for you. We design it, build it and keep it running.',
   },

@@ -25,6 +25,8 @@ export function pageMetadata({
   image?: string | null;
   keywords?: string[];
 }): Metadata {
+  // No long dashes in tab titles (the owner's call): "Software — Custom platforms" reads "Software: Custom platforms".
+  title = title.replace(/\s+[—–]\s+/g, ': ');
   const images = image ? [{ url: image, alt: title }] : [OG_IMAGE];
   return {
     title,

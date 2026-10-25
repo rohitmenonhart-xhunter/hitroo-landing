@@ -25,7 +25,8 @@ export const revalidate = 300;
 
 export async function generateMetadata(): Promise<Metadata> {
   const { meta } = await getContent('home');
-  return { ...pageMetadata({ title: meta.title, description: meta.description, path: '/' }), title: { absolute: meta.title } };
+  const title = meta.title.replace(/\s+[—–]\s+/, ' | ');
+  return { ...pageMetadata({ title, description: meta.description, path: '/' }), title: { absolute: title } };
 }
 
 /** The home page: its own copy is the `home` key; the divisions, steps, promises, quote and questions are shared keys. */

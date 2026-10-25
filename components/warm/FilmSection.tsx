@@ -8,7 +8,7 @@ import { WSection } from './ui';
 
 /**
  * A HITROO film in the section under a page's opening (`film:home`, `film:<division>`). It loads nothing until it
- * nears the screen, plays muted while on screen, and "Sound on" restarts it with sound; the transcript is one tap away.
+ * nears the screen, plays muted while on screen, and "Sound on" restarts it with sound; the transcript is one tap away (no credits line: the owner asked for none).
  */
 export default function FilmSection({ film: f, className }: { film: FilmContent; className?: string }) {
   return (
@@ -27,8 +27,7 @@ export default function FilmSection({ film: f, className }: { film: FilmContent;
         }}
       />
       <ShowcaseVideo video={{ src: f.src, poster: f.poster, width: f.width, height: f.height, title: f.title, seconds: f.seconds }} className="w-full rounded-[32px]" />
-      <div className="mt-5 flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-10">
-        <p className="text-[13px] font-medium text-stone">{f.credits}</p>
+      <div className="mt-5">
         <details className="group max-w-[720px] [&_summary::-webkit-details-marker]:hidden">
           <summary className="flex cursor-pointer list-none items-center gap-3 text-[16px] font-medium text-char outline-none focus-visible:underline">
             Transcript

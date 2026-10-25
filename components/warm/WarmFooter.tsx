@@ -88,7 +88,7 @@ export default async function WarmFooter() {
         </p>
       </WContainer>
       <WContainer className="flex flex-wrap items-center justify-between gap-4 py-8 text-[14px] font-medium text-stone">
-        <p>© {new Date().getFullYear()} HITROO</p>
+        <p>© {new Date().getFullYear()} hitroo</p>
         <div className="flex flex-wrap gap-x-5 gap-y-2">
           <Link href="/site-map" className="hover:text-char">
             Site map

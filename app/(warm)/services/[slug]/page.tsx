@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     title: `${s.title} — ${s.tagline}`,
     description: s.overview,
     path: `/services/${s.slug}`,
-    keywords: [s.title, s.label, ...s.capabilities, ...s.stack, 'HITROO'],
+    keywords: [s.title, s.label, ...s.capabilities, ...s.stack, 'hitroo'],
   });
 }
 
@@ -65,7 +65,7 @@ export default async function ServicePage({ params }: { params: { slug: string }
           { name: s.title, path: `/services/${s.slug}` },
         ])}
       />
-      <PageIntro word={WORD[s.slug] ?? 'services'} caption={`HITROO ${d.name}`} title={s.title} lede={s.short} action={<TouchPill label="Book a free call" />} />
+      <PageIntro word={WORD[s.slug] ?? 'services'} caption={`hitroo ${d.name}`} title={s.title} lede={s.short} action={<TouchPill label="Book a free call" />} />
 
       <Statement id="problem-title" caption="The problem" lines={[s.pain, `${s.tagline}.`]} />
 

@@ -12,7 +12,7 @@ export default async function ContactPage() {
   const c = await getContent('page:contact');
   return (
     <>
-      <JsonLd data={webPageLd('ContactPage', 'Contact HITROO', '/contact', 'Tell us what you need. We reply within a day.')} />
+      <JsonLd data={webPageLd('ContactPage', 'Contact hitroo', '/contact', 'Tell us what you need. We reply within a day.')} />
       <JsonLd data={breadcrumbLd([{ name: 'Contact', path: '/contact' }])} />
       <JsonLd data={faqLd(c.faq.items)} />
       <PageIntro word="contact" caption={c.intro.caption} title={c.intro.title} lede={c.intro.lede} />

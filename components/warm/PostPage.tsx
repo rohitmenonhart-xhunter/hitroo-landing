@@ -87,7 +87,7 @@ export default async function PostPage({ kind, slug }: { kind: PostKind; slug: s
             <PostBody body={post.body} />
             {kind === 'news' && (
               <div className="glass-warm mt-16 rounded-[24px] p-7 text-[16px] font-medium leading-relaxed text-char/75 sm:p-8">
-                <p className="text-[13px] uppercase tracking-[0.06em] text-char">About HITROO</p>
+                <p className="text-[13px] uppercase tracking-[0.06em] text-char">About hitroo</p>
                 <p className="mt-3">{COMPANY.about}</p>
                 <p className="mt-4">
                   Press:{' '}

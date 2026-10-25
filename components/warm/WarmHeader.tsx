@@ -37,7 +37,7 @@ export function TouchPill({ className, label = 'Get in touch', href = '/contact'
 
 function Logo() {
   return (
-    <Link href="/" aria-label="HITROO home" className={cn('rounded-sm', RING)}>
+    <Link href="/" aria-label="hitroo home" className={cn('rounded-sm', RING)}>
       <Wordmark className="text-[27px] text-char" />
     </Link>
   );

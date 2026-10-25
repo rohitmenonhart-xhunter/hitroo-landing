@@ -7,7 +7,7 @@ import ShowcaseVideo from './reels/ShowcaseVideo';
 import { WSection } from './ui';
 
 /**
- * A HITROO film in the section under a page's opening (`film:home`, `film:<division>`). It loads nothing until it
+ * A hitroo film in the section under a page's opening (`film:home`, `film:<division>`). It loads nothing until it
  * nears the screen, plays muted while on screen, and "Sound on" restarts it with sound; the transcript is one tap away (no credits line: the owner asked for none).
  */
 export default function FilmSection({ film: f, className }: { film: FilmContent; className?: string }) {

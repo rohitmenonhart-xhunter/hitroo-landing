@@ -6,7 +6,7 @@ import { getContent } from '@/lib/content';
 import type { Company } from '@/lib/site-data';
 import { breadcrumbLd, pageMetadata, webPageLd } from '@/lib/seo';
 
-const DESCRIPTION = 'The terms for using the HITROO website.';
+const DESCRIPTION = 'The terms for using the hitroo website.';
 export const metadata = pageMetadata({ title: 'Terms of use', description: DESCRIPTION, path: '/terms' });
 
 const A = 'font-medium text-char underline decoration-char/30 underline-offset-4 hover:decoration-char';
@@ -23,7 +23,7 @@ const sections = (COMPANY: Company): LegalSection[] => [
     title: 'Our content',
     body: [
       <>
-        The text, images, logo and code on this site belong to HITROO or its licensors. Use our logo only as shown in the{' '}
+        The text, images, logo and code on this site belong to hitroo or its licensors. Use our logo only as shown in the{' '}
         <Link href="/brand" className={A}>
           brand kit
         </Link>
@@ -41,7 +41,7 @@ const sections = (COMPANY: Company): LegalSection[] => [
   },
   {
     title: 'Liability',
-    body: ['We work to keep the site accurate and available, but provide it as it is. As far as the law allows, HITROO isn’t liable for losses from using it.'],
+    body: ['We work to keep the site accurate and available, but provide it as it is. As far as the law allows, hitroo isn’t liable for losses from using it.'],
   },
   {
     title: 'Projects',

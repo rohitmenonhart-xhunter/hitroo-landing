@@ -7,7 +7,7 @@ import { getContent } from '@/lib/content';
 import type { Company } from '@/lib/site-data';
 import { breadcrumbLd, pageMetadata, webPageLd } from '@/lib/seo';
 
-const DESCRIPTION = 'The cookies and browser storage the HITROO website uses, and how to change your choice.';
+const DESCRIPTION = 'The cookies and browser storage the hitroo website uses, and how to change your choice.';
 export const metadata = pageMetadata({ title: 'Cookie policy', description: DESCRIPTION, path: '/cookies' });
 
 const A = 'font-medium text-char underline decoration-char/30 underline-offset-4 hover:decoration-char';

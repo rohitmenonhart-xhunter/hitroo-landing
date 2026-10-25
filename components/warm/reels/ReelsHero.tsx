@@ -24,7 +24,7 @@ export default function ReelsHero({ title, lede, action, reels, isNew }: { title
       <WContainer className="flex flex-col items-center pt-6 text-center lg:pt-10">
         <GlassWord word="creatives" />
         <div className="mt-10 flex items-center gap-3">
-          <Caption>HITROO Creatives</Caption>
+          <Caption>hitroo Creatives</Caption>
           {isNew && <span className="rounded-full bg-char px-2.5 py-0.5 text-[11px] font-bold tracking-[0.08em] text-white">NEW</span>}
         </div>
         <h1 id="hero-title" className="mt-6 max-w-[980px] font-display text-[clamp(40px,6.2vw,96px)] font-extrabold leading-[0.95] tracking-[-0.05em] text-char [text-wrap:balance]">

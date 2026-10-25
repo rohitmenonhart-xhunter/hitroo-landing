@@ -5,7 +5,7 @@ import { getContent } from '@/lib/content';
 import type { Company } from '@/lib/site-data';
 import { breadcrumbLd, pageMetadata, webPageLd } from '@/lib/seo';
 
-const DESCRIPTION = 'How HITROO makes its website usable for everyone, and how to tell us about a barrier.';
+const DESCRIPTION = 'How hitroo makes its website usable for everyone, and how to tell us about a barrier.';
 export const metadata = pageMetadata({ title: 'Accessibility', description: DESCRIPTION, path: '/accessibility' });
 
 const A = 'font-medium text-char underline decoration-char/30 underline-offset-4 hover:decoration-char';

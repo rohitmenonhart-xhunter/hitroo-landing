@@ -13,12 +13,12 @@ import { breadcrumbLd, faqLd, webPageLd } from '@/lib/seo';
 
 const PLATFORM_ICONS: Record<string, LucideIcon> = { iOS: Smartphone, Android: Smartphone, Windows: Monitor, macOS: Laptop };
 
-/** Support (the HITROO app): its copy is `page:support`; the promises are shared. */
+/** Support (the hitroo app): its copy is `page:support`; the promises are shared. */
 export default async function SupportPage() {
   const [c, promises] = await Promise.all([getContent('page:support'), getContent('promises')]);
   return (
     <>
-      <JsonLd data={webPageLd('WebPage', 'Support', '/support', 'Support from the engineers who built your software, followed from report to release in the HITROO app.')} />
+      <JsonLd data={webPageLd('WebPage', 'Support', '/support', 'Support from the engineers who built your software, followed from report to release in the hitroo app.')} />
       <JsonLd data={breadcrumbLd([{ name: 'Support', path: '/support' }])} />
       <JsonLd data={faqLd(c.faq.items)} />
       <PageIntro word="support" caption={c.intro.caption} title={c.intro.title} lede={c.intro.lede} action={<TouchPill label={c.intro.action} />} />

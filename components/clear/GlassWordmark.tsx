@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { boxBlur, signedField } from './field';
 import { GRADIENT_CSS, GRADIENT_GLSL, quadProgram, watchVisible } from './gl';
 
-const WORD = 'HITROO';
+const WORD = 'hitroo';
 const MAX_DROPS = 16;
 
 /** How the hero's wordmark is drawn: the face, and the shape of its glass. */

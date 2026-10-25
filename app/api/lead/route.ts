@@ -147,11 +147,11 @@ export async function POST(request: NextRequest) {
         });
 
         const labels: Record<string, string> = {
-            contact: 'New message from the HITROO website',
-            early_access: 'New Early Access request — HITROO',
-            ai_chat: 'New lead from HITROO',
+            contact: 'New message from the hitroo website',
+            early_access: 'New Early Access request — hitroo',
+            ai_chat: 'New lead from hitroo',
         };
-        const subject = labels[data.leadType] || 'New message from the HITROO website';
+        const subject = labels[data.leadType] || 'New message from the hitroo website';
         const timestamp = new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' });
         const context =
             [
@@ -161,10 +161,10 @@ export async function POST(request: NextRequest) {
                 .filter(Boolean)
                 .join('\n') || 'No details provided';
 
-        // 1) Notify the HITROO team
+        // 1) Notify the hitroo team
         try {
         await transporter.sendMail({
-            from: `HITROO Website <${process.env.GMAIL_USER}>`,
+            from: `hitroo Website <${process.env.GMAIL_USER}>`,
             to: RECIPIENT,
             replyTo: data.email || undefined,
             subject,
@@ -177,9 +177,9 @@ export async function POST(request: NextRequest) {
           ${data.phone ? `<p><strong>Phone:</strong> <a href="tel:${esc(data.phone)}">${esc(data.phone)}</a></p>` : ''}
           <p style="margin-top:16px;"><strong>Message</strong></p>
           <div style="background:#f8f9fa;padding:15px;border-radius:12px;margin:8px 0;white-space:pre-wrap;">${esc(context)}</div>
-          <p style="color:#80868b;font-size:12px;margin-top:16px;">Sent from the HITROO website · ${timestamp}</p>
+          <p style="color:#80868b;font-size:12px;margin-top:16px;">Sent from the hitroo website · ${timestamp}</p>
         </div>`,
-            text: `${subject}\n\n${data.name ? `Name: ${data.name}\n` : ''}${data.email ? `Email: ${data.email}\n` : ''}${data.phone ? `Phone: ${data.phone}\n` : ''}\nMessage:\n${context}\n\nSent from the HITROO website · ${timestamp}`,
+            text: `${subject}\n\n${data.name ? `Name: ${data.name}\n` : ''}${data.email ? `Email: ${data.email}\n` : ''}${data.phone ? `Phone: ${data.phone}\n` : ''}\nMessage:\n${context}\n\nSent from the hitroo website · ${timestamp}`,
         });
 
             if (leadId) await markLeadEmailed(leadId);
@@ -194,14 +194,14 @@ export async function POST(request: NextRequest) {
         if (data.email && mayAcknowledge(data.email)) {
             try {
                 await transporter.sendMail({
-                    from: `HITROO <${process.env.GMAIL_USER}>`,
+                    from: `hitroo <${process.env.GMAIL_USER}>`,
                     to: data.email,
-                    subject: 'We\'ve received your message — HITROO',
+                    subject: 'We\'ve received your message | hitroo',
                     html: acknowledgmentEmail({
                         caption: 'Message received',
                         name: data.name,
                         promise: 'We’ll reply within a day.',
-                        intro: 'Your message is with the HITROO team. Here’s what happens next, and a copy of what you sent.',
+                        intro: 'Your message is with the hitroo team. Here’s what happens next, and a copy of what you sent.',
                         steps: [
                             { title: 'We read your message', text: 'It’s with our team now.' },
                             { title: 'We reply within a day', text: 'To set up your free call.' },
@@ -211,7 +211,7 @@ export async function POST(request: NextRequest) {
                         recapBody: esc(context),
                         preheader: 'We’ll reply within a day. Here’s what happens next.',
                     }),
-                    text: `Thanks${data.name ? `, ${data.name}` : ''}. We'll reply within a day.\n\nWhat happens next\n01  We read your message\n02  We reply within a day to set up your free call\n03  You get a clear scope and a plan, before anything is built\n\nYour message:\n${context}\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nHITROO · Chennai, Tamil Nadu, India`,
+                    text: `Thanks${data.name ? `, ${data.name}` : ''}. We'll reply within a day.\n\nWhat happens next\n01  We read your message\n02  We reply within a day to set up your free call\n03  You get a clear scope and a plan, before anything is built\n\nYour message:\n${context}\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nhitroo · Chennai, Tamil Nadu, India`,
                 });
             } catch (ackErr) {
                 console.error('Acknowledgment email failed (non-fatal):', ackErr);

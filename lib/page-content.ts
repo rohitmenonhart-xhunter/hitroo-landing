@@ -49,7 +49,7 @@ export const HOME: HomeContent = {
   meta: {
     title: 'hitroo | Software, Automation, AI & Social Media',
     description:
-      'HITROO engineers custom software, automation and AI around how your business actually works, and runs your social media for you. We design it, build it and keep it running.',
+      'hitroo engineers custom software, automation and AI around how your business actually works, and runs your social media for you. We design it, build it and keep it running.',
   },
   hero: {
     title: 'The quiet machinery behind ambitious businesses.',
@@ -58,7 +58,7 @@ export const HOME: HomeContent = {
     tags: ['Custom software', 'Mobile apps', 'Desktop apps', 'Automation', 'AI models', 'Vision systems', 'Social media', 'Support'],
   },
   why: {
-    caption: 'Why HITROO',
+    caption: 'Why hitroo',
     text: 'Most software is built to be delivered. Ours is built to be depended on: designed with your team, proven in production and kept running by the people who wrote it.',
   },
   divisions: {
@@ -128,12 +128,12 @@ export interface AboutContent {
 export const ABOUT_PAGE: AboutContent = {
   meta: {
     title: 'About us',
-    description: 'HITROO is a software company building custom software, automation and AI for businesses of every size — fast delivery and support long after launch.',
+    description: 'hitroo is a software company building custom software, automation and AI for businesses of every size — fast delivery and support long after launch.',
   },
   intro: {
-    caption: 'About HITROO',
+    caption: 'About hitroo',
     title: 'One foundation. Many ways forward.',
-    lede: 'HITROO is where software, automation, AI and creatives are built under one roof, to one standard.',
+    lede: 'hitroo is where software, automation, AI and creatives are built under one roof, to one standard.',
   },
   story: { caption: 'Why we started', lines: ['Advanced technology became too costly and too complex.', 'We make it simple, and within reach.'] },
   divisions: { caption: 'Our divisions', title: 'Four divisions, one standard.' },
@@ -153,7 +153,7 @@ export const ABOUT_PAGE: AboutContent = {
     caption: 'Where we are',
     title: 'Based in India. Working with the world.',
     items: [
-      { title: 'Headquarters', text: 'Chennai, Tamil Nadu, India.' },
+      { title: 'Based in', text: 'Chennai, India.' },
       { title: 'Clients', text: 'Businesses around the world.' },
       { title: 'Language', text: 'We work in English.' },
     ],
@@ -165,7 +165,7 @@ export const ABOUT_PAGE: AboutContent = {
   },
   explore: {
     caption: 'Explore',
-    title: 'See more of HITROO.',
+    title: 'See more of hitroo.',
     links: [
       { href: '/research', title: 'Research', text: 'The hard problems we study, and ship.' },
       { href: '/support', title: 'Support', text: 'How we look after what we build.' },
@@ -177,7 +177,7 @@ export const ABOUT_PAGE: AboutContent = {
 };
 
 /* ------------------------------------------------------------------
-   Support: the HITROO app (key `page:support`)
+   Support: the hitroo app (key `page:support`)
    ------------------------------------------------------------------ */
 
 export interface SupportContent {
@@ -199,12 +199,12 @@ export interface SupportContent {
 export const SUPPORT_PAGE: SupportContent = {
   meta: {
     title: 'Support',
-    description: 'Support from the engineers who built your software: raise a request from any device and follow it from report to release in the HITROO app.',
+    description: 'Support from the engineers who built your software: raise a request from any device and follow it from report to release in the hitroo app.',
   },
   intro: {
     caption: 'Support',
     title: 'The people who built it are one tap away.',
-    lede: 'Every request goes straight to the engineers who wrote your software. Follow it from report to release in the HITROO app.',
+    lede: 'Every request goes straight to the engineers who wrote your software. Follow it from report to release in the hitroo app.',
     action: 'Start a project',
   },
   manifesto: {
@@ -239,7 +239,7 @@ export const SUPPORT_PAGE: SupportContent = {
     items: [
       { q: 'Who answers our requests?', a: 'The engineers who built your software. There is no call centre in between.' },
       { q: 'Is support only for bugs?', a: 'No. Changes, questions and new ideas go through the same app, to the same team.' },
-      { q: 'Where do we raise a request?', a: 'In the HITROO app, on iOS, Android, Windows or macOS.' },
+      { q: 'Where do we raise a request?', a: 'In the hitroo app, on iOS, Android, Windows or macOS.' },
       { q: 'Can we see what’s happening?', a: 'Yes. Every request shows where it stands, from report to release.' },
     ],
   },
@@ -251,7 +251,7 @@ export const SUPPORT_PAGE: SupportContent = {
       { href: '/contact', title: 'Book a free call', text: 'Bring the problem. Leave with a clear next step.' },
     ],
   },
-  closing: { title: 'Build with the team that stays.', line: 'Every project ships with the HITROO app, and the engineers behind it.', action: 'Book a free call' },
+  closing: { title: 'Build with the team that stays.', line: 'Every project ships with the hitroo app, and the engineers behind it.', action: 'Book a free call' },
 };
 
 /* ------------------------------------------------------------------
@@ -289,7 +289,7 @@ export const CONTACT_PAGE: ContactContent = {
       { q: 'Do I need a detailed brief?', a: 'No. A few lines about what you want is enough. We’ll ask the rest.' },
       { q: 'Can I just call?', a: 'Yes. The number is beside the form, and email works too.' },
       { q: 'How fast will you reply?', a: 'Within a day, by email or phone, whichever you prefer.' },
-      { q: 'I’m a client and something’s wrong.', a: 'Raise a ticket in the HITROO app for the fastest reply.' },
+      { q: 'I’m a client and something’s wrong.', a: 'Raise a ticket in the hitroo app for the fastest reply.' },
     ],
   },
   explore: {
@@ -374,7 +374,7 @@ export const CREATIVES_PAGE: CreativesContent = {
   action: 'Book a free call',
   fan: [pick('trends', 0), pick('faceless', 0), pick('ads', 0), pick('characters', 1), pick('animation', 0)],
   showcase: {
-    caption: 'Made by HITROO Creatives',
+    caption: 'Made by hitroo Creatives',
     title: 'Thirty seconds. One myth, busted.',
     text: 'Researched, scripted and edited by our team, with every claim checked against two sources. The kind of video that makes people stop, and trust you for it.',
   },

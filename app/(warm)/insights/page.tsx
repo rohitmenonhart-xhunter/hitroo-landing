@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 
 export const revalidate = 300;
 
-const DESCRIPTION = 'Articles and news from HITROO on what’s changing in software, AI, automation and business around the world.';
+const DESCRIPTION = 'Articles and news from hitroo on what’s changing in software, AI, automation and business around the world.';
 export const metadata = pageMetadata({ title: 'Insights', description: DESCRIPTION, path: '/insights' });
 
 function AllLink({ href, children }: { href: string; children: string }) {
@@ -30,7 +30,7 @@ export default async function InsightsPage() {
     <>
       <JsonLd data={webPageLd('CollectionPage', 'Insights', '/insights', DESCRIPTION)} />
       <JsonLd data={breadcrumbLd([{ name: 'Insights', path: '/insights' }])} />
-      <PageIntro word="insights" caption="Insights" title="What’s changing in software, AI and business." lede="Articles and news from the HITROO team." />
+      <PageIntro word="insights" caption="Insights" title="What’s changing in software, AI and business." lede="Articles and news from the hitroo team." />
 
       <WSection id="articles-title" caption="Articles" title="In-depth reads." lede="Longer pieces for when you’re planning something big.">
         <PostGrid posts={articles} />
@@ -43,7 +43,7 @@ export default async function InsightsPage() {
       </WSection>
 
       {news.length > 0 && (
-        <WSection id="news-title" caption="Newsroom" title="News from HITROO." lede="Company news and announcements.">
+        <WSection id="news-title" caption="Newsroom" title="News from hitroo." lede="Company news and announcements.">
           <PostGrid posts={news} />
           <AllLink href="/news">All news</AllLink>
         </WSection>

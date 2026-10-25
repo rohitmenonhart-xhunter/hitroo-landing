@@ -5,7 +5,7 @@ import { getContent } from '@/lib/content';
 import type { Company } from '@/lib/site-data';
 import { breadcrumbLd, pageMetadata, webPageLd } from '@/lib/seo';
 
-const DESCRIPTION = 'How to report a security problem to HITROO.';
+const DESCRIPTION = 'How to report a security problem to hitroo.';
 export const metadata = pageMetadata({ title: 'Security', description: DESCRIPTION, path: '/security' });
 
 const A = 'font-medium text-char underline decoration-char/30 underline-offset-4 hover:decoration-char';

@@ -215,7 +215,7 @@ export default function CareersForm({ email }: { email: string }) {
         </div>
         <div>
           <label htmlFor="careers-why" className={LABEL}>
-            Why HITROO?
+            Why hitroo?
           </label>
           <textarea id="careers-why" name="whyHitroo" value={form.whyHitroo} onChange={onChange} required rows={3} className={`${FIELD} resize-none`} />
         </div>

@@ -162,7 +162,7 @@ export async function POST(request: NextRequest) {
         const attachments = [{ filename: resumeName, content: resume }];
 
         const mailOptions = {
-            from: `HITROO Careers <${process.env.GMAIL_USER}>`,
+            from: `hitroo Careers <${process.env.GMAIL_USER}>`,
             to: process.env.LEAD_EMAIL_RECIPIENT || 'info@hitroo.com',
             replyTo: email || undefined,
             subject: `New Job Application: ${positionTitle} - ${name}`,
@@ -211,7 +211,7 @@ export async function POST(request: NextRequest) {
             </tr>
           </table>
           
-          <h3 style="color: #333; margin-top: 20px;">Why HITROO?</h3>
+          <h3 style="color: #333; margin-top: 20px;">Why hitroo?</h3>
           <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0;">
             ${esc(whyHitroo || 'Not provided')}
           </div>
@@ -228,7 +228,7 @@ export async function POST(request: NextRequest) {
           <hr style="border: 1px solid #eee; margin-top: 30px;" />
           <p style="color: #888; font-size: 12px;">
             Submitted on ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
-            <br/>This application was submitted via the HITROO Careers page.
+            <br/>This application was submitted via the hitroo Careers page.
           </p>
         </div>
       `,
@@ -243,7 +243,7 @@ Portfolio: ${portfolio || 'Not provided'}
 Experience: ${experience || 'Not specified'}
 Availability: ${availability || 'Not specified'}
 
-Why HITROO?
+Why hitroo?
 ${whyHitroo || 'Not provided'}
 
 Why This Position?
@@ -269,19 +269,19 @@ Submitted: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
         if (email && mayAcknowledge(email)) {
             try {
                 await transporter.sendMail({
-                    from: `HITROO Careers <${process.env.GMAIL_USER}>`,
+                    from: `hitroo Careers <${process.env.GMAIL_USER}>`,
                     to: email,
-                    subject: 'We\'ve received your application — HITROO',
+                    subject: 'We\'ve received your application | hitroo',
                     html: acknowledgmentEmail({
                         caption: 'Application received',
                         name,
                         promise: 'We’ll be in touch.',
                         intro: `We’ve received your application${positionTitle ? ` for <strong style="color:#12110B;">${esc(positionTitle)}</strong>` : ''}. Our team reviews every application within 7 days.`,
                         recapLabel: 'Applied for',
-                        recapBody: esc(positionTitle || 'HITROO'),
+                        recapBody: esc(positionTitle || 'hitroo'),
                         preheader: 'Our team reviews every application within 7 days.',
                     }),
-                    text: `Thanks${name ? `, ${name}` : ''}. We've received your application${positionTitle ? ` for ${positionTitle}` : ''}. Our team reviews every application within 7 days and we'll be in touch.\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nHITROO · Chennai, Tamil Nadu, India`,
+                    text: `Thanks${name ? `, ${name}` : ''}. We've received your application${positionTitle ? ` for ${positionTitle}` : ''}. Our team reviews every application within 7 days and we'll be in touch.\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nhitroo · Chennai, Tamil Nadu, India`,
                 });
             } catch (ackErr) {
                 console.error('Careers acknowledgment email failed (non-fatal):', ackErr);

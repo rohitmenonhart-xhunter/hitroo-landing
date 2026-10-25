@@ -17,8 +17,8 @@ const HOW = [
 ];
 
 const FAQ = [
-  { q: 'Is AI a threat to HITROO?', a: 'No. AI makes us faster. It doesn’t replace what we do: AI can draft a prototype in hours, but software a business runs on still takes a team.' },
-  { q: 'How does HITROO use AI?', a: HOW.map((h) => `${h.title}: ${h.text}`).join(' ') },
+  { q: 'Is AI a threat to hitroo?', a: 'No. AI makes us faster. It doesn’t replace what we do: AI can draft a prototype in hours, but software a business runs on still takes a team.' },
+  { q: 'How does hitroo use AI?', a: HOW.map((h) => `${h.title}: ${h.text}`).join(' ') },
   { q: 'Will AI replace software companies?', a: 'No. Smartphones didn’t replace the computer; they multiplied the software the world needs. AI will do the same. It makes the good software companies faster.' },
 ];
 
@@ -27,7 +27,7 @@ export default function AiPerspectivePage() {
     <>
       <JsonLd data={faqLd(FAQ)} />
       <JsonLd data={breadcrumbLd([{ name: 'Our view on AI', path: '/ai-perspective' }])} />
-      <PageIntro word="perspective" caption="Our view" title="Is AI a threat to HITROO?" lede="No. AI makes us faster. It doesn’t replace what we do." />
+      <PageIntro word="perspective" caption="Our view" title="Is AI a threat to hitroo?" lede="No. AI makes us faster. It doesn’t replace what we do." />
 
       <Statement id="can-title" caption="The short answer" lines={['AI can draft a prototype in hours.', 'Software a business runs on still takes a team.']} />
 
@@ -35,7 +35,7 @@ export default function AiPerspectivePage() {
         <SplitCards left={{ label: 'What AI does well', items: AI_DOES }} right={{ label: 'What still takes a team', items: TEAM_DOES }} />
       </WSection>
 
-      <WSection id="how-title" caption="How we use AI" title="Fast, but never careless." lede="Three rules for how AI works inside HITROO.">
+      <WSection id="how-title" caption="How we use AI" title="Fast, but never careless." lede="Three rules for how AI works inside hitroo.">
         <PointCards items={HOW} icons={[Layers, Timer, ShieldCheck]} />
       </WSection>
 

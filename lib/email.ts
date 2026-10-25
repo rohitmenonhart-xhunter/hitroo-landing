@@ -1,4 +1,4 @@
-// Shared email building blocks for HITROO transactional emails.
+// Shared email building blocks for hitroo transactional emails.
 import { COMPANY, DIVISIONS } from './site-data';
 
 export const esc = (s: unknown) =>
@@ -38,7 +38,7 @@ interface AckOptions {
 }
 
 /**
- * The acknowledgment a visitor gets after writing to HITROO, in the site's look: warm paper, the glass wordmark,
+ * The acknowledgment a visitor gets after writing to hitroo, in the site's look: warm paper, the glass wordmark,
  * Plus Jakarta Sans headlines, ember as the only colour, white and sand cards. Table layout with inline styles so it
  * holds up in Gmail, Apple Mail and Outlook.
  */
@@ -160,7 +160,7 @@ export function acknowledgmentEmail({ caption, name, promise, intro, steps, reca
                 <td style="border-top:1px solid ${LINE};padding-top:22px;">
                   <div style="font-family:${DISPLAY};font-size:26px;font-weight:800;letter-spacing:-0.05em;color:${CHAR};line-height:1;"><span style="color:${EMBER};">hi</span>troo</div>
                   <p style="margin:10px 0 0;font-family:${TEXT};font-size:13px;line-height:1.6;color:${STONE};">${esc(COMPANY.location)}</p>
-                  <p style="margin:14px 0 0;font-family:${TEXT};font-size:12px;line-height:1.6;color:#A39C92;">You received this because you contacted HITROO.</p>
+                  <p style="margin:14px 0 0;font-family:${TEXT};font-size:12px;line-height:1.6;color:#A39C92;">You received this because you contacted hitroo.</p>
                 </td>
               </tr></table>
             </td>

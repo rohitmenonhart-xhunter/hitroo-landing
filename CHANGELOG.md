@@ -2,6 +2,13 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
+## 2026-10-25 — lowercase hitroo, Head of Technology, "based in"
+
+### Changed
+- **The brand is written in lowercase everywhere:** every visible "HITROO" on the site, in emails, structured data names, llms.txt and the admin now reads "hitroo" (178 places on the site); "HITROO" stays only as an `alternateName`.
+- **Rohit is Head of Technology** on the About page's block and in structured data (`employee`, `jobTitle`), not Founder.
+- **"Based in Chennai, India"** replaces "Headquarters" (About page, llms.txt). Email subjects use " | hitroo" (no long dash).
+
 ## 2026-10-25 — HITROO films, the new acknowledgment email
 
 ### Added

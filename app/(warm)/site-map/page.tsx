@@ -9,7 +9,7 @@ import { breadcrumbLd, pageMetadata, webPageLd } from '@/lib/seo';
 
 export const revalidate = 300;
 
-const DESCRIPTION = 'Every page on the HITROO website in one place.';
+const DESCRIPTION = 'Every page on the hitroo website in one place.';
 export const metadata = pageMetadata({ title: 'Site map', description: DESCRIPTION, path: '/site-map' });
 
 const groups = (DIVISIONS: Division[], services: Service[]): { title: string; links: [string, string][] }[] => [

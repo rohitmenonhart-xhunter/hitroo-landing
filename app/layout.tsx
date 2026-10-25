@@ -6,7 +6,7 @@ import { getContent } from '@/lib/content';
 import { OG_IMAGE, SITE_URL, organizationLd, websiteLd } from '@/lib/seo';
 
 const DESCRIPTION =
-  'HITROO builds custom software, mobile and desktop apps, AI models, automation and computer-vision systems for businesses — built fast, security-tested and supported after launch.';
+  'hitroo builds custom software, mobile and desktop apps, AI models, automation and computer-vision systems for businesses — built fast, security-tested and supported after launch.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   },
   description: DESCRIPTION,
   keywords: [
-    'HITROO',
+    'hitroo',
     'software development company',
     'custom software development',
     'mobile app development',
@@ -31,10 +31,10 @@ export const metadata: Metadata = {
     'managed services',
     'software outsourcing',
   ],
-  authors: [{ name: 'HITROO', url: SITE_URL }],
-  creator: 'HITROO',
-  publisher: 'HITROO',
-  applicationName: 'HITROO',
+  authors: [{ name: 'hitroo', url: SITE_URL }],
+  creator: 'hitroo',
+  publisher: 'hitroo',
+  applicationName: 'hitroo',
   // No referrer meta: the Referrer-Policy header (next.config.js) sets it, and Next 13.5
   // briefly writes other tags' values into it while navigating to and from posts.
   formatDetection: { telephone: false, address: false, email: false },

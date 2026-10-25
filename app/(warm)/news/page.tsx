@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 
 export const revalidate = 300;
 
-const DESCRIPTION = 'HITROO newsroom: company news and announcements, press contact and brand kit.';
+const DESCRIPTION = 'hitroo newsroom: company news and announcements, press contact and brand kit.';
 export const metadata = pageMetadata({ title: 'Newsroom', description: DESCRIPTION, path: '/news' });
 
 export default async function NewsPage() {
@@ -21,7 +21,7 @@ export default async function NewsPage() {
     <>
       <JsonLd data={webPageLd('CollectionPage', 'Newsroom', '/news', DESCRIPTION)} />
       <JsonLd data={breadcrumbLd([{ name: 'Newsroom', path: '/news' }])} />
-      <PageIntro word="news" caption="Newsroom" title="News from HITROO." lede="Company news and announcements." />
+      <PageIntro word="news" caption="Newsroom" title="News from hitroo." lede="Company news and announcements." />
 
       <WContainer className="pb-20 lg:pb-28">
         <PostGrid posts={news} empty="News is on the way." />
@@ -44,7 +44,7 @@ export default async function NewsPage() {
               </p>
             </div>
             <div>
-              <p className="text-[13px] font-medium uppercase tracking-[0.06em] text-stone">About HITROO</p>
+              <p className="text-[13px] font-medium uppercase tracking-[0.06em] text-stone">About hitroo</p>
               <p className="mt-3 text-[16px] font-medium leading-relaxed text-char/75">{COMPANY.about}</p>
               <Link href="/brand" className={cn(TEXT_LINK, 'mt-6')}>
                 Brand kit

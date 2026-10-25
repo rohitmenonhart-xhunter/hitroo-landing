@@ -67,7 +67,7 @@ export function DivisionLd({ p, d }: { p: DivisionPageContent; d: Division }) {
     <>
       <JsonLd data={divisionLd(d)} />
       <JsonLd data={faqLd(p.faq)} />
-      <JsonLd data={webPageLd('WebPage', `HITROO ${d.name}`, `/${d.slug}`, p.description)} />
+      <JsonLd data={webPageLd('WebPage', `hitroo ${d.name}`, `/${d.slug}`, p.description)} />
       <JsonLd data={breadcrumbLd([{ name: d.name, path: `/${d.slug}` }])} />
     </>
   );
@@ -90,10 +90,10 @@ export default async function DivisionPage({ slug }: { slug: DivisionSlug }) {
       <DivisionLd p={p} d={d} />
 
       {p.hero ? (
-        <SignatureIntro word={slug} caption={`HITROO ${d.name}`} title={p.title} lede={p.lede} action={<TouchPill label="Book a free call" />} hero={p.hero} />
+        <SignatureIntro word={slug} caption={`hitroo ${d.name}`} title={p.title} lede={p.lede} action={<TouchPill label="Book a free call" />} hero={p.hero} />
       ) : (
         <>
-          <PageIntro word={slug} caption={`HITROO ${d.name}`} title={p.title} lede={p.lede} action={<TouchPill label="Book a free call" />} />
+          <PageIntro word={slug} caption={`hitroo ${d.name}`} title={p.title} lede={p.lede} action={<TouchPill label="Book a free call" />} />
           <DivisionGallery gallery={p.gallery} />
         </>
       )}

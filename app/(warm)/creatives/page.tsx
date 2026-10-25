@@ -18,7 +18,7 @@ export const generateMetadata = () => divisionMetadata('creatives');
 
 /**
  * Creatives' signature page: a fan of reels in the opening, then one finished showcase video, the monthly cycle as a loop, the best performer and its trending variations, and a line that slides with the
- * scroll; the frame stays HITROO. Copy: `division:creatives`; reels and the page's own lines: `page:creatives`; the video: `video:creatives`.
+ * scroll; the frame stays hitroo. Copy: `division:creatives`; reels and the page's own lines: `page:creatives`; the video: `video:creatives`.
  */
 export default async function CreativesPage() {
   const [{ p, d }, c, video, film] = await Promise.all([getDivisionContent('creatives'), getContent('page:creatives'), getContent('video:creatives'), getContent('film:creatives')]);

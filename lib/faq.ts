@@ -55,24 +55,24 @@ const list = (items: string[]) =>
 export function serviceFaq(s: { title: string; approach: string[]; capabilities: string[]; outcomes: string[]; stack: string[] }): Qa[] {
   const t = midSentence(s.title);
   return [
-    { q: `What does HITROO’s ${t} include?`, a: `${list(s.capabilities.map((c, i) => (i ? lowerFirst(c) : c)))}.` },
+    { q: `What does hitroo’s ${t} include?`, a: `${list(s.capabilities.map((c, i) => (i ? lowerFirst(c) : c)))}.` },
     {
-      q: `How does HITROO deliver ${t}?`,
+      q: `How does hitroo deliver ${t}?`,
       a: `${s.approach.map((step, i) => (i ? lowerFirst(step) : step)).join(', then ')}. You see working software early, and every change is tested before it ships.`,
     },
     { q: `What does ${t} change for a business?`, a: `${list(s.outcomes.map((o, i) => (i ? lowerFirst(o) : o)))}.` },
-    { q: `Which technology does HITROO use for ${t}?`, a: `Usually ${list(s.stack)}, chosen to fit your business and your team.` },
-    { q: `Is ${t} supported after launch?`, a: 'Yes. The engineers who built it support it through the HITROO app, and you can follow every request from report to release.' },
+    { q: `Which technology does hitroo use for ${t}?`, a: `Usually ${list(s.stack)}, chosen to fit your business and your team.` },
+    { q: `Is ${t} supported after launch?`, a: 'Yes. The engineers who built it support it through the hitroo app, and you can follow every request from report to release.' },
   ];
 }
 
 /** The questions most people ask before they contact us. */
 export function generalFaq(email: string, contactUrl: string): Qa[] {
   return [
-    { q: 'What does HITROO build?', a: 'Custom platforms, mobile and desktop apps, automated workflows, AI models, vision systems and social media content.' },
-    { q: 'How does HITROO work?', a: 'In four stages: discovery, scope and design, delivery, then operations. You use working software early and steer every release.' },
-    { q: 'Does HITROO support software after launch?', a: 'Yes. The engineers who built it support it through the HITROO app, where you follow every request from report to release.' },
-    { q: 'Who does HITROO work with?', a: 'Founders turning an idea into a product, growing businesses replacing spreadsheets, and enterprises modernising systems they can’t switch off, worldwide.' },
+    { q: 'What does hitroo build?', a: 'Custom platforms, mobile and desktop apps, automated workflows, AI models, vision systems and social media content.' },
+    { q: 'How does hitroo work?', a: 'In four stages: discovery, scope and design, delivery, then operations. You use working software early and steer every release.' },
+    { q: 'Does hitroo support software after launch?', a: 'Yes. The engineers who built it support it through the hitroo app, where you follow every request from report to release.' },
+    { q: 'Who does hitroo work with?', a: 'Founders turning an idea into a product, growing businesses replacing spreadsheets, and enterprises modernising systems they can’t switch off, worldwide.' },
     { q: 'How do I start a project?', a: `Book a free call at ${contactUrl} or write to ${email}. After the call, you get a clear scope and estimate.` },
   ];
 }

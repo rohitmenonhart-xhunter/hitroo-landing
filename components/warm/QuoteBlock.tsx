@@ -11,7 +11,7 @@ export const roleWithoutCompany = (role: string) => (role.includes(', ') ? role.
 
 /**
  * A public figure's words beside their portrait (the same layout as the founder block). The source is linked and the
- * photo credit is always shown; nothing here suggests the speaker endorses HITROO.
+ * photo credit is always shown; nothing here suggests the speaker endorses hitroo.
  */
 export default function QuoteBlock({ quote: q }: { quote: Quote }) {
   const { quote, name, role, source, photo } = q;

@@ -50,7 +50,7 @@ export default async function Home() {
       <JsonLd data={faqLd(faq)} />
       <WarmHero title={home.hero.title} lede={home.hero.lede} action={home.hero.action} tags={home.hero.tags} />
 
-      {/* The HITROO film, right under the opening */}
+      {/* The hitroo film, right under the opening */}
       <FilmSection film={film} className="pt-20 lg:pt-28" />
 
       <ScrollStatement id="why-title" caption={home.why.caption} text={home.why.text} />

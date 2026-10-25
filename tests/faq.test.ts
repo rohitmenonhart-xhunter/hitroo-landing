@@ -44,7 +44,7 @@ test('service questions come only from the service facts', () => {
     stack: ['TypeScript', 'PostgreSQL'],
   });
   assert.equal(qa.length, 5);
-  assert.equal(qa[0].q, 'What does HITROO’s custom software development include?');
+  assert.equal(qa[0].q, 'What does hitroo’s custom software development include?');
   assert.equal(qa[0].a, 'Web platforms and APIs and integrations.');
   assert.equal(qa[1].a.startsWith('Map the workflow, then architect for scale, then ship in iterations.'), true);
   assert.equal(qa[2].a, 'Hours saved every week and one source of truth.');

@@ -8,7 +8,7 @@ import ReelCaption from './ReelCaption';
  *  (the Hobby plan allows 5,000 a month) and never wait for an encode. */
 export const isLibrary = (src: string) => src.startsWith('/photos/library/');
 
-/** The Creatives colours, for chips and caption boxes (that page's content is colourful; its frame stays HITROO). */
+/** The Creatives colours, for chips and caption boxes (that page's content is colourful; its frame stays hitroo). */
 export const TINT: Record<CreativeTint, string> = {
   ember: 'bg-ember text-white',
   pink: 'bg-[#FF3E8A] text-white',

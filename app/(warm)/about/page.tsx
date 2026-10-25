@@ -16,7 +16,7 @@ export default async function AboutPage() {
   const [c, founder, steps, promises] = await Promise.all([getContent('page:about'), getContent('founder'), getContent('steps'), getContent('promises')]);
   return (
     <>
-      <JsonLd data={webPageLd('AboutPage', 'About HITROO', '/about', 'HITROO is one foundation for software, automation, AI and creative growth.')} />
+      <JsonLd data={webPageLd('AboutPage', 'About hitroo', '/about', 'hitroo is one foundation for software, automation, AI and creative growth.')} />
       <JsonLd data={breadcrumbLd([{ name: 'About', path: '/about' }])} />
       <PageIntro word="about" caption={c.intro.caption} title={c.intro.title} lede={c.intro.lede} />
 

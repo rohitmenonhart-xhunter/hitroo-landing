@@ -7,7 +7,7 @@ import { breadcrumbLd, pageMetadata, webPageLd } from '@/lib/seo';
 
 export const revalidate = 300;
 
-const DESCRIPTION = 'In-depth articles from HITROO on software, AI, automation and running a business on technology.';
+const DESCRIPTION = 'In-depth articles from hitroo on software, AI, automation and running a business on technology.';
 export const metadata = pageMetadata({ title: 'Articles', description: DESCRIPTION, path: '/articles' });
 
 export default async function ArticlesPage() {

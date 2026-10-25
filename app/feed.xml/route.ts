@@ -28,9 +28,9 @@ export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-<title>HITROO — news, articles and blog</title>
+<title>hitroo — news, articles and blog</title>
 <link>${SITE_URL}</link>
-<description>Custom software, automation and AI for business: news and insights from HITROO.</description>
+<description>Custom software, automation and AI for business: news and insights from hitroo.</description>
 <language>en</language>
 <atom:link href="${abs('/feed.xml')}" rel="self" type="application/rss+xml"/>
 ${items}

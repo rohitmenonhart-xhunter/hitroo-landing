@@ -4,7 +4,7 @@ import type { DivisionSlug, Point } from './site-data';
 /* ------------------------------------------------------------------
    The four division pages (/software, /automation, /ai, /creatives).
    Facts confirmed by the owner (2026-10-24): clients own the code and
-   models, no client data is retained, automation runs on HITROO's own
+   models, no client data is retained, automation runs on hitroo's own
    platform, every engagement starts with a free call, and Creatives is
    done for you with results in the client's dashboard.
    ------------------------------------------------------------------ */
@@ -34,7 +34,7 @@ export interface DivisionHero extends DivisionImage {
   flip?: boolean;
 }
 
-/** The Creatives colours: content on that page is colourful (the page frame stays HITROO). */
+/** The Creatives colours: content on that page is colourful (the page frame stays hitroo). */
 export type CreativeTint = 'ember' | 'pink' | 'yellow' | 'lime' | 'teal' | 'lilac' | 'cobalt' | 'char';
 
 /** One reel on the Creatives page: a vertical still with its content format. */
@@ -110,7 +110,7 @@ export const DIVISION_PAGES: Record<DivisionSlug, DivisionPageContent> = {
     standardsImage: { src: '/photos/divisions/software-night.webp', alt: '', position: '50% 50%', dim: 0.35 },
     metaTitle: 'Software — Custom platforms, mobile and desktop apps',
     description:
-      'HITROO Software designs, engineers and operates custom web platforms, mobile and desktop applications, APIs and cloud infrastructure. From discovery to operations, and you own the code.',
+      'hitroo Software designs, engineers and operates custom web platforms, mobile and desktop applications, APIs and cloud infrastructure. From discovery to operations, and you own the code.',
     title: 'From first sketch to production, and every release after.',
     lede: 'Custom platforms, mobile and desktop applications, designed, engineered and kept running for you.',
     signs: {
@@ -191,7 +191,7 @@ export const DIVISION_PAGES: Record<DivisionSlug, DivisionPageContent> = {
       { q: 'How long does a project take?', a: 'It depends on the scope. You see working software early, and a new version every iteration after that.' },
       { q: 'Do you keep our data?', a: 'No. We don’t retain client data.' },
       { q: 'Can you work with our existing systems?', a: 'Yes. We connect new software to the systems you already run through APIs and integrations.' },
-      { q: 'What happens after launch?', a: 'The engineers who built it stay on it. Raise anything in the HITROO app and follow it from report to release.' },
+      { q: 'What happens after launch?', a: 'The engineers who built it stay on it. Raise anything in the hitroo app and follow it from report to release.' },
     ],
     closing: { title: 'Have a system in mind?', line: 'Tell us what it needs to do. We reply within a day.' },
   },
@@ -202,7 +202,7 @@ export const DIVISION_PAGES: Record<DivisionSlug, DivisionPageContent> = {
     hero: { src: '/photos/divisions/automation-ribbons.webp', alt: 'Two ribbons of fine ember lines crossing and twisting on paper', theme: 'light', position: '50% 90%' },
     metaTitle: 'Automation — Workflow automation and AI agents',
     description:
-      'HITROO Automation runs your repetitive work on our own automation platform: workflow automation, AI agents, document processing and integrations with the tools you already use, with people approving the steps that matter.',
+      'hitroo Automation runs your repetitive work on our own automation platform: workflow automation, AI agents, document processing and integrations with the tools you already use, with people approving the steps that matter.',
     title: 'The repetitive work, handled by systems.',
     lede: 'Workflow automation and AI agents on our own automation platform, connected to the tools you already use.',
     signs: {
@@ -296,7 +296,7 @@ export const DIVISION_PAGES: Record<DivisionSlug, DivisionPageContent> = {
     ],
     faq: [
       { q: 'Will automation replace my team?', a: 'No. It takes the repetitive work, so your team can do the work that needs people.' },
-      { q: 'Where do the automations run?', a: 'On the HITROO automation platform, which we build and operate. It connects to the tools you already use.' },
+      { q: 'Where do the automations run?', a: 'On the hitroo automation platform, which we build and operate. It connects to the tools you already use.' },
       { q: 'Which tools can it connect to?', a: 'Most tools with an API or an inbox: CRMs, spreadsheets, accounting and messaging apps.' },
       { q: 'Is it safe to let AI act on our data?', a: 'Agents act only with the permissions you give them, and sensitive steps wait for a person’s approval.' },
       { q: 'Where do we start?', a: 'With the one workflow that costs the most hours. We automate it, measure it, then move to the next.' },
@@ -312,7 +312,7 @@ export const DIVISION_PAGES: Record<DivisionSlug, DivisionPageContent> = {
     standardsImage: { src: '/photos/divisions/ai-glass-tall.webp', alt: '', position: '50% 70%' },
     metaTitle: 'AI — Custom models, private language models and vision',
     description:
-      'HITROO AI trains custom models on your data, deploys private language models in your cloud or on your servers, offers ready in-house models and builds computer-vision systems for quality inspection. You own the model; we retain no client data.',
+      'hitroo AI trains custom models on your data, deploys private language models in your cloud or on your servers, offers ready in-house models and builds computer-vision systems for quality inspection. You own the model; we retain no client data.',
     title: 'AI that understands your business.',
     lede: 'Custom models, private language models and vision systems, trained on your data and deployed where you choose.',
     signs: {
@@ -405,7 +405,7 @@ export const DIVISION_PAGES: Record<DivisionSlug, DivisionPageContent> = {
     visual: { src: '/photos/divisions/creatives-leap.webp', alt: 'A man in an ember corduroy suit leaping across a blue sky with a phone in his hand', position: '70% 40%' },
     metaTitle: 'Creatives — Social media, done for you',
     description:
-      'HITROO Creatives runs your social media for you: we create your content, post it across your channels and analyse which posts perform best. You see every post and its results in your own dashboard.',
+      'hitroo Creatives runs your social media for you: we create your content, post it across your channels and analyse which posts perform best. You see every post and its results in your own dashboard.',
     title: 'Your social media, done for you.',
     lede: 'We create your content, post it across your channels and analyse what performs. You see everything in your dashboard.',
     signs: {

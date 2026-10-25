@@ -4,7 +4,7 @@ import type { Company, Division, Service } from '@/lib/site-data';
 /** Canonical origin. Override per deployment with NEXT_PUBLIC_SITE_URL (e.g. a Vercel preview). */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://www.hitroo.com').replace(/\/$/, '');
 export const abs = (path = '/') => `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
-export const OG_IMAGE = { url: '/og-image.png', width: 1200, height: 675, alt: 'HITROO — one foundation for software, automation, AI and creative growth' };
+export const OG_IMAGE = { url: '/og-image.png', width: 1200, height: 675, alt: 'hitroo — one foundation for software, automation, AI and creative growth' };
 
 export const ORG_ID = `${SITE_URL}/#organization`;
 export const SITE_ID = `${SITE_URL}/#website`;
@@ -34,7 +34,7 @@ export function pageMetadata({
     // Only override keywords when given, so every page renders the same set of meta tags
     // (Next 13.5 reuses head tags by position during client navigation).
     ...(keywords ? { keywords } : {}),
-    alternates: { canonical: path, languages: { en: path, 'x-default': path }, types: { 'application/rss+xml': [{ url: '/feed.xml', title: 'HITROO news, articles and blog' }] } },
+    alternates: { canonical: path, languages: { en: path, 'x-default': path }, types: { 'application/rss+xml': [{ url: '/feed.xml', title: 'hitroo news, articles and blog' }] } },
     openGraph: { type, url: path, title, description, siteName: 'hitroo', locale: 'en_US', images },
     twitter: { card: 'summary_large_image', title, description, images: images.map((i) => i.url) },
   };
@@ -45,18 +45,18 @@ export const organizationLd = (COMPANY: Company, DIVISIONS: Division[]) => ({
   '@context': 'https://schema.org',
   '@type': 'Organization',
   '@id': ORG_ID,
-  name: 'HITROO',
-  alternateName: ['hitroo', 'hitroo.com'],
+  name: 'hitroo',
+  alternateName: ['HITROO', 'hitroo.com'],
   url: SITE_URL,
   logo: { '@type': 'ImageObject', url: abs('/brand/hitroo-wordmark.png'), width: 1200, height: 373 },
   image: abs('/og-image.png'),
   description:
-    'HITROO is one foundation for software, automation, AI and creative growth: custom software and our own products, workflow automation and AI agents, custom AI models and computer vision, and social media, done for you. HITROO designs, builds, secures and supports everything it ships.',
+    'hitroo is one foundation for software, automation, AI and creative growth: custom software and our own products, workflow automation and AI agents, custom AI models and computer vision, and social media, done for you. hitroo designs, builds, secures and supports everything it ships.',
   slogan: 'One foundation. Every way forward.',
   email: COMPANY.email,
   telephone: COMPANY.phone.replace(/\s+/g, '-'),
   foundingDate: '2024',
-  founder: [{ '@type': 'Person', name: 'Rohit', jobTitle: 'Founder', image: abs('/people/rohit.webp'), worksFor: { '@id': ORG_ID } }],
+  employee: [{ '@type': 'Person', name: 'Rohit', jobTitle: 'Head of Technology', image: abs('/people/rohit.webp'), worksFor: { '@id': ORG_ID } }],
   address: { '@type': 'PostalAddress', addressLocality: 'Chennai', addressRegion: 'Tamil Nadu', addressCountry: 'IN' },
   areaServed: 'Worldwide',
   contactPoint: [
@@ -89,10 +89,10 @@ export const organizationLd = (COMPANY: Company, DIVISIONS: Division[]) => ({
   ],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: 'HITROO',
+    name: 'hitroo',
     itemListElement: DIVISIONS.map((d) => ({
       '@type': 'OfferCatalog',
-      name: `HITROO ${d.name}`,
+      name: `hitroo ${d.name}`,
       url: abs(`/${d.slug}`),
       itemListElement: d.offers.map((o) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: o.title } })),
     })),
@@ -104,7 +104,7 @@ export const divisionLd = (d: Division) => ({
   '@context': 'https://schema.org',
   '@type': 'Service',
   '@id': `${abs(`/${d.slug}`)}#service`,
-  name: `HITROO ${d.name}`,
+  name: `hitroo ${d.name}`,
   serviceType: d.name,
   description: d.overview,
   url: abs(`/${d.slug}`),
@@ -113,7 +113,7 @@ export const divisionLd = (d: Division) => ({
   areaServed: 'Worldwide',
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
-    name: `HITROO ${d.name}`,
+    name: `hitroo ${d.name}`,
     itemListElement: d.offers.map((o) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name: o.title, ...(o.href ? { url: abs(o.href) } : {}) } })),
   },
 });
@@ -125,7 +125,7 @@ export const websiteLd = () => ({
   url: SITE_URL,
   // The site name Google shows in results; the logo is lowercase "hitroo".
   name: 'hitroo',
-  alternateName: ['HITROO', 'hitroo.com'],
+  alternateName: ['hitroo', 'hitroo.com'],
   description: 'One foundation for software, automation, AI and creative growth.',
   publisher: { '@id': ORG_ID },
   inLanguage: 'en',
@@ -199,7 +199,7 @@ export const articleLd = (p: {
   image: [p.image ? (p.image.startsWith('http') ? p.image : abs(p.image)) : abs('/og-image.png')],
   datePublished: p.published.toISOString(),
   dateModified: p.modified.toISOString(),
-  author: p.author === 'HITROO' ? { '@id': ORG_ID, '@type': 'Organization', name: 'HITROO' } : { '@type': 'Person', name: p.author },
+  author: p.author === 'hitroo' ? { '@id': ORG_ID, '@type': 'Organization', name: 'hitroo' } : { '@type': 'Person', name: p.author },
   publisher: { '@id': ORG_ID },
   articleSection: p.category ?? undefined,
   keywords: p.category ?? undefined,

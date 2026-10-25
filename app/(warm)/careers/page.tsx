@@ -13,7 +13,7 @@ export default async function CareersPage() {
   const [before, after = ''] = c.apply.note.split('{email}');
   return (
     <>
-      <JsonLd data={webPageLd('WebPage', 'Careers', '/careers', 'Roles in software, AI/ML and hardware engineering at HITROO.')} />
+      <JsonLd data={webPageLd('WebPage', 'Careers', '/careers', 'Roles in software, AI/ML and hardware engineering at hitroo.')} />
       <JsonLd data={breadcrumbLd([{ name: 'Careers', path: '/careers' }])} />
       <PageIntro word="careers" caption={c.intro.caption} title={c.intro.title} lede={c.intro.lede} />
 

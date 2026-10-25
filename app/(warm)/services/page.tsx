@@ -14,7 +14,7 @@ import { abs, breadcrumbLd, faqLd, pageMetadata, webPageLd } from '@/lib/seo';
 import { cn } from '@/lib/utils';
 
 const DESCRIPTION =
-  'Everything HITROO does, across four divisions: Software (custom software, mobile and desktop apps, managed services), Automation (workflows and AI agents), AI (custom models and vision) and Creatives (social media, done for you).';
+  'Everything hitroo does, across four divisions: Software (custom software, mobile and desktop apps, managed services), Automation (workflows and AI agents), AI (custom models and vision) and Creatives (social media, done for you).';
 
 export const metadata = pageMetadata({
   title: 'What we do — software, automation, AI and creatives',
@@ -53,7 +53,7 @@ export default async function ServicesPage() {
           '@context': 'https://schema.org',
           '@type': 'ItemList',
           itemListElement: [
-            ...DIVISIONS.map((d) => ({ name: `HITROO ${d.name}`, url: abs(`/${d.slug}`) })),
+            ...DIVISIONS.map((d) => ({ name: `hitroo ${d.name}`, url: abs(`/${d.slug}`) })),
             ...services.map((s) => ({ name: s.title, url: abs(`/services/${s.slug}`) })),
           ].map((it, i) => ({ '@type': 'ListItem', position: i + 1, ...it })),
         }}

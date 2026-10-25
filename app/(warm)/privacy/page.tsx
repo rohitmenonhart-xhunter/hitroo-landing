@@ -6,7 +6,7 @@ import { getContent } from '@/lib/content';
 import type { Company } from '@/lib/site-data';
 import { breadcrumbLd, pageMetadata, webPageLd } from '@/lib/seo';
 
-const DESCRIPTION = 'What HITROO collects on this website, why, how long we keep it, and your choices.';
+const DESCRIPTION = 'What hitroo collects on this website, why, how long we keep it, and your choices.';
 export const metadata = pageMetadata({ title: 'Privacy policy', description: DESCRIPTION, path: '/privacy' });
 
 /** The sections, with the contact details from `company` content. */

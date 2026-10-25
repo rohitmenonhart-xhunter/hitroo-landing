@@ -24,7 +24,7 @@ export const MYTH_VIDEO: ShowcaseVideoContent = {
   height: 1280,
   seconds: 32,
   title: 'The goldfish attention span, busted',
-  description: 'A 30-second myth-buster made by HITROO Creatives: where the “goldfish attention span” claim came from, and why it doesn’t hold up.',
+  description: 'A 30-second myth-buster made by hitroo Creatives: where the “goldfish attention span” claim came from, and why it doesn’t hold up.',
   uploadDate: '2026-10-24',
   transcript:
     'You’ve heard we have the attention span of a goldfish. Eight seconds. It traces back to a 2015 Microsoft Canada report that credited a website called Statistic Brain. When reporters checked, no one could find the study behind it. Attention researchers say there’s no evidence ours is shrinking. And goldfish? Scientists use them to study memory. People don’t stop paying attention. They stop paying attention to things that aren’t worth it. So the fix isn’t shorter. It’s better.',

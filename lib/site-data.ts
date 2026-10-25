@@ -6,7 +6,7 @@ import type { MediaImage } from './media';
  * (lib/content.ts, lib/content-defaults.ts).
  */
 
-/** HITROO's divisions: the foundation's four lines of business (never called "wings" on the site). */
+/** hitroo's divisions: the foundation's four lines of business (never called "wings" on the site). */
 export type DivisionSlug = 'software' | 'automation' | 'ai' | 'creatives';
 export const DIVISION_SLUGS: DivisionSlug[] = ['software', 'automation', 'ai', 'creatives'];
 
@@ -46,14 +46,14 @@ export interface Company {
 }
 
 export const COMPANY: Company = {
-  name: 'HITROO',
+  name: 'hitroo',
   email: 'info@hitroo.com',
   phone: '+91 7550000805',
   phoneHref: 'tel:+917550000805',
   location: 'Chennai, Tamil Nadu, India',
   oneLiner: 'One foundation for software, automation, AI and creative growth.',
   about:
-    'HITROO is a technology company built as one foundation with four divisions: Software (our products, custom software, mobile and desktop apps, managed services), Automation (workflows and AI agents), AI (custom models and computer vision) and Creatives (social media, done for you). HITROO designs, builds, secures and supports everything it ships.',
+    'hitroo is a technology company built as one foundation with four divisions: Software (our products, custom software, mobile and desktop apps, managed services), Automation (workflows and AI agents), AI (custom models and computer vision) and Creatives (social media, done for you). hitroo designs, builds, secures and supports everything it ships.',
   linkedin: 'https://www.linkedin.com/company/hitroo',
 };
 
@@ -166,7 +166,7 @@ export const services: Service[] = [
       'Monitoring and approvals',
     ],
     outcomes: ['Hours of manual work removed', 'Fewer errors', 'Scales without new headcount'],
-    stack: ['HITROO automation platform', 'AI agents', 'API integrations'],
+    stack: ['hitroo automation platform', 'AI agents', 'API integrations'],
   },
   {
     slug: 'vision-systems',
@@ -261,7 +261,7 @@ export const DIVISIONS: Division[] = [
     name: 'Software',
     line: 'Products and custom builds your business runs on.',
     overview:
-      'HITROO Software builds custom software, mobile and desktop apps and our own software products, and runs them as managed services. We design, build, secure and support it all.',
+      'hitroo Software builds custom software, mobile and desktop apps and our own software products, and runs them as managed services. We design, build, secure and support it all.',
     statement: ['Off-the-shelf tools make you work their way.', 'We build software that works yours.'],
     offers: [
       serviceOffer('custom-software'),
@@ -287,7 +287,7 @@ export const DIVISIONS: Division[] = [
       { q: 'Do we own what you build?', a: 'Yes. The software we build for you is yours to keep and run.' },
       { q: 'Can it work with the tools we already use?', a: 'Yes. We connect new software to your existing tools through APIs and integrations.' },
       { q: 'How long does a project take?', a: 'It depends on the scope. You see working software early, it grows in short cycles, and we agree on the timeline before we start.' },
-      { q: 'What happens after launch?', a: 'The engineers who built it stay on it. Raise anything in the HITROO app and follow it from report to release.' },
+      { q: 'What happens after launch?', a: 'The engineers who built it stay on it. Raise anything in the hitroo app and follow it from report to release.' },
     ],
   },
   {
@@ -295,7 +295,7 @@ export const DIVISIONS: Division[] = [
     name: 'Automation',
     line: 'Your workflows, running on their own.',
     overview:
-      'HITROO Automation takes repetitive work off your team: workflow automation, AI agents that work inside your tools, document processing and integrations, with people in the loop.',
+      'hitroo Automation takes repetitive work off your team: workflow automation, AI agents that work inside your tools, document processing and integrations, with people in the loop.',
     statement: ['Repetitive work quietly eats your team’s week.', 'Automation gives it back.'],
     offers: [
       { title: 'Workflow automation', text: 'Approvals, hand-offs and reports that run themselves.', href: '/services/ai-automation' },
@@ -328,7 +328,7 @@ export const DIVISIONS: Division[] = [
     name: 'AI',
     line: 'Models and vision that learn your business.',
     overview:
-      'HITROO AI trains custom models on your data, deploys private language models, offers ready in-house models and builds computer-vision systems that inspect quality on the line.',
+      'hitroo AI trains custom models on your data, deploys private language models, offers ready in-house models and builds computer-vision systems that inspect quality on the line.',
     statement: ['Generic AI doesn’t know your business.', 'Ours learns it.'],
     offers: [
       { title: 'Custom models', text: 'Trained and tuned on your own data.', href: '/services/ai-models' },
@@ -361,7 +361,7 @@ export const DIVISIONS: Division[] = [
     name: 'Creatives',
     line: 'Your social media, done for you.',
     overview:
-      'HITROO Creatives runs your brand’s social media for you: content made for your brand, scheduled posting across your channels, clear analytics and a growth engine that learns from every post.',
+      'hitroo Creatives runs your brand’s social media for you: content made for your brand, scheduled posting across your channels, clear analytics and a growth engine that learns from every post.',
     statement: ['Posting every day is a full-time job.', 'We take it off your hands.'],
     offers: [
       { title: 'Content', text: 'Posts, reels and carousels, made for your brand.' },
@@ -415,14 +415,14 @@ export const ENGAGEMENTS: Point[] = [
    Home page
    ------------------------------------------------------------------ */
 
-/** Why HITROO, in two lines (llms.txt). */
+/** Why hitroo, in two lines (llms.txt). */
 export const WHY_HITROO_STATEMENT = ['Most firms build your software and move on.', 'We build it fast, keep it secure and stay.'];
 
 /**
  * The home page's quote: a public figure's exact words, checked against the original (NVIDIA's announcement of GTC
  * 2026, 3 March 2026), with a freely licensed photo whose credit is always shown. The card quotes the two sentences
  * about every company. Chosen by the owner on 2026-09-28; back on the home page from 2026-10-24 in place of the
- * founder block. Nothing on the page may suggest he endorses HITROO.
+ * founder block. Nothing on the page may suggest he endorses hitroo.
  */
 export interface Quote {
   caption: string;
@@ -467,8 +467,8 @@ export const FOUNDER: Founder = {
   lines: ['The software a business runs on can’t be a demo.', 'We build it to work on day one and keep it working for years.'],
   text: 'No account managers in between. You work with the people who design and write your software, from the first call to the latest release.',
   name: 'Rohit',
-  role: 'Founder, HITROO',
-  photo: { src: '/people/rohit.webp', alt: 'Rohit, founder of HITROO' },
+  role: 'Head of Technology, hitroo',
+  photo: { src: '/people/rohit.webp', alt: 'Rohit, Head of Technology at hitroo' },
 };
 
 /* ------------------------------------------------------------------
@@ -562,5 +562,5 @@ export const PROMISES: Point[] = [
   { title: 'Engineers, not account managers', text: 'You work with the people who design and build it.' },
   { title: 'Context that stays', text: 'The team that built it supports it, so nothing is explained twice.' },
   { title: 'Every change tested', text: 'Nothing reaches your users unchecked.' },
-  { title: 'Visible end to end', text: 'Follow every request from report to release in the HITROO app.' },
+  { title: 'Visible end to end', text: 'Follow every request from report to release in the hitroo app.' },
 ];

@@ -31,7 +31,7 @@ export default function FounderBlock({ founder, link = true }: { founder: Founde
           <p className={cn(P, 'mt-6 max-w-[560px]')}>{founder.text}</p>
           {link && (
             <Link href="/about" className={cn(TEXT_LINK, 'mt-8 text-[17px]')}>
-              About HITROO
+              About hitroo
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Link>
           )}

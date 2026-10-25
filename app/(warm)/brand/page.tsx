@@ -11,7 +11,7 @@ import { getContent } from '@/lib/content';
 import { breadcrumbLd, pageMetadata, webPageLd } from '@/lib/seo';
 import { cn } from '@/lib/utils';
 
-const DESCRIPTION = 'The HITROO brand kit: the wordmark (SVG, PNG), the glass wordmark, the app icon, colours, type and how to use them.';
+const DESCRIPTION = 'The hitroo brand kit: the wordmark (SVG, PNG), the glass wordmark, the app icon, colours, type and how to use them.';
 export const metadata = pageMetadata({ title: 'Brand kit', description: DESCRIPTION, path: '/brand' });
 
 const COLOURS = [
@@ -29,7 +29,7 @@ const TYPE = [
 ];
 
 const RULES = [
-  'The wordmark is always lowercase “hitroo”. In writing, the company is HITROO.',
+  'The wordmark is always lowercase “hitroo”. In writing, the company is hitroo.',
   '“hi” is always Ember; “troo” is Char on light backgrounds and Paper on dark ones.',
   'Keep clear space around the wordmark of at least the height of the “h”.',
   'Don’t recolour, stretch, rotate or outline the wordmark, or add shadows or glows.',
@@ -91,7 +91,7 @@ export default async function BrandPage() {
             <Wordmark className="text-[clamp(44px,5vw,72px)] text-paper" />
           </div>
           <div className={cn(TILE, 'bg-sand')}>
-            <Image src="/brand/hitroo-icon.svg" alt="The HITROO app icon: “hi” in Ember on Paper" width={160} height={160} unoptimized className="h-[38%] w-auto rounded-[22%]" />
+            <Image src="/brand/hitroo-icon.svg" alt="The hitroo app icon: “hi” in Ember on Paper" width={160} height={160} unoptimized className="h-[38%] w-auto rounded-[22%]" />
           </div>
         </div>
         <div className="mt-8 flex flex-wrap gap-2">
@@ -105,7 +105,7 @@ export default async function BrandPage() {
 
       <WSection id="glass-title" caption="Glass" title="Clear glass is part of the brand." lede="Words and numerals in glass that bends the light behind them. Always clear: no tint, no glow, no shadow.">
         <div className="glass-warm flex items-center justify-center rounded-[32px] px-6 py-14 sm:px-12 sm:py-20">
-          <Glass name="wordmark" alt="The HITROO wordmark in clear glass" sizes="(min-width: 1024px) 900px, 90vw" className="h-auto w-full max-w-[900px]" />
+          <Glass name="wordmark" alt="The hitroo wordmark in clear glass" sizes="(min-width: 1024px) 900px, 90vw" className="h-auto w-full max-w-[900px]" />
         </div>
       </WSection>
 

@@ -18,7 +18,7 @@ const INK = '#12110B';
 const WORDS = [
   'software', 'automation', 'ai', 'creatives', 'services', 'custom', 'mobile', 'desktop', 'models', 'agents', 'vision', 'managed',
   'about', 'contact', 'support', 'careers', 'insights', 'articles', 'blog', 'news', 'research', 'perspective', 'brand',
-  'privacy', 'terms', 'cookies', 'security', 'accessibility', 'sitemap', '404',
+  'privacy', 'terms', 'cookies', 'security', 'accessibility', 'sitemap', '404', 'refunds', 'delivery', 'pricing',
 ];
 
 const ITEMS: { id: string; text: string; bg: string; w: number; h: number; fontFit?: boolean }[] = [

@@ -21,6 +21,9 @@ const columns = (divisions: Division[]): { title: string; links: { href: string;
     links: [
       { href: '/privacy', label: 'Privacy' },
       { href: '/terms', label: 'Terms' },
+      { href: '/refunds', label: 'Refunds' },
+      { href: '/delivery', label: 'Delivery' },
+      { href: '/pricing', label: 'Pricing' },
       { href: '/cookies', label: 'Cookies' },
       { href: '/accessibility', label: 'Accessibility' },
       { href: '/security', label: 'Security' },

@@ -1,4 +1,4 @@
-import { CircleAlert, Clock, RotateCw } from 'lucide-react';
+import { CircleAlert, Clock, Phone, RotateCw } from 'lucide-react';
 import type { ChatFile, ChatMessage } from '@/lib/client/types';
 import { cn } from '@/lib/utils';
 import Files, { type ShownFile } from './Files';
@@ -45,6 +45,7 @@ export default function Thread({ lead, messages, waiting, outbox, replying, fail
                   {!run && (
                     <p className="mb-1 text-[13.5px] font-bold text-char">
                       {lead} <span className="font-medium text-stone">· {timeOf(at)}</span>
+                      {it.m.call && <OnCall />}
                     </p>
                   )}
                   <Markdown>{it.m.text}</Markdown>
@@ -58,6 +59,7 @@ export default function Thread({ lead, messages, waiting, outbox, replying, fail
                 text={it.kind === 'message' ? it.m.text : it.kind === 'waiting' ? it.text : it.o.text}
                 files={it.kind === 'message' ? shown(it.m.files) : it.kind === 'waiting' ? shown(it.files) : it.o.files}
                 at={at}
+                call={it.kind === 'message' && it.m.call}
                 state={it.kind === 'out' ? it.o.state : 'sent'}
                 onRetry={it.kind === 'out' ? () => onRetry(it.o) : undefined}
               />
@@ -81,7 +83,16 @@ export default function Thread({ lead, messages, waiting, outbox, replying, fail
 }
 
 /** The client's own message: a dark bubble on the right, with its time or its sending state. */
-function Mine({ text, files, at, state, onRetry }: { text: string; files: ShownFile[]; at: string; state: Outgoing['state']; onRetry?: () => void }) {
+/** Marks what was said on a voice call, as opposed to written. */
+function OnCall() {
+  return (
+    <span className="ml-1.5 inline-flex items-center gap-1 rounded-full bg-paper px-2 py-0.5 align-[1px] text-[11.5px] font-semibold text-stone ring-1 ring-char/5">
+      <Phone aria-hidden="true" className="h-3 w-3" /> On a call
+    </span>
+  );
+}
+
+function Mine({ text, files, at, state, call, onRetry }: { text: string; files: ShownFile[]; at: string; state: Outgoing['state']; call?: boolean; onRetry?: () => void }) {
   return (
     <div className="flex flex-col items-end gap-1.5">
       <Files files={files} mine />
@@ -96,7 +107,10 @@ function Mine({ text, files, at, state, onRetry }: { text: string; files: ShownF
             <RotateCw aria-hidden="true" className="h-3 w-3" /> Not sent. Tap to try again
           </button>
         ) : (
-          timeOf(at)
+          <>
+            {call && <OnCall />}
+            {timeOf(at)}
+          </>
         )}
       </p>
     </div>

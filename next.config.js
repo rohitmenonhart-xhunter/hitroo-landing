@@ -31,6 +31,8 @@ const nextConfig = {
       ...['/d/:path*', '/q/:path*'].map((source) => ({
         source,
         headers: [
+          // The chat can call the Project Lead, so the client area may use the microphone (and nothing else may).
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(self), geolocation=()' },
           { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
           { key: 'Referrer-Policy', value: 'no-referrer' },
           { key: 'Cache-Control', value: 'private, no-store' },

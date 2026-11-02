@@ -85,6 +85,8 @@ export interface ChatMessage {
   text: string;
   at: string;
   files: ChatFile[];
+  /** Said on a voice call with the Lead, not written. */
+  call?: boolean;
 }
 
 /** A file sent in the chat, with a signed link to view it (null once it has expired). */
@@ -106,6 +108,8 @@ export interface Chat {
   waiting: Array<{ text: string; at: string; files: ChatFile[] }>;
   replying: boolean;
   failed: boolean;
+  /** Whether the client can call the Lead from the chat. */
+  calls?: boolean;
 }
 
 export type Quote =

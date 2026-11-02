@@ -61,6 +61,8 @@ export const api = {
   chat: (t: string, id: string, after?: string) => call<Chat>('GET', `${p(t, id)}/messages${after ? `?after=${encodeURIComponent(after)}` : ''}`),
   message: (t: string, id: string, text: string, files: string[] = []) => call<{ sent: Sent }>('POST', `${p(t, id)}/message`, { text, files }),
   upload: (t: string, id: string, file: { name: string; type: string; size: number }) => call<{ id: string; url: string; headers: Record<string, string> }>('POST', `${p(t, id)}/uploads`, file),
+  /** A one-use address (60 s) to open a voice call with the Lead from this page. */
+  voice: (t: string, id: string) => call<{ url: string; expiresInSeconds: number }>('POST', `${p(t, id)}/voice`),
   domain: (t: string, id: string, domain: string) => call<{ sent: Sent }>('POST', `${p(t, id)}/domain`, { domain }),
   quote: (q: string) => call<Quote>('GET', `/q/${q}`),
   accept: (q: string, name: string, agree: boolean) => call<Quote>('POST', `/q/${q}/accept`, { name, agree }),

@@ -2,6 +2,7 @@ import { ApiError, api, isQuoteToken } from '@/lib/client/api';
 import { back, errorCode, field, fromOurPage, refused } from '@/lib/client/forms';
 
 export const dynamic = 'force-dynamic';
+export const preferredRegion = 'fra1';
 
 /** Accepting a quote: the typed name and the tick, recorded with the client's address and browser. */
 export async function POST(req: Request, { params }: { params: { token: string } }) {

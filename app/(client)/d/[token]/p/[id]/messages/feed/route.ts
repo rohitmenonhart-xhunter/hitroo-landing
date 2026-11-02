@@ -2,6 +2,7 @@ import { ApiError, api, isAccessToken, isProjectId } from '@/lib/client/api';
 import { errorCode, fromOurPage, refused } from '@/lib/client/forms';
 
 export const dynamic = 'force-dynamic';
+export const preferredRegion = 'fra1';
 
 type Ctx = { params: { token: string; id: string } };
 const json = (status: number, body: unknown) => Response.json(body, { status, headers: { 'cache-control': 'private, no-store' } });

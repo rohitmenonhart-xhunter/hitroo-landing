@@ -2,6 +2,7 @@ import { api, isAccessToken, isProjectId } from '@/lib/client/api';
 import { back, errorCode, field, fromOurPage, refused } from '@/lib/client/forms';
 
 export const dynamic = 'force-dynamic';
+export const preferredRegion = 'fra1';
 
 /**
  * Every dashboard form posts here (`do` says which), and the client lands back on the page they were on:
@@ -19,8 +20,9 @@ export async function POST(req: Request, { params }: { params: { token: string }
   const home = `/d/${t}`;
   if (action === 'new') {
     try {
-      const { sent } = await api.newProject(t, text);
-      return back(`${home}?sent=${sent}`);
+      // The new project is there at once: straight into its chat, where its lead is already writing.
+      const { project } = await api.newProject(t, text);
+      return back(`${home}/p/${project}/messages`);
     } catch (err) {
       return back(`${home}/new?error=${errorCode(err, 'short')}`);
     }

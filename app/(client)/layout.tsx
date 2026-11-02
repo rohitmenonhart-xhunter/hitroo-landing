@@ -6,7 +6,10 @@ import type { Metadata } from 'next';
  * delivery API (lib/client/api.ts).
  */
 export const dynamic = 'force-dynamic';
-/** Next to the delivery system (Germany): each page's calls to it take milliseconds, not half a second. */
+/**
+ * Next to the delivery system (Germany), so its calls take milliseconds. Vercel's Hobby plan runs every function
+ * in the project's one region (sin1, by the site's database) and ignores this; on Pro it takes effect.
+ */
 export const preferredRegion = 'fra1';
 
 export const metadata: Metadata = {

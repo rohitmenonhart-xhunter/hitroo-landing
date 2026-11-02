@@ -9,6 +9,7 @@ All notable changes to the HITROO website and its infrastructure. Newest first. 
 - **`/refunds`:** cancellations and refunds: a full refund within 24 hours of a payment if no work from that stage was shared; payments for started work aren't refunded and the client keeps the work; refunds within 5 to 7 working days.
 - **`/delivery`:** service delivery (Razorpay's "shipping policy" for a services business): everything is delivered online, what the client receives, when work starts.
 - The three pages are in the footer's Legal column, the sitemap, the site map page and on-demand revalidation. Their glass words (`refunds`, `delivery`, `pricing`) were rendered by `/preview/glass-render` and keyed to transparent WebP (minimal alpha over the paper colour, cropped to the same 776 px band as the other words).
+- **Registered office:** the contact panel (contact page and wherever the panel shows) and the Terms give Mockello's registered address, and the Terms its PAN.
 - **Operated by Mockello:** the footer, the Terms (a new "Who we are" section), Pricing and Refunds say hitroo is operated by Mockello, Chennai, which holds the agreements, payments and invoices, so the site matches the business on the Razorpay account.
 - Why: Razorpay's activation review asks for links to pricing, refund and shipping/delivery policies alongside About, Contact, Terms and Privacy. The amounts match the Software Factory's price list (`config/pricing.yaml`, KT D33/D34).
 

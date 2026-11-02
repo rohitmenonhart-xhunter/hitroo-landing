@@ -69,7 +69,7 @@ const sections = (COMPANY: Company): LegalSection[] => [
   },
   {
     title: 'Who we are',
-    body: ['hitroo is operated by Mockello, based in Chennai, Tamil Nadu, India. Project agreements, payments and invoices are in Mockello’s name.'],
+    body: ['hitroo is operated by Mockello, No. 41, 3rd Street, Chinnamal Nagar, Avadi, Chennai, Tamil Nadu 600071, India (PAN ACDFM2414R). Project agreements, payments and invoices are in Mockello’s name.'],
   },
   {
     title: 'Contact',

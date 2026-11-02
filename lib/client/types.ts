@@ -84,6 +84,17 @@ export interface ChatMessage {
   /** Markdown. */
   text: string;
   at: string;
+  files: ChatFile[];
+}
+
+/** A file sent in the chat, with a signed link to view it (null once it has expired). */
+export interface ChatFile {
+  id: string;
+  name: string;
+  type: string;
+  size: number;
+  kind: 'image' | 'video' | 'pdf' | 'file';
+  url: string | null;
 }
 
 /** The chat with the Project Lead: its messages, those waiting for the current reply, and its state. */
@@ -92,7 +103,7 @@ export interface Chat {
   lead: string;
   project: string;
   messages: ChatMessage[];
-  waiting: Array<{ text: string; at: string }>;
+  waiting: Array<{ text: string; at: string; files: ChatFile[] }>;
   replying: boolean;
   failed: boolean;
 }

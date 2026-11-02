@@ -18,17 +18,18 @@ export async function GET(req: Request, ctx: Ctx) {
   }
 }
 
-/** A message from the chat (JSON {text}); the reply arrives through the feed. */
+/** A message from the chat (JSON {text, files}); the reply arrives through the feed. */
 export async function POST(req: Request, ctx: Ctx) {
   if (!valid(ctx)) return json(404, { error: 'not_found' });
   if (!fromOurPage(req)) return refused();
-  const body = (await req.json().catch(() => ({}))) as { text?: unknown };
+  const body = (await req.json().catch(() => ({}))) as { text?: unknown; files?: unknown };
   const text = typeof body.text === 'string' ? body.text.slice(0, 2000) : '';
-  if (!text.trim()) return json(400, { error: 'empty' });
+  const files = Array.isArray(body.files) ? body.files.filter((f): f is string => typeof f === 'string' && /^[0-9a-f]{20}$/.test(f)).slice(0, 10) : [];
+  if (!text.trim() && !files.length) return json(400, { error: 'empty' });
   try {
-    await api.message(ctx.params.token, ctx.params.id, text);
+    await api.message(ctx.params.token, ctx.params.id, text, files);
     return json(200, { ok: true });
   } catch (err) {
-    return json(err instanceof ApiError ? err.status : 502, { error: errorCode(err, 'empty') });
+    return json(err instanceof ApiError ? err.status : 502, { error: errorCode(err, 'empty'), message: err instanceof ApiError && err.status === 400 ? err.message : undefined });
   }
 }

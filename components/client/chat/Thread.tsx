@@ -1,6 +1,7 @@
 import { CircleAlert, Clock, RotateCw } from 'lucide-react';
-import type { ChatMessage } from '@/lib/client/types';
+import type { ChatFile, ChatMessage } from '@/lib/client/types';
 import { cn } from '@/lib/utils';
+import Files, { type ShownFile } from './Files';
 import Markdown from './Markdown';
 import { CopyButton, DaySeparator, LeadAvatar, sameDay, timeOf, Typing } from './bits';
 
@@ -10,14 +11,17 @@ export interface Outgoing {
   text: string;
   at: string;
   state: 'sending' | 'sent' | 'failed';
+  /** Its files: ids to send, and local previews to show meanwhile. */
+  files: Array<ShownFile & { id: string }>;
 }
 
-type Item = { kind: 'message'; m: ChatMessage } | { kind: 'waiting'; text: string; at: string } | { kind: 'out'; o: Outgoing };
+type Item = { kind: 'message'; m: ChatMessage } | { kind: 'waiting'; text: string; at: string; files: ChatFile[] } | { kind: 'out'; o: Outgoing };
+const shown = (files: ChatFile[]): ShownFile[] => files.map((f) => ({ ...f, key: f.id }));
 const atOf = (i: Item) => (i.kind === 'message' ? i.m.at : i.kind === 'waiting' ? i.at : i.o.at);
 const fromOf = (i: Item) => (i.kind === 'message' ? i.m.from : 'you');
 
 /** The conversation: day by day, the Lead's messages in Markdown with its avatar, the client's on the right. */
-export default function Thread({ lead, messages, waiting, outbox, replying, failed, onRetry }: { lead: string; messages: ChatMessage[]; waiting: Array<{ text: string; at: string }>; outbox: Outgoing[]; replying: boolean; failed: boolean; onRetry: (o: Outgoing) => void }) {
+export default function Thread({ lead, messages, waiting, outbox, replying, failed, onRetry }: { lead: string; messages: ChatMessage[]; waiting: Array<{ text: string; at: string; files: ChatFile[] }>; outbox: Outgoing[]; replying: boolean; failed: boolean; onRetry: (o: Outgoing) => void }) {
   const items: Item[] = [...messages.map((m) => ({ kind: 'message' as const, m })), ...waiting.map((w) => ({ kind: 'waiting' as const, ...w })), ...outbox.map((o) => ({ kind: 'out' as const, o }))];
   return (
     <ol className="flex flex-col gap-1.5" aria-label={`Conversation with ${lead}`}>
@@ -50,7 +54,13 @@ export default function Thread({ lead, messages, waiting, outbox, replying, fail
                 </div>
               </div>
             ) : (
-              <Mine text={it.kind === 'message' ? it.m.text : it.kind === 'waiting' ? it.text : it.o.text} at={at} state={it.kind === 'out' ? it.o.state : 'sent'} onRetry={it.kind === 'out' ? () => onRetry(it.o) : undefined} />
+              <Mine
+                text={it.kind === 'message' ? it.m.text : it.kind === 'waiting' ? it.text : it.o.text}
+                files={it.kind === 'message' ? shown(it.m.files) : it.kind === 'waiting' ? shown(it.files) : it.o.files}
+                at={at}
+                state={it.kind === 'out' ? it.o.state : 'sent'}
+                onRetry={it.kind === 'out' ? () => onRetry(it.o) : undefined}
+              />
             )}
           </li>
         );
@@ -71,10 +81,11 @@ export default function Thread({ lead, messages, waiting, outbox, replying, fail
 }
 
 /** The client's own message: a dark bubble on the right, with its time or its sending state. */
-function Mine({ text, at, state, onRetry }: { text: string; at: string; state: Outgoing['state']; onRetry?: () => void }) {
+function Mine({ text, files, at, state, onRetry }: { text: string; files: ShownFile[]; at: string; state: Outgoing['state']; onRetry?: () => void }) {
   return (
-    <div className="flex flex-col items-end">
-      <p className={cn('max-w-[min(85%,560px)] whitespace-pre-wrap break-words rounded-[20px] rounded-br-[6px] bg-char px-4 py-2.5 text-[15.5px] font-medium leading-[1.55] text-white', state === 'failed' && 'bg-char/60')}>{text}</p>
+    <div className="flex flex-col items-end gap-1.5">
+      <Files files={files} mine />
+      {text && <p className={cn('max-w-[min(85%,560px)] whitespace-pre-wrap break-words rounded-[20px] rounded-br-[6px] bg-char px-4 py-2.5 text-[15.5px] font-medium leading-[1.55] text-white', state === 'failed' && 'bg-char/60')}>{text}</p>}
       <p className="mt-1 flex items-center gap-1.5 pr-1 text-[12px] font-semibold text-stone">
         {state === 'sending' ? (
           <>

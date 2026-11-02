@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: 'Your dashboard' };
 
 /** my.hitroo.com without a link: where to get one. */
 export default function DashboardHome() {
-  return <SignInHelp title="Your hitroo dashboard" text="Every client has a private dashboard with their projects, quotes, payments, invoices and site numbers. Your link comes from your project lead on WhatsApp; ask them for it any time." />;
+  return <SignInHelp title="Your hitroo dashboard" text="Every client has a private dashboard with their projects, quotes, payments, invoices and site numbers. Your private link comes from your project lead; ask hitroo for it any time." />;
 }
 
 export function SignInHelp({ title, text }: { title: string; text: string }) {

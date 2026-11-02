@@ -1,6 +1,6 @@
 import Wordmark from '@/components/brand/Wordmark';
 
-/** Quotes, payments and invoices: a calm page with the logo, the way a client opens it from WhatsApp. */
+/** Quotes, payments and invoices: a calm page with the logo, the way a client opens it from a link. */
 export default function QuoteLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-paper">

@@ -19,6 +19,8 @@ export interface Overview {
     total: number;
     asks: number;
     quotesWaiting: number;
+    /** When the Lead last wrote, for the unread mark. */
+    lastLeadAt: string | null;
   }>;
   due: Due[];
   quotesWaiting: Array<{ project: string; name: string; price: number; path: string }>;
@@ -73,7 +75,26 @@ export interface Project {
     uptime: { pct: number | null; days: Array<{ date: string; pct: number | null }>; down: boolean; incidents: Array<{ start: string; end: string; minutes: number }> };
   } | null;
   invoices: Array<{ number: string; at: string; description: string; total: number; kind: 'Hosting' | 'Project' }>;
-  messages: Array<{ from: 'lead' | 'you'; text: string; at: string; channel: string }>;
+  messages: ChatMessage[];
+}
+
+export interface ChatMessage {
+  id: string;
+  from: 'lead' | 'you';
+  /** Markdown. */
+  text: string;
+  at: string;
+}
+
+/** The chat with the Project Lead: its messages, those waiting for the current reply, and its state. */
+export interface Chat {
+  name: string;
+  lead: string;
+  project: string;
+  messages: ChatMessage[];
+  waiting: Array<{ text: string; at: string }>;
+  replying: boolean;
+  failed: boolean;
 }
 
 export type Quote =

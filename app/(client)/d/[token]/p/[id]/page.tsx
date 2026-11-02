@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Bug, Sparkles } from 'lucide-react';
 import { DuePayments } from '@/components/client/Billing';
-import Messages from '@/components/client/Messages';
+import ChatPreview from '@/components/client/chat/ChatPreview';
 import { Notice, one } from '@/components/client/Notice';
 import ProjectHeader from '@/components/client/ProjectHeader';
 import Ring from '@/components/client/Ring';
@@ -70,7 +70,7 @@ export default async function ProjectOverview({ params, searchParams }: Props) {
             </div>
           </div>
           <div className="space-y-6">
-            <Messages token={params.token} project={p.id} lead={p.lead} messages={p.messages} compact />
+            <ChatPreview base={base} lead={p.lead} messages={p.messages} />
             <Card>
               <CardHead title="Latest updates" />
               <div className="mt-5">

@@ -35,7 +35,7 @@ export default async function QuotePage({ params, searchParams }: { params: { to
           <PaymentPlan q={q} token={params.token} />
         </div>
         <Agreement q={q} token={params.token} />
-        <p className="text-[13.5px] font-medium text-stone">Keep this link: your quote, the agreement and every payment and invoice stay here. {q.lead}, your project lead, is one WhatsApp message away.</p>
+        <p className="text-[13.5px] font-medium text-stone">Keep this link: your quote, the agreement and every payment and invoice stay here. Questions? {q.lead}, your project lead, is one message away on your dashboard.</p>
       </div>
     </>
   );

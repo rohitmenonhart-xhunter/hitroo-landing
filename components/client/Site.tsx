@@ -110,7 +110,7 @@ export function Seo({ seo }: { seo: Site['seo'] }) {
               <span className="font-display text-[24px] font-extrabold tracking-[-0.04em]">{seo.score}</span>
             </Ring>
             <p className="text-[14.5px] font-medium leading-relaxed text-char/75">
-              Your site is checked once a month, the way Google and WhatsApp see it. Anything to improve is fixed by the team as part of your plan. The home page loaded in {seo.seconds} s.
+              Your site is checked once a month, the way search engines and social apps see it. Anything to improve is fixed by the team as part of your plan. The home page loaded in {seo.seconds} s.
             </p>
           </div>
           <ul className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">

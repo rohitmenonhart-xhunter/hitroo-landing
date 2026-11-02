@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Globe, LayoutGrid, MessageCircle, Plus, Receipt, Sparkles } from 'lucide-react';
@@ -11,13 +12,15 @@ export interface NavProject {
   name: string;
   live: boolean;
   attention: boolean;
+  /** When the Lead last wrote; newer than what this browser has seen means unread. */
+  lastLeadAt: string | null;
 }
 
 const SECTIONS = [
   { href: '', label: 'Overview', icon: Sparkles },
   { href: '/site', label: 'Your site', icon: Globe },
   { href: '/billing', label: 'Billing', icon: Receipt },
-  { href: '/messages', label: 'Messages', icon: MessageCircle },
+  { href: '/messages', label: 'Chat', icon: MessageCircle },
 ] as const;
 
 /** The client area's navigation: home, each project (with its sections when open) and "new project". */
@@ -26,6 +29,7 @@ export default function ClientNav({ token, projects, variant }: { token: string;
   const home = `/d/${token}`;
   const open = projects.find((p) => path === `${home}/p/${p.id}` || path.startsWith(`${home}/p/${p.id}/`));
   const at = (href: string, exact = false) => (exact ? path === href : path === href || path.startsWith(href + '/'));
+  const unread = useUnread(projects);
 
   if (variant === 'top') {
     const base = open ? `${home}/p/${open.id}` : '';
@@ -36,7 +40,7 @@ export default function ClientNav({ token, projects, variant }: { token: string;
             Home
           </TopItem>
           {projects.map((p) => (
-            <TopItem key={p.id} href={`${home}/p/${p.id}`} active={open?.id === p.id} dot={p.attention}>
+            <TopItem key={p.id} href={`${home}/p/${p.id}`} active={open?.id === p.id} dot={p.attention || unread.has(p.id)}>
               {p.name}
             </TopItem>
           ))}
@@ -51,8 +55,9 @@ export default function ClientNav({ token, projects, variant }: { token: string;
               const active = s.href ? at(href) : path === href || at(`${href}/request`);
               return (
                 <li key={s.label}>
-                  <Link href={href} aria-current={active ? 'page' : undefined} className={cn('block whitespace-nowrap border-b-2 pb-2.5 pt-1 text-[14.5px] font-semibold', active ? 'border-ember text-char' : 'border-transparent text-stone', RING)}>
+                  <Link href={href} aria-current={active ? 'page' : undefined} className={cn('flex items-center gap-1.5 whitespace-nowrap border-b-2 pb-2.5 pt-1 text-[14.5px] font-semibold', active ? 'border-ember text-char' : 'border-transparent text-stone', RING)}>
                     {s.label}
+                    {s.href === '/messages' && unread.has(open.id) && !active && <span aria-label="New message" className="h-1.5 w-1.5 rounded-full bg-ember" />}
                   </Link>
                 </li>
               );
@@ -83,7 +88,7 @@ export default function ClientNav({ token, projects, variant }: { token: string;
                 {p.name.trim()[0]?.toUpperCase()}
               </span>
               <span className="min-w-0 flex-1 truncate">{p.name}</span>
-              {p.attention && <span aria-label="Needs you" className="h-2 w-2 shrink-0 rounded-full bg-ember" />}
+              {(p.attention || unread.has(p.id)) && <span aria-label="Needs you" className="h-2 w-2 shrink-0 rounded-full bg-ember" />}
               {!p.attention && p.live && <span aria-label="Live" className="h-2 w-2 shrink-0 rounded-full bg-[#2F9E5B]" />}
             </Link>
             {isOpen && (
@@ -101,6 +106,7 @@ export default function ClientNav({ token, projects, variant }: { token: string;
                       >
                         <Icon aria-hidden="true" className={cn('h-4 w-4', active ? 'text-ember' : 'text-stone')} />
                         {s.label}
+                        {s.href === '/messages' && unread.has(p.id) && !active && <span aria-label="New message" className="ml-auto h-2 w-2 rounded-full bg-ember" />}
                       </Link>
                     </li>
                   );
@@ -115,6 +121,28 @@ export default function ClientNav({ token, projects, variant }: { token: string;
       </SideItem>
     </nav>
   );
+}
+
+/** Projects with a message from the Lead this browser hasn't seen (the chat page records what it showed). */
+function useUnread(projects: NavProject[]): Set<string> {
+  const [unread, setUnread] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    const check = () => {
+      try {
+        setUnread(new Set(projects.filter((p) => p.lastLeadAt && (localStorage.getItem(`hf-read:${p.id}`) ?? '') < p.lastLeadAt).map((p) => p.id)));
+      } catch {
+        /* private mode: no unread marks */
+      }
+    };
+    check();
+    window.addEventListener('hf-read', check);
+    window.addEventListener('storage', check);
+    return () => {
+      window.removeEventListener('hf-read', check);
+      window.removeEventListener('storage', check);
+    };
+  }, [projects]);
+  return unread;
 }
 
 function SideItem({ href, active, icon, children }: { href: string; active: boolean; icon: React.ReactNode; children: React.ReactNode }) {

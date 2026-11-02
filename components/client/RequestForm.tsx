@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { Card, Field, INPUT, SubmitButton } from './ui';
 
 const KINDS = {
-  new: { icon: Rocket, title: 'Start a new project', lead: 'Tell us what you want built. The team prices it and the quote appears here and on WhatsApp, usually the same day.', label: 'What do you need?', placeholder: 'For example: a booking website for my salon, with online payments and reminders on WhatsApp.', button: 'Get a quote' },
+  new: { icon: Rocket, title: 'Start a new project', lead: 'Tell us what you want built. The team prices it and the quote appears here, usually the same day.', label: 'What do you need?', placeholder: 'For example: a booking website for my salon, with online payments and booking reminders.', button: 'Get a quote' },
   change: { icon: Sparkles, title: 'Ask for a change', lead: 'Something new or different. The team prices it, and nothing starts or is charged until you accept the quote.', label: 'What should change?', placeholder: 'For example: add gift wrapping as an option at checkout, with a note card.', button: 'Get a quote' },
   problem: { icon: Bug, title: 'Report a problem', lead: "Something that doesn't work the way it should. Faults in what we built are fixed free.", label: "What's wrong?", placeholder: 'What you did, what you expected, and what happened instead. Which page, and on phone or computer?', button: 'Send to the team' },
 } as const;

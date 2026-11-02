@@ -7,7 +7,7 @@
  *   FACTORY_API_SECRET   the shared secret (CLIENT_API_SECRET on the factory)
  */
 import { headers } from 'next/headers';
-import type { Invoice, Overview, Paid, Project, Quote, Sent } from './types';
+import type { Chat, Invoice, Overview, Paid, Project, Quote, Sent } from './types';
 
 const BASE = (process.env.FACTORY_API_URL || 'https://console.factory.hitroo.com/api/client/v1').replace(/\/+$/, '');
 
@@ -58,6 +58,7 @@ export const api = {
   newProject: (t: string, text: string) => call<{ sent: Sent }>('POST', `${d(t)}/new`, { text }),
   request: (t: string, id: string, kind: 'change' | 'problem', text: string) => call<{ sent: Sent }>('POST', `${p(t, id)}/request`, { kind, text }),
   answer: (t: string, id: string, task: string, text: string) => call<{ sent: Sent }>('POST', `${p(t, id)}/answer`, { task, text }),
+  chat: (t: string, id: string, after?: string) => call<Chat>('GET', `${p(t, id)}/messages${after ? `?after=${encodeURIComponent(after)}` : ''}`),
   message: (t: string, id: string, text: string) => call<{ sent: Sent }>('POST', `${p(t, id)}/message`, { text }),
   domain: (t: string, id: string, domain: string) => call<{ sent: Sent }>('POST', `${p(t, id)}/domain`, { domain }),
   quote: (q: string) => call<Quote>('GET', `/q/${q}`),

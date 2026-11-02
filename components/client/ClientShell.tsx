@@ -8,7 +8,7 @@ import { RING } from './ui';
 
 /** Every dashboard page's frame: the navigation on the left (a top bar on phones), the page on the right. */
 export default function ClientShell({ token, overview, children }: { token: string; overview: Overview; children: ReactNode }) {
-  const projects: NavProject[] = overview.projects.map((p) => ({ id: p.id, name: p.name, live: Boolean(p.live), attention: p.asks > 0 || p.quotesWaiting > 0 || overview.due.some((d) => d.project === p.id) }));
+  const projects: NavProject[] = overview.projects.map((p) => ({ id: p.id, name: p.name, live: Boolean(p.live), attention: p.asks > 0 || p.quotesWaiting > 0 || overview.due.some((d) => d.project === p.id), lastLeadAt: p.lastLeadAt }));
   const home = `/d/${token}`;
   return (
     <div className="min-h-screen bg-paper lg:grid lg:grid-cols-[288px_minmax(0,1fr)]">
@@ -22,7 +22,7 @@ export default function ClientShell({ token, overview, children }: { token: stri
         </Link>
         <ClientNav token={token} projects={projects} variant="side" />
         <div className="mt-auto pt-8">
-          <LeadCard lead={overview.lead} />
+          <LeadCard lead={overview.lead} chat={overview.projects[0] ? `${home}/p/${overview.projects[0].id}/messages` : null} />
           <p className="mt-4 px-3 text-[12.5px] font-medium leading-relaxed text-stone">
             Signed in as {overview.name}. This private link is yours; please don&apos;t share it.
           </p>
@@ -49,7 +49,7 @@ export default function ClientShell({ token, overview, children }: { token: stri
 }
 
 /** Who looks after them: their Project Lead, one message away. */
-function LeadCard({ lead }: { lead: string }) {
+function LeadCard({ lead, chat }: { lead: string; chat: string | null }) {
   return (
     <div className="rounded-[18px] bg-white p-4 ring-1 ring-char/5">
       <div className="flex items-center gap-3">
@@ -62,7 +62,12 @@ function LeadCard({ lead }: { lead: string }) {
           <p className="text-[13px] font-medium text-stone">Your project lead</p>
         </div>
       </div>
-      <p className="mt-3 text-[13px] font-medium leading-relaxed text-char/70">Message {lead} here or on WhatsApp, any time.</p>
+      <p className="mt-3 text-[13px] font-medium leading-relaxed text-char/70">Ask {lead} anything, any time.</p>
+      {chat && (
+        <Link href={chat} className={`mt-3 inline-flex h-9 items-center rounded-full bg-char px-4 text-[13.5px] font-semibold text-white hover:bg-char/90 ${RING}`}>
+          Chat with {lead}
+        </Link>
+      )}
     </div>
   );
 }

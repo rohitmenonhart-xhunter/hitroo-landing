@@ -13,16 +13,6 @@ const nextConfig = {
   poweredByHeader: false,
   async headers() {
     return [
-      // The client area (my.hitroo.com): private pages behind secret links. Never indexed, never cached, and the
-      // link never leaves in a Referer header.
-      ...['/d/:path*', '/q/:path*'].map((source) => ({
-        source,
-        headers: [
-          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
-          { key: 'Referrer-Policy', value: 'no-referrer' },
-          { key: 'Cache-Control', value: 'private, no-store' },
-        ],
-      })),
       {
         source: '/:path*',
         headers: [
@@ -32,6 +22,16 @@ const nextConfig = {
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
         ],
       },
+      // The client area (my.hitroo.com): private pages behind secret links (after the site-wide rule, so these win). Never indexed, never cached, and the
+      // link never leaves in a Referer header.
+      ...['/d/:path*', '/q/:path*'].map((source) => ({
+        source,
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+          { key: 'Referrer-Policy', value: 'no-referrer' },
+          { key: 'Cache-Control', value: 'private, no-store' },
+        ],
+      })),
       // The Creatives library is served as static files whose URLs carry a content fingerprint (?v=): cache for a year.
       {
         source: '/photos/library/:path*',

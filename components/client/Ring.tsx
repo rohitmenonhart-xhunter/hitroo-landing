@@ -9,7 +9,7 @@ export default function Ring({ value, size = 64, stroke = 7, children, label }: 
     <span className="relative inline-flex shrink-0 items-center justify-center" style={{ width: size, height: size }} role="img" aria-label={label}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#F3EEE8" strokeWidth={stroke} />
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#F5502F" strokeWidth={stroke} strokeLinecap="round" strokeDasharray={`${c * v} ${c}`} />
+        {v > 0 && <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#F5502F" strokeWidth={stroke} strokeLinecap="round" strokeDasharray={`${c * v} ${c}`} />}
       </svg>
       {children && <span className="absolute inset-0 flex items-center justify-center">{children}</span>}
     </span>

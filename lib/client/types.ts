@@ -24,6 +24,23 @@ export interface Overview {
   }>;
   due: Due[];
   quotesWaiting: Array<{ project: string; name: string; price: number; path: string }>;
+  /** Phone calls with the Project Lead; null when they aren't set up. */
+  phone?: Phone | null;
+}
+
+/** The client's phone for calls with their Project Lead: verified by a code read out on a call. */
+export interface Phone {
+  /** The Lead's number, written for people (+91 80 6558 0934), and for a tel: link. */
+  leadNumber: string;
+  leadNumberTel: string;
+  /** Their verified number, masked (+91 98••• ••210), or null. */
+  number: string | null;
+  /** Whether the Lead may ring them. */
+  calls: boolean;
+  /** A number waiting for its code, masked. */
+  verifying: string | null;
+  /** When the Lead may ring, e.g. "9 am to 8 pm". */
+  hours: string;
 }
 
 export interface Due {

@@ -10,6 +10,11 @@ const SENT: Record<string, string> = {
   answer: 'Thanks! Your answer is with the team, and the work carries on.',
   domain: "Got it. Add the DNS record below at your domain's company; it connects by itself, usually within the hour.",
   accepted: 'Thank you! The quote is accepted. The first payment is below.',
+  'phone-code': "We're calling you now. Pick up, and type the six-digit code you hear below.",
+  'phone-verified': 'Your number is verified. You can call your project lead from it, and they can call you when the team needs you.',
+  'phone-on': "Done. Your project lead may call you when the team needs you.",
+  'phone-off': "Done. Your project lead won't call you; they'll write in the chat instead.",
+  'phone-removed': 'Your number is removed. Calls from it no longer reach your project lead.',
 };
 const ERROR: Record<string, string> = {
   short: 'Tell us a little more, so the team gets it right.',
@@ -21,6 +26,12 @@ const ERROR: Record<string, string> = {
   expired: 'This quote has expired. Ask your project lead for a fresh one.',
   busy: 'Too many tries in a short time. Please wait a few minutes and try again.',
   failed: 'Something went wrong on our side. Please try again in a minute.',
+  phone_number: "That isn't an Indian mobile number. Calls work with Indian mobiles (+91) for now.",
+  phone_limit: "We've called with a code three times this hour. Please try again a little later.",
+  phone_off: 'Phone calls are not available just now. Please write in the chat.',
+  code_wrong: "That code isn't right. Check it and try again.",
+  code_expired: 'That code has expired. Ask for a new call.',
+  code_tries: 'Too many tries. Ask for a new call.',
 };
 
 export function Notice({ sent, error, className }: { sent?: string; error?: string; className?: string }) {

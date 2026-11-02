@@ -64,6 +64,8 @@ export const api = {
   /** A one-use address (60 s) to open a voice call with the Lead from this page. */
   voice: (t: string, id: string) => call<{ url: string; expiresInSeconds: number }>('POST', `${p(t, id)}/voice`),
   domain: (t: string, id: string, domain: string) => call<{ sent: Sent }>('POST', `${p(t, id)}/domain`, { domain }),
+  /** Phone calls with the Lead: verify a number (a call reads out a code), turn her calls on or off, remove it. */
+  phone: (t: string, body: { do: 'start'; phone: string } | { do: 'confirm'; code: string } | { do: 'calls'; on: boolean } | { do: 'remove' }) => call<Record<string, unknown>>('POST', `${d(t)}/phone`, body),
   quote: (q: string) => call<Quote>('GET', `/q/${q}`),
   accept: (q: string, name: string, agree: boolean) => call<Quote>('POST', `/q/${q}/accept`, { name, agree }),
   pay: (q: string, n: number) => call<{ url: string }>('POST', `/q/${q}/pay/${n}`),

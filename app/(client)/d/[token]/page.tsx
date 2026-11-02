@@ -3,6 +3,7 @@ import { ArrowUpRight, Plus } from 'lucide-react';
 import { DuePayments } from '@/components/client/Billing';
 import { Notice, one } from '@/components/client/Notice';
 import PageHeader from '@/components/client/PageHeader';
+import PhoneCalls from '@/components/client/PhoneCalls';
 import Ring from '@/components/client/Ring';
 import { ActionLink, Card, CardHead, Empty, Pill, RING } from '@/components/client/ui';
 import { firstName, greeting, host, inr } from '@/lib/client/format';
@@ -91,6 +92,8 @@ export default async function Overview({ params, searchParams }: { params: { tok
             <Empty>Your projects appear here once your first quote is accepted.</Empty>
           )}
         </section>
+
+        {o.phone && <PhoneCalls token={params.token} lead={o.lead} phone={o.phone} />}
       </div>
     </>
   );

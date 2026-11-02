@@ -44,7 +44,7 @@ const sections: LegalSection[] = [
     title: 'Paying in stages',
     body: [
       'A new project is paid 40% to start, 40% at the main milestone and 20% at launch. A change request is paid in full upfront when it’s small, or half to start and half before it goes live.',
-      'You pay online by card, UPI, net banking or wallet through a secure payment link, and receive an invoice for every payment.',
+      'You pay online by card, UPI, net banking or wallet through a secure payment link, and receive an invoice for every payment. Payments are made to Mockello, which operates hitroo.',
     ],
   },
   {

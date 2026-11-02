@@ -22,7 +22,7 @@ const sections = (COMPANY: Company): LegalSection[] => [
         </Link>
         .
       </>,
-      'Each payment covers the work in that stage. Work on a stage starts once its payment is received.',
+      'Each payment covers the work in that stage. Work on a stage starts once its payment is received. hitroo is operated by Mockello, so payments and refunds are in Mockello’s name.',
     ],
   },
   {

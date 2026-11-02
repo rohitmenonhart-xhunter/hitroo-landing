@@ -68,6 +68,10 @@ const sections = (COMPANY: Company): LegalSection[] => [
     body: ['We may update these terms; the date above shows the current version. These terms are governed by the laws of India, and the courts of Chennai, Tamil Nadu have jurisdiction.'],
   },
   {
+    title: 'Who we are',
+    body: ['hitroo is operated by Mockello, based in Chennai, Tamil Nadu, India. Project agreements, payments and invoices are in Mockello’s name.'],
+  },
+  {
     title: 'Contact',
     body: [
       <>

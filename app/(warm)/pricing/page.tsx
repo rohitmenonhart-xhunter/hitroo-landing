@@ -18,6 +18,13 @@ const STARTING: Array<[string, string]> = [
   ['A change to an app we built', '₹3,000'],
 ];
 
+const HOSTING: Array<[string, string, string]> = [
+  ['Starter', '512 MB, 2 GB storage, for websites', '₹299'],
+  ['Growth', '1 GB, 5 GB storage, with a database', '₹599'],
+  ['Pro', '2 GB, 10 GB storage, for busy apps', '₹1,199'],
+  ['Business', '4 GB, 20 GB storage, for heavy apps', '₹2,399'],
+];
+
 const sections: LegalSection[] = [
   {
     title: 'A fixed price for your project',
@@ -52,11 +59,24 @@ const sections: LegalSection[] = [
     body: ['Anything beyond your quote is a change request with its own quote, priced the same way. Nothing is added to your bill without your approval.'],
   },
   {
-    title: 'Support and hosting',
+    title: 'Hosting, from ₹299 a month',
     body: [
-      'Defects are fixed free for 60 days after launch.',
-      'After that, support and maintenance is about 18% of the project price a year, paid monthly. Hosting starts at ₹1,500 a month, depending on the app.',
+      <ul key="hosting" className="grid gap-2">
+        {HOSTING.map(([plan, size, price]) => (
+          <li key={plan} className="flex justify-between gap-6 border-b border-char/10 pb-2">
+            <span>
+              <span className="font-semibold text-char">{plan}</span> · {size}
+            </span>
+            <span className="font-semibold text-char">{price} / month</span>
+          </li>
+        ))}
+      </ul>,
+      'Every plan includes HTTPS, your own domain, daily backups, uptime checks, your own dashboard with your visitors and progress, and a monthly search-engine check with the fixes done for you. Paid monthly by UPI Autopay or card. Cancel any time.',
     ],
+  },
+  {
+    title: 'Support',
+    body: ['Defects are fixed free for 60 days after launch. After that, support and maintenance is about 18% of the project price a year, paid monthly, and new features are quoted as changes.'],
   },
   {
     title: 'Get a quote',

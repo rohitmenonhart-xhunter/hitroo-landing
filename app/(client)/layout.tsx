@@ -6,6 +6,8 @@ import type { Metadata } from 'next';
  * delivery API (lib/client/api.ts).
  */
 export const dynamic = 'force-dynamic';
+/** Next to the delivery system (Germany): each page's calls to it take milliseconds, not half a second. */
+export const preferredRegion = 'fra1';
 
 export const metadata: Metadata = {
   title: { default: 'Your dashboard', template: '%s | hitroo' },

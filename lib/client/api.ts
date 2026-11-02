@@ -55,7 +55,7 @@ export const api = {
   overview: (t: string) => call<Overview>('GET', d(t)),
   project: (t: string, id: string) => call<Project>('GET', p(t, id)),
   projectInvoice: (t: string, id: string, n: string) => call<Invoice>('GET', `${p(t, id)}/invoice/${encodeURIComponent(n)}`),
-  newProject: (t: string, text: string) => call<{ sent: Sent }>('POST', `${d(t)}/new`, { text }),
+  newProject: (t: string, text: string) => call<{ sent: Sent; project: string }>('POST', `${d(t)}/new`, { text }),
   request: (t: string, id: string, kind: 'change' | 'problem', text: string) => call<{ sent: Sent }>('POST', `${p(t, id)}/request`, { kind, text }),
   answer: (t: string, id: string, task: string, text: string) => call<{ sent: Sent }>('POST', `${p(t, id)}/answer`, { task, text }),
   chat: (t: string, id: string, after?: string) => call<Chat>('GET', `${p(t, id)}/messages${after ? `?after=${encodeURIComponent(after)}` : ''}`),

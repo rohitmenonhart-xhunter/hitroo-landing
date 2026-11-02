@@ -2,6 +2,7 @@ import { ApiError, api, isAccessToken, isProjectId } from '@/lib/client/api';
 import { fromOurPage, refused } from '@/lib/client/forms';
 
 export const dynamic = 'force-dynamic';
+export const preferredRegion = 'fra1';
 
 /**
  * A signed link to upload one file (JSON {name, type, size}) straight to storage. The file never passes

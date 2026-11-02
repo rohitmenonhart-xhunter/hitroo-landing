@@ -2,6 +2,7 @@ import { ApiError, api, isQuoteToken } from '@/lib/client/api';
 import { back, fromOurPage, refused } from '@/lib/client/forms';
 
 export const dynamic = 'force-dynamic';
+export const preferredRegion = 'fra1';
 
 /** On to Razorpay for a due payment (a fresh link if the last one expired). Only Razorpay's own addresses. */
 export async function POST(req: Request, { params }: { params: { token: string; n: string } }) {

@@ -50,7 +50,7 @@ export default async function Overview({ params, searchParams }: { params: { tok
             <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
               {o.projects.map((p) => (
                 <li key={p.id}>
-                  <Link href={`${home}/p/${p.id}`} className={cn('group flex h-full flex-col rounded-[24px] bg-white p-6 ring-1 ring-char/5 transition-shadow hover:shadow-[0_12px_40px_rgba(18,17,11,0.08)]', RING)}>
+                  <Link prefetch href={`${home}/p/${p.id}`} className={cn('group flex h-full flex-col rounded-[24px] bg-white p-6 ring-1 ring-char/5 transition-shadow hover:shadow-[0_12px_40px_rgba(18,17,11,0.08)]', RING)}>
                     <div className="flex items-start justify-between gap-3">
                       <span aria-hidden="true" className="flex h-12 w-12 items-center justify-center rounded-[16px] bg-char font-display text-[20px] font-extrabold text-white">
                         {p.name.trim()[0]?.toUpperCase()}

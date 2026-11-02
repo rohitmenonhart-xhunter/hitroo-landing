@@ -23,7 +23,10 @@ const SECTIONS = [
   { href: '/messages', label: 'Chat', icon: MessageCircle },
 ] as const;
 
-/** The client area's navigation: home, each project (with its sections when open) and "new project". */
+/**
+ * The client area's navigation: home, each project (with its sections when open) and "new project". Every
+ * link is prefetched in full as soon as it's on screen, so moving between pages is instant.
+ */
 export default function ClientNav({ token, projects, variant }: { token: string; projects: NavProject[]; variant: 'side' | 'top' }) {
   const path = usePathname() ?? '';
   const home = `/d/${token}`;
@@ -55,7 +58,7 @@ export default function ClientNav({ token, projects, variant }: { token: string;
               const active = s.href ? at(href) : path === href || at(`${href}/request`);
               return (
                 <li key={s.label}>
-                  <Link href={href} aria-current={active ? 'page' : undefined} className={cn('flex items-center gap-1.5 whitespace-nowrap border-b-2 pb-2.5 pt-1 text-[14.5px] font-semibold', active ? 'border-ember text-char' : 'border-transparent text-stone', RING)}>
+                  <Link prefetch href={href} aria-current={active ? 'page' : undefined} className={cn('flex items-center gap-1.5 whitespace-nowrap border-b-2 pb-2.5 pt-1 text-[14.5px] font-semibold', active ? 'border-ember text-char' : 'border-transparent text-stone', RING)}>
                     {s.label}
                     {s.href === '/messages' && unread.has(open.id) && !active && <span aria-label="New message" className="h-1.5 w-1.5 rounded-full bg-ember" />}
                   </Link>
@@ -80,6 +83,7 @@ export default function ClientNav({ token, projects, variant }: { token: string;
         return (
           <div key={p.id}>
             <Link
+              prefetch
               href={base}
               aria-current={isOpen && path === base ? 'page' : undefined}
               className={cn('flex items-center gap-3 rounded-[12px] px-3 py-2.5 text-[15px] font-semibold transition-colors', isOpen ? 'text-char' : 'text-char/70 hover:bg-white hover:text-char', RING)}
@@ -100,6 +104,7 @@ export default function ClientNav({ token, projects, variant }: { token: string;
                   return (
                     <li key={s.label}>
                       <Link
+                        prefetch
                         href={href}
                         aria-current={active ? 'page' : undefined}
                         className={cn('flex items-center gap-2.5 rounded-[10px] px-3 py-2 text-[14.5px] font-medium transition-colors', active ? 'bg-white text-char shadow-[0_1px_2px_rgba(18,17,11,0.06)] ring-1 ring-char/5' : 'text-char/65 hover:text-char', RING)}
@@ -148,6 +153,7 @@ function useUnread(projects: NavProject[]): Set<string> {
 function SideItem({ href, active, icon, children }: { href: string; active: boolean; icon: React.ReactNode; children: React.ReactNode }) {
   return (
     <Link
+      prefetch
       href={href}
       aria-current={active ? 'page' : undefined}
       className={cn('flex items-center gap-3 rounded-[12px] px-3 py-2.5 text-[15px] font-semibold transition-colors', active ? 'bg-white text-char ring-1 ring-char/5' : 'text-char/70 hover:bg-white hover:text-char', RING)}
@@ -164,6 +170,7 @@ function TopItem({ href, active, dot, children }: { href: string; active: boolea
   return (
     <li className="shrink-0">
       <Link
+        prefetch
         href={href}
         aria-current={active ? 'page' : undefined}
         className={cn('flex h-9 items-center gap-2 whitespace-nowrap rounded-full px-4 text-[14px] font-semibold', active ? 'bg-char text-white' : 'bg-white text-char/75 ring-1 ring-char/10', RING)}

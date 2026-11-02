@@ -25,7 +25,7 @@ const nextConfig = {
       // the delivery system serves sandboxed and which frame their own screens from that sandbox. The boards set
       // their own framing rules.
       { source: '/', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
-      { source: '/:path((?!r/|static/board/).+)', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
+      { source: '/:path((?!r/|static/).+)', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
       // The client area (my.hitroo.com): private pages behind secret links (after the site-wide rule, so these win). Never indexed, never cached, and the
       // link never leaves in a Referer header.
       ...['/d/:path*', '/q/:path*'].map((source) => ({
@@ -52,8 +52,9 @@ const nextConfig = {
   async rewrites() {
     return [
       { source: '/media/img/:path*', destination: 'https://hitroo-media.fly.storage.tigris.dev/img/:path*' },
-      // The client area's design boards are served by the delivery system itself, under the client host.
-      ...['/r/:path*', '/static/board/:path*'].map((source) => ({ source, destination: `${FACTORY_ORIGIN}${source}` })),
+      // The client area's design boards are served by the delivery system itself, under the client host, with the
+      // assets their pages load (/static/: the stylesheets, fonts and wordmark; the site itself has no /static).
+      ...['/r/:path*', '/static/:path*'].map((source) => ({ source, destination: `${FACTORY_ORIGIN}${source}` })),
     ];
   },
   async redirects() {
@@ -65,7 +66,7 @@ const nextConfig = {
         ['/d', '/d/:path*', '/q/:path*', '/r/:path*'].map((source) => ({ source, has: [{ type: 'host', value: h }], destination: `https://${CLIENT_HOST}${source}`, permanent: false }))
       ),
       { source: '/', has: [client], destination: '/d', permanent: false },
-      { source: '/:path((?!d$|d/|q/|r/|static/board/|_next/|favicon|glass/|fonts/|robots\\.txt).*)', has: [client], destination: 'https://www.hitroo.com/:path', permanent: false },
+      { source: '/:path((?!d$|d/|q/|r/|static/|_next/|favicon|glass/|fonts/|robots\\.txt).*)', has: [client], destination: 'https://www.hitroo.com/:path', permanent: false },
       // Division subdomains (software., automation., ai., creatives.hitroo.com) land on their page on www.
       ...['software', 'automation', 'ai', 'creatives'].flatMap((d) => [
         { source: '/', has: [{ type: 'host', value: `${d}.hitroo.com` }], destination: `https://www.hitroo.com/${d}`, permanent: false },

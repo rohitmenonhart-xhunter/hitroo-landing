@@ -21,7 +21,10 @@ export default function ChatPreview({ base, lead, messages }: { base: string; le
           {last.map((m) => (
             <li key={m.id} className={m.from === 'you' ? 'flex justify-end' : ''}>
               {m.from === 'you' ? (
-                <p className="line-clamp-3 max-w-[85%] whitespace-pre-wrap rounded-[18px] rounded-br-[6px] bg-char px-3.5 py-2 text-[14px] font-medium text-white">{m.text}</p>
+                <p className="line-clamp-3 max-w-[85%] whitespace-pre-wrap rounded-[18px] rounded-br-[6px] bg-char px-3.5 py-2 text-[14px] font-medium text-white">
+                  {m.text}
+                  {m.files.length > 0 && <span className="block text-[12.5px] text-white/60">{m.files.length === 1 ? `1 file: ${m.files[0]!.name}` : `${m.files.length} files`}</span>}
+                </p>
               ) : (
                 <div className="rounded-[18px] rounded-bl-[6px] bg-paper px-3.5 py-2.5 ring-1 ring-char/5">
                   <Markdown className="line-clamp-5 text-[14px] leading-[1.55]">{m.text}</Markdown>

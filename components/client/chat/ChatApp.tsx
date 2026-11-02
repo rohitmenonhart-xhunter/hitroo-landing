@@ -8,6 +8,7 @@ import Composer from './Composer';
 import Thread, { type Outgoing } from './Thread';
 import { useUploads } from './uploads';
 import { LeadAvatar } from './bits';
+import CallHeader from './CallHeader';
 
 const SUGGESTIONS = ["How's my project going?", "I'd like to change something", "Something isn't working right", "What's next, and what do you need from me?"];
 
@@ -30,6 +31,8 @@ export default function ChatApp({ token, project, initial }: { token: string; pr
   const [unseen, setUnseen] = useState(0);
   const [atBottom, setAtBottom] = useState(true);
   const [dragging, setDragging] = useState(false);
+  const [calls, setCalls] = useState(Boolean(initial.calls));
+  const [onCall, setOnCall] = useState(false);
   const uploads = useUploads(feed);
   const scroller = useRef<HTMLDivElement>(null);
   const bottom = useRef(true);
@@ -62,6 +65,7 @@ export default function ChatApp({ token, project, initial }: { token: string; pr
     setWaiting(c.waiting);
     setReplying(c.replying);
     setFailed(c.failed);
+    setCalls(Boolean(c.calls));
   }, [feed]);
 
   const send = useCallback(
@@ -82,8 +86,13 @@ export default function ChatApp({ token, project, initial }: { token: string; pr
     [feed, poll]
   );
 
-  // The feed: quick while a reply is on its way, slow otherwise, and at once when the tab is back.
-  const busy = replying || waiting.length > 0 || outbox.some((x) => x.state !== 'failed');
+  // The feed: quick while a reply is on its way or a call is on (its words arrive as they're said), slow
+  // otherwise, and at once when the tab is back.
+  const busy = onCall || replying || waiting.length > 0 || outbox.some((x) => x.state !== 'failed');
+  const activity = useCallback(() => {
+    bottom.current = true;
+    void poll();
+  }, [poll]);
   const sendDraft = () => {
     const files = uploads.ready.map((u) => ({ key: u.key, id: u.id!, name: u.name, type: u.type, size: u.size, kind: u.kind, url: u.preview }));
     void send(draft, files);
@@ -149,7 +158,7 @@ export default function ChatApp({ token, project, initial }: { token: string; pr
           </p>
         </div>
       )}
-      <header className="flex items-center gap-3 border-b border-char/[0.06] px-4 py-3.5 sm:px-6">
+      <CallHeader endpoint={`/d/${token}/p/${project}/messages/voice`} lead={initial.lead} available={calls} onActive={setOnCall} onActivity={activity}>
         <LeadAvatar name={initial.lead} online />
         <div className="min-w-0">
           <h1 className="font-display text-[18px] font-bold leading-tight tracking-[-0.025em]">{initial.lead}</h1>
@@ -157,7 +166,7 @@ export default function ChatApp({ token, project, initial }: { token: string; pr
             {replying ? <span className="text-ember-dark">Writing…</span> : `Your project lead · ${initial.project}`}
           </p>
         </div>
-      </header>
+      </CallHeader>
 
       <div
         ref={scroller}

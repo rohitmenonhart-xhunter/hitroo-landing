@@ -18,10 +18,14 @@ const nextConfig = {
         headers: [
           { key: 'X-Content-Type-Options', value: 'nosniff' },
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
           { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
         ],
       },
+      // Every page refuses framing by other sites, except the design boards' live canvases (/r/…/canvas/), which
+      // the delivery system serves sandboxed and which frame their own screens from that sandbox. The boards set
+      // their own framing rules.
+      { source: '/', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
+      { source: '/:path((?!r/|static/board/).+)', headers: [{ key: 'X-Frame-Options', value: 'SAMEORIGIN' }] },
       // The client area (my.hitroo.com): private pages behind secret links (after the site-wide rule, so these win). Never indexed, never cached, and the
       // link never leaves in a Referer header.
       ...['/d/:path*', '/q/:path*'].map((source) => ({

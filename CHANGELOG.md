@@ -2,6 +2,16 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
+## 2026-11-03 — my.hitroo.com keeps only the design review boards
+
+### Removed
+- **The client area on my.hitroo.com** (dashboards `/d`, quotes, payments and invoices `/q`, the chat with its uploads and voice calls, the phone card): `app/(client)`, `components/client`, `lib/client` and its test. Clients now reach Rohit or their project manager by phone, and Rohit forwards the links they need (Software Factory KT D46). Its dependencies (`react-markdown`, `remark-gfm`), its headers (microphone, no-store, no-referrer, noindex on `/d` and `/q`) and its env vars (`FACTORY_API_URL`, `FACTORY_API_SECRET`) went with it.
+
+### Kept
+- **Design review boards:** `my.hitroo.com/r/<token>` and the `/static/…` assets their pages load are still proxied to the factory, with the boards' own headers, and still skip the site's `X-Frame-Options` (their live canvases frame their own screens). www's `/r/…` still redirects to my.hitroo.com.
+- On my.hitroo.com, `/`, `/d/…` and `/q/…` redirect to the www home page (old client links' tokens never reach www) and any other path to the same path on www. `/r` without a token no longer bounces between the two hosts.
+- The marketing site is unchanged: apart from `next.config.js`, the code is as it was before the client area was added.
+
 ## 2026-11-02 — Pricing, refunds and delivery pages (for Razorpay)
 
 ### Added

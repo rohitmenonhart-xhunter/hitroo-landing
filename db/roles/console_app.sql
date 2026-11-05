@@ -10,6 +10,6 @@ CREATE ROLE console_app LOGIN PASSWORD :'consolepw' CONNECTION LIMIT 20;
 GRANT CONNECT ON DATABASE hitroo TO console_app;
 CREATE SCHEMA console AUTHORIZATION console_app;
 
--- Website enquiries, read-only.
+-- Website enquiries, read-only. (Read access to the anonymous analytics was added in migrations/006.)
 GRANT USAGE ON SCHEMA web TO console_app;
 GRANT SELECT ON web.leads TO console_app;

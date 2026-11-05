@@ -11,6 +11,7 @@ All notable changes to the HITROO website and its infrastructure. Newest first. 
 
 ### Added
 - **The console** (console.hitroo.com, on hitroo-1): projects and products with their progress and next steps, clients, leads and the team, in schema `console` with its own role ([db/roles/console_app.sql](db/roles/console_app.sql)). It reads `web.leads` to bring the website's enquiries into its pipeline and cannot write to `web`.
+- **Website performance in the console:** `console_app` reads the anonymous analytics too (`web.page_views`, `web.events`, `web.consents`; [migration 006](db/migrations/006_console_reads_analytics.sql)). Still read-only, and still no access to job applications.
 
 ### Removed
 - The Fly app `hitroo-db` and its dedicated IPv4, destroyed after the move (its last dump is kept).

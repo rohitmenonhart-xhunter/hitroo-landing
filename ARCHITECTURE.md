@@ -54,7 +54,7 @@ One database, `hitroo`, split into segments by schema. Each consumer gets its ow
 | `web` | `postgres` | `web_app` (the website) | **Write-only** for forms, analytics and consent (`INSERT`), plus `SELECT (id)` / `UPDATE (emailed)` on leads and applications to mark notifications sent; `SELECT` on `posts`, `content` and `media`. Cannot read anyone's details back, never writes content. |
 | `web` | `postgres` | `admin_app` (the admin) | `SELECT/INSERT/UPDATE/DELETE` on rows. No DDL, no `internal`. |
 | `internal` | `internal_app` | `internal_app` (internal apps) | Owns the schema and manages its own tables. |
-| `console` | `console_app` | `console_app` (the console) | Owns the schema and manages its own tables (its migrations live in the console repo). `SELECT` on `web.leads` to import the website's enquiries; nothing else in `web` ([db/roles/console_app.sql](db/roles/console_app.sql)). |
+| `console` | `console_app` | `console_app` (the console) | Owns the schema and manages its own tables (its migrations live in the console repo). `SELECT` on `web.leads` to import the website's enquiries, and on `web.page_views`, `web.events` and `web.consents` for its website page (migration 006); nothing else in `web` and no writes ([db/roles/console_app.sql](db/roles/console_app.sql)). |
 | `public` | — | — | `public.schema_migrations` only; `PUBLIC` has no access. |
 
 `web` tables (see [db/migrations/](db/migrations/)):

@@ -1,7 +1,7 @@
 import { Pool, type QueryResultRow } from 'pg';
 
 /**
- * Shared Postgres pool for the website (Fly app `hitroo-db`, database `hitroo`, schema `web`).
+ * Shared Postgres pool for the website (hitroo-1 at db.hitroo.com, database `hitroo`, schema `web`).
  * Connects as the least-privilege `web_app` role via DATABASE_URL (TLS, verify-full).
  * Serverless-friendly: a small pool per instance, reused across invocations.
  */

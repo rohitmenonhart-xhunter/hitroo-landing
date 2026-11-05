@@ -2,6 +2,19 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
+## 2026-11-05 — The database moves to hitroo-1; functions to Frankfurt
+
+### Changed
+- **Database:** the shared Postgres moved from the Fly app `hitroo-db` (Singapore) to **hitroo-1**, our Hetzner server in Falkenstein, at `db.hitroo.com:5432` (PostgreSQL 18, Let's Encrypt certificate, `sslmode=verify-full`). Same database, schemas, roles, grants and rows; new passwords. The superuser now signs in only through an SSH tunnel (`ssh -fNL 15432:127.0.0.1:5432 hitroo-1`), so `npm run db:migrate` and the content and media scripts need it open.
+- **Region:** `vercel.json` pins functions to `fra1` (Frankfurt), next to the database (was `sin1`, next to the old one).
+- **Backups:** a nightly `pg_dump` on hitroo-1 (14 days) inside Hetzner's daily server backups, instead of Fly's volume snapshots.
+
+### Added
+- **The console** (console.hitroo.com, on hitroo-1): projects and products with their progress and next steps, clients, leads and the team, in schema `console` with its own role ([db/roles/console_app.sql](db/roles/console_app.sql)). It reads `web.leads` to bring the website's enquiries into its pipeline and cannot write to `web`.
+
+### Removed
+- The Fly app `hitroo-db` and its dedicated IPv4, destroyed after the move (its last dump is kept).
+
 ## 2026-11-03 — my.hitroo.com keeps only the design review boards
 
 ### Removed

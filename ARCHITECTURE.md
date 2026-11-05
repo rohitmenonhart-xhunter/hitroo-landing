@@ -1,6 +1,6 @@
 # HITROO — Architecture
 
-How the HITROO website, the admin and the shared HITROO database fit together. Pairs with [KT.md](KT.md) (what we built), [CHANGELOG.md](CHANGELOG.md) (what changed, when) and [designs.md](designs.md) (how it looks).
+How the HITROO website, the admin, the console and the shared HITROO database fit together. Pairs with [KT.md](KT.md) (what we built), [CHANGELOG.md](CHANGELOG.md) (what changed, when) and [designs.md](designs.md) (how it looks).
 
 The apps live side by side in `Hitroo_internal_Apps/hitroo/`:
 
@@ -8,6 +8,7 @@ The apps live side by side in `Hitroo_internal_Apps/hitroo/`:
 | --- | --- | --- |
 | `hitroo_landing` (this repo) | The public website, www.hitroo.com. Also home of the shared database's schema (`db/`). | Next.js 13, Vercel |
 | `hitroo_admin_page` | The owner's admin: website analytics, leads, applications, posts, page content and media. | Next.js 16, Vercel |
+| `~/Desktop/hitroo_dashboard` (outside this folder) | The console, console.hitroo.com: projects and products with their progress and next steps, clients, leads (including the website's enquiries), the team. | Next.js 16, on hitroo-1 |
 | later internal apps | Each gets its own folder, database role and schema. | — |
 
 ## System overview
@@ -15,31 +16,34 @@ The apps live side by side in `Hitroo_internal_Apps/hitroo/`:
 ```mermaid
 flowchart LR
   V[Visitors and crawlers] -->|HTTPS| E[Vercel CDN<br/>static pages, ISR]
-  E --> F[Website functions<br/>hitroo_landing, sin1]
-  F -->|TLS · role web_app<br/>write-only + read posts, content| DB[(Postgres 18<br/>Fly app hitroo-db<br/>region sin)]
+  E --> F[Website functions<br/>hitroo_landing, fra1]
+  F -->|TLS · role web_app<br/>write-only + read posts, content| DB[(Postgres 18<br/>hitroo-1, Hetzner<br/>Falkenstein)]
   V -->|page images, video| S[(Tigris bucket<br/>hitroo-media)]
   AD -->|uploads| S
   F -->|SMTP| G[Gmail / Google Workspace]
   F -->|verify| T[Cloudflare Turnstile<br/>optional]
-  O[Owner] -->|password + session cookie| AD[Admin<br/>hitroo_admin_page, sin1]
+  O[Owner] -->|password + session cookie| AD[Admin<br/>hitroo_admin_page, fra1]
   AD -->|TLS · role admin_app| DB
   AD -->|POST /api/revalidate<br/>shared secret| F
   I[Internal HITROO apps] -->|role internal_app| DB
+  O -->|email + password| C[Console<br/>hitroo_dashboard, hitroo-1]
+  C -->|localhost · role console_app<br/>own schema + read web.leads| DB
   F -.->|npm run indexnow| B[IndexNow: Bing, Yandex…]
 ```
 
 | Piece | Where | Notes |
 | --- | --- | --- |
-| Website | Vercel project `hitroo-landing` (Next.js 13 App Router) | Live at www.hitroo.com (`hitroo.com` redirects there). `vercel.json` pins functions to `sin1` (Singapore), next to the database. Pushing to `main` deploys to production. |
+| Website | Vercel project `hitroo-landing` (Next.js 13 App Router) | Live at www.hitroo.com (`hitroo.com` redirects there). `vercel.json` pins functions to `fra1` (Frankfurt), next to the database (`sin1` until 2026-11-05). Pushing to `main` deploys to production. |
 | Review boards | my.hitroo.com, a domain on `hitroo-landing` | Serves only the design review boards the Software Factory publishes (`/r/<token>`, which Rohit forwards to clients) and their assets (`/static/…`): both are rewritten to the factory (`FACTORY_ORIGIN`, default `https://console.factory.hitroo.com`), which sets the boards' own headers; `/r` and `/static` skip the site's `X-Frame-Options` because the boards' live canvases frame their own screens. Every other my.hitroo.com path redirects to www (old `/d` and `/q` client links to the home page); www's `/r/…` redirects to my.hitroo.com (`next.config.js`). The client area that lived here (dashboards, quotes, chat, calls) was removed on 2026-11-03. |
-| Admin | Vercel project `hitroo_admin`, live at admin.hitroo.com, Next.js 16 | One owner password; everything server-rendered; no public pages. See `../hitroo_admin_page/README.md`. |
-| Database | Fly.io app `hitroo-db` | Fly Postgres (flex), PostgreSQL 18, 1 machine `shared-cpu-1x` / 1 GB, 10 GB encrypted volume, region `sin`. |
-| Public DB endpoint | `hitroo-db.fly.dev:5432` | Dedicated IPv4 `149.248.221.16` ($2/month) with Fly's `pg_tls` handler; connect with `sslmode=verify-full`. Fly apps can use `hitroo-db.internal` over the private network. |
+| Admin | Vercel project `hitroo_admin`, live at admin.hitroo.com, Next.js 16 | One owner password; everything server-rendered; no public pages; functions in `fra1`. See `../hitroo_admin_page/README.md`. |
+| Console | console.hitroo.com, on hitroo-1 (`~/Desktop/hitroo_dashboard`), Next.js 16 | Projects and products with their progress and next steps, clients, leads, the team; email + password sign-in per person. Connects as `console_app` over localhost and imports the website's enquiries from `web.leads` every minute. |
+| Database | hitroo-1, our Hetzner Cloud server (CX23: 2 vCPU, 4 GB, 40 GB disk; fsn1, Falkenstein; 91.98.81.19) | PostgreSQL 18 (PGDG), on the same server as the console. Ops (TLS, firewall, backups, restore, the tunnel): `~/Desktop/hitroo_dashboard/docs/SERVER.md`. Moved from the Fly app `hitroo-db` (Singapore) on 2026-11-05. |
+| Public DB endpoint | `db.hitroo.com:5432` | Let's Encrypt certificate (Caddy on the server keeps it, a daily job copies it to Postgres); connect with `sslmode=verify-full` (libpq 16+: add `sslrootcert=system`). From outside only the app roles may sign in, only over TLS; the `postgres` superuser only through an SSH tunnel, `ssh -fNL 15432:127.0.0.1:5432 hitroo-1`. |
 | Media storage | Tigris (Fly.io) bucket `hitroo-media`, public at `https://hitroo-media.fly.storage.tigris.dev` | Editable page images (pre-sized WebP) and the Creatives video, with a one-year `immutable` cache (never through Vercel's image optimizer). Images load from our own origin: `/media/img/*` is rewritten to the bucket (`next.config.js`) and cached on Vercel's CDN for a year (`vercel.json`; only requests without a `Range` header are stored, since the CDN would keep a partial response as the whole file). The video streams from the bucket directly (browsers fetch video in ranges). Written by the admin and `npm run media:upload`; keys in `_secrets/hitroo-media.env`. The bucket alone answers over HTTP/1.1 in about 0.3–0.45 s from India; cached on Vercel, about 0.06 s. |
 | Email | Gmail SMTP (`nodemailer`) | Lead and application notifications plus acknowledgments. |
 | Spam protection | Per-visitor rate limits, honeypot, timing, email caps, optional Turnstile | Limits live in code (`lib/lead-protection.ts`, per server instance); Turnstile only when both keys are set. See [docs/contact-form-protection.md](docs/contact-form-protection.md). |
 
-The Fly app replaced the earlier `decern-hitroo` server, which was destroyed on 2026-09-25 (its 892 KB data volume is backed up at `Hitroo_internal_Apps/_backups/decern-data-backup-2026-09-25.tgz`).
+hitroo-1 replaced the Fly app `hitroo-db` on 2026-11-05; the app was destroyed after the move (its last dump is kept in `Hitroo_internal_Apps/_backups/` and on the server in `/var/backups/postgres/from-fly/`). The Fly app had replaced the earlier `decern-hitroo` server, which was destroyed on 2026-09-25 (its 892 KB data volume is backed up at `Hitroo_internal_Apps/_backups/decern-data-backup-2026-09-25.tgz`).
 
 ## Database layout
 
@@ -50,6 +54,7 @@ One database, `hitroo`, split into segments by schema. Each consumer gets its ow
 | `web` | `postgres` | `web_app` (the website) | **Write-only** for forms, analytics and consent (`INSERT`), plus `SELECT (id)` / `UPDATE (emailed)` on leads and applications to mark notifications sent; `SELECT` on `posts`, `content` and `media`. Cannot read anyone's details back, never writes content. |
 | `web` | `postgres` | `admin_app` (the admin) | `SELECT/INSERT/UPDATE/DELETE` on rows. No DDL, no `internal`. |
 | `internal` | `internal_app` | `internal_app` (internal apps) | Owns the schema and manages its own tables. |
+| `console` | `console_app` | `console_app` (the console) | Owns the schema and manages its own tables (its migrations live in the console repo). `SELECT` on `web.leads` to import the website's enquiries; nothing else in `web` ([db/roles/console_app.sql](db/roles/console_app.sql)). |
 | `public` | — | — | `public.schema_migrations` only; `PUBLIC` has no access. |
 
 `web` tables (see [db/migrations/](db/migrations/)):
@@ -66,7 +71,7 @@ One database, `hitroo`, split into segments by schema. Each consumer gets its ow
 | `web.content_history` | Every saved version of a key (for undo in the admin). |
 | `web.media` | Uploaded images and videos: public `url` (largest variant, or the video), `width`, `height`, `bytes`, `tone` (average colour), `variants` (`[{ w, url, bytes }]`, ascending), `poster_url`, `alt`, `tags`. |
 
-**Credentials** live outside the repos in `Hitroo_internal_Apps/_secrets/hitroo-db.env` (chmod 600): superuser URL, `hitroo` admin URL, `web_app`, `internal_app` and `admin_app` URLs. The website only ever gets `DATABASE_URL` = the `web_app` URL; the admin gets the `admin_app` URL. The admin's sign-in password, session secret and the shared revalidate key are in `_secrets/hitroo-admin.env`. Store these in a password manager too.
+**Credentials** live outside the repos in `Hitroo_internal_Apps/_secrets/hitroo-db.env` (chmod 600): superuser URL and `hitroo` admin URL (both `postgres`, through the SSH tunnel), `web_app`, `internal_app`, `admin_app` and `console_app` URLs. The website only ever gets `DATABASE_URL` = the `web_app` URL; the admin gets the `admin_app` URL. The admin's sign-in password, session secret and the shared revalidate key are in `_secrets/hitroo-admin.env`. Store these in a password manager too.
 
 ### Adding another internal app
 
@@ -77,7 +82,7 @@ GRANT CONNECT ON DATABASE hitroo TO app_example;
 CREATE SCHEMA app_example AUTHORIZATION app_example;
 ```
 
-Then give the app `postgres://app_example:…@hitroo-db.fly.dev:5432/hitroo?sslmode=verify-full` (or `hitroo-db.internal:5432` if it runs on Fly) and set its `search_path` to its schema. Keep apps in separate schemas and roles; share data through explicit views, not shared tables. Put the role script in `db/roles/` like [db/roles/admin_app.sql](db/roles/admin_app.sql).
+Then add the role to the remote `hostssl` lines in hitroo-1's `pg_hba.conf` (and reload Postgres), give the app `postgres://app_example:…@db.hitroo.com:5432/hitroo?sslmode=verify-full` (or `127.0.0.1:5432` if it runs on hitroo-1) and set its `search_path` to its schema. Keep apps in separate schemas and roles; share data through explicit views, not shared tables. Put the role script in `db/roles/` like [db/roles/admin_app.sql](db/roles/admin_app.sql).
 
 ## Data flows
 
@@ -105,7 +110,7 @@ Then give the app `postgres://app_example:…@hitroo-db.fly.dev:5432/hitroo?sslm
 
 ## Security
 
-- Postgres over TLS with full certificate verification. The website's role cannot read leads, applications or analytics, cannot change or delete rows (beyond marking emails sent), cannot create or alter tables, and cannot see the `internal` schema. The admin's role cannot change the schema or see `internal`.
+- Postgres over TLS with full certificate verification; from outside only the app roles may sign in (the superuser only through SSH). The website's role cannot read leads, applications or analytics, cannot change or delete rows (beyond marking emails sent), cannot create or alter tables, and cannot see the `internal` schema. The admin's role cannot change the schema or see `internal`.
 - The admin is a separate app with no public pages; its responses carry `X-Frame-Options: DENY` and `X-Robots-Tag: noindex`.
 - No IP addresses stored; identifiers only with consent; no third-party trackers.
 - Same-origin checks, payload size limits, strict schemas and rate limits on every write endpoint.
@@ -116,15 +121,15 @@ Then give the app `postgres://app_example:…@hitroo-db.fly.dev:5432/hitroo?sslm
 
 | Task | How |
 | --- | --- |
-| New migration | Add `db/migrations/NNN_name.sql` → `npm run db:migrate` (uses `DATABASE_ADMIN_URL`; each file once, in a transaction). Grant rights explicitly: new `web` tables are not readable by `web_app` by default, only by `admin_app`. |
-| First-time setup | [db/bootstrap.sql](db/bootstrap.sql) (roles, database, schemas), then [db/roles/admin_app.sql](db/roles/admin_app.sql), each run once as `postgres`. |
+| New migration | Add `db/migrations/NNN_name.sql` → `npm run db:migrate` (uses `DATABASE_ADMIN_URL`, the superuser through the SSH tunnel: `ssh -fNL 15432:127.0.0.1:5432 hitroo-1` first; each file once, in a transaction). Grant rights explicitly: new `web` tables are not readable by `web_app` by default, only by `admin_app`. |
+| First-time setup | [db/bootstrap.sql](db/bootstrap.sql) (roles, database, schemas), then [db/roles/admin_app.sql](db/roles/admin_app.sql) and [db/roles/console_app.sql](db/roles/console_app.sql), each run once as `postgres`. On a new server, restore the latest dump instead (`~/Desktop/hitroo_dashboard/docs/SERVER.md`). |
 | Import old CMS posts | `npm run db:seed-posts` (idempotent). |
 | Upload site media | `npm run media:upload`: the division photos, the two portraits, the six Creatives reels and the video (with its poster) → Tigris + `web.media`; idempotent by content hash; writes `db/seeds/media-map.json`. Needs `_secrets/hitroo-media.env` and `DATABASE_ADMIN_URL`. |
 | Seed page content | `npm run content:seed` writes each key's built-in copy (media swapped for the storage files) to `web.content` with a history row; keys already saved are kept (`-- --force` overwrites, `-- --dry-run` only checks). |
 | After a production deploy | `npm run indexnow`, then `npm run warm-images` (requests every image variant the pages use, so visitors never wait for a first AVIF encode; encoded images are cached 30 days). |
-| Database health | `fly status -a hitroo-db`, `fly checks list -a hitroo-db`. |
-| Backups | Fly takes daily volume snapshots (`fly volumes snapshots list -a hitroo-db`, 5-day retention). Recommended: turn on continuous backups to Tigris (needs you to accept Tigris's terms) and/or a scheduled `pg_dump`. |
-| Grow storage | `fly volumes extend <vol-id> -s <GB> -a hitroo-db`. |
+| Database health | `ssh hitroo-1 'systemctl is-active postgresql@18-main caddy hitroo-console'`; the Postgres log is `/var/log/postgresql/postgresql-18-main.log`. |
+| Backups | A nightly `pg_dump` of `hitroo` plus the roles at 21:30 UTC on hitroo-1 (`/var/backups/postgres`, 14 days), inside Hetzner's daily server backups (window 22:00–02:00 UTC, 7 kept). Restore steps: `~/Desktop/hitroo_dashboard/docs/SERVER.md`. |
+| Grow storage | The database is about 10 MB on a 40 GB disk. When it needs more: a larger server type (`hcloud server change-type`) or a Hetzner volume for `/var/lib/postgresql`. |
 
 ### Vercel environment variables
 

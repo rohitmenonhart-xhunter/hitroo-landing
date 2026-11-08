@@ -41,14 +41,6 @@ export default async function ContactPanel({ idPrefix, title, text }: { idPrefix
               </a>
             </dd>
           </div>
-          <div>
-            <dt className="text-[14px] text-stone">Office</dt>
-            <dd className="text-char">{COMPANY.location}</dd>
-          </div>
-          <div>
-            <dt className="text-[14px] text-stone">Registered office</dt>
-            <dd className="text-char">Mockello (operates hitroo), No. 41, 3rd Street, Chinnamal Nagar, Avadi, Chennai 600071</dd>
-          </div>
         </dl>
         <p className="mt-auto flex items-center gap-2 pt-10 text-[15px] font-medium text-stone">
           <span aria-hidden="true" className="h-2 w-2 rounded-full bg-ember" />

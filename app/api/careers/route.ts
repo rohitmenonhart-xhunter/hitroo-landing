@@ -281,7 +281,7 @@ Submitted: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
                         recapBody: esc(positionTitle || 'hitroo'),
                         preheader: 'Our team reviews every application within 7 days.',
                     }),
-                    text: `Thanks${name ? `, ${name}` : ''}. We've received your application${positionTitle ? ` for ${positionTitle}` : ''}. Our team reviews every application within 7 days and we'll be in touch.\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nhitroo · Chennai, Tamil Nadu, India`,
+                    text: `Thanks${name ? `, ${name}` : ''}. We've received your application${positionTitle ? ` for ${positionTitle}` : ''}. Our team reviews every application within 7 days and we'll be in touch.\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nhitroo · hitroo.com`,
                 });
             } catch (ackErr) {
                 console.error('Careers acknowledgment email failed (non-fatal):', ackErr);

@@ -153,7 +153,7 @@ export const ABOUT_PAGE: AboutContent = {
     caption: 'Where we are',
     title: 'Based in India. Working with the world.',
     items: [
-      { title: 'Based in', text: 'Chennai, India.' },
+      { title: 'Based in', text: 'India.' },
       { title: 'Clients', text: 'Businesses around the world.' },
       { title: 'Language', text: 'We work in English.' },
     ],

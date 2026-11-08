@@ -25,7 +25,7 @@ const facts = (COMPANY: Company, DIVISIONS: Division[], services: Service[], ste
   `Why hitroo: “${WHY_HITROO_STATEMENT.join(' ')}”`,
   `How hitroo works: ${steps.map(([step]) => step).join(' → ')}.`,
   'Who hitroo works with: enterprises, growing businesses, and founders and startups.',
-  'Where: based in Chennai, India; works with clients around the world, in English.',
+  'Where: based in India; works with clients around the world, in English.',
   `Contact: ${COMPANY.email} · ${COMPANY.phone} · ${abs('/contact')}`,
 ];
 

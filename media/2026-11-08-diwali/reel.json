@@ -1,0 +1,9 @@
+{
+  "$comment": "Diwali 2026, 18:00 IST: the Reel (7 s, silent). Publish only after the owner approves: node media/tools/zernio.mjs post media/2026-11-08-diwali/reel.json",
+  "title": "Diwali 2026 Reel",
+  "content": "One flame lights the next. Happy Diwali.\n\n#Diwali #Deepavali #HappyDiwali",
+  "mediaItems": [{ "type": "video", "file": "export/upload/hitroo-diwali-2026-reel.mp4" }],
+  "platforms": [{ "platform": "instagram", "accountId": "6aefdc06453a64563dd72eac" }],
+  "scheduledFor": "2026-11-08T18:00:00",
+  "timezone": "Asia/Kolkata"
+}

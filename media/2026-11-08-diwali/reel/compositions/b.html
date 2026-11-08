@@ -1,0 +1,86 @@
+<template>
+  <style>
+    @font-face { font-family: 'Plus Jakarta Sans'; src: url('assets/fonts/PlusJakartaSans-Variable.ttf') format('truetype'); font-weight: 200 800; }
+    @font-face { font-family: 'Fustat'; src: url('assets/fonts/Fustat-Variable.ttf') format('truetype'); font-weight: 200 800; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #fcf8f6; }
+    /* The camera starts close on the front flame (continuing the dive) and pulls back; then drifts with the light. */
+    #b-cam { position: absolute; inset: 0; transform-origin: 717px 1203px; }
+    #b-pan { position: absolute; inset: 0; }
+    .b-img { position: absolute; left: 0; top: -20px; width: 1080px; height: 1620px; }
+    /* Each lamp blooms from its flame into full colour: one radial mask per lamp, opened by --l1 … --l7. */
+    #b-color {
+      --l1: 0; --l2: 0; --l3: 0; --l4: 0; --l5: 0; --l6: 0; --l7: 0;
+      -webkit-mask-image:
+        radial-gradient(ellipse calc(var(--l1) * 103px + 0.5px) calc(var(--l1) * 85px + 0.5px) at 105px 881px, #000 58%, transparent 100%),
+        radial-gradient(ellipse calc(var(--l2) * 107px + 0.5px) calc(var(--l2) * 87px + 0.5px) at 195px 928px, #000 58%, transparent 100%),
+        radial-gradient(ellipse calc(var(--l3) * 112px + 0.5px) calc(var(--l3) * 92px + 0.5px) at 283px 976px, #000 58%, transparent 100%),
+        radial-gradient(ellipse calc(var(--l4) * 121px + 0.5px) calc(var(--l4) * 99px + 0.5px) at 380px 1039px, #000 58%, transparent 100%),
+        radial-gradient(ellipse calc(var(--l5) * 139px + 0.5px) calc(var(--l5) * 112px + 0.5px) at 496px 1102px, #000 58%, transparent 100%),
+        radial-gradient(ellipse calc(var(--l6) * 158px + 0.5px) calc(var(--l6) * 127px + 0.5px) at 633px 1192px, #000 58%, transparent 100%),
+        radial-gradient(ellipse calc(var(--l7) * 182px + 0.5px) calc(var(--l7) * 146px + 0.5px) at 812px 1281px, #000 58%, transparent 100%);
+      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+    }
+    .b-f { position: absolute; opacity: 0; }
+    #b-f1 { left: 45.4px; top: 794.2px; width: 35.9px; height: 71.7px; transform-origin: 17.6px 63.3px; }
+    #b-f2 { left: 130.8px; top: 840.6px; width: 36.9px; height: 74.9px; transform-origin: 18.7px 66.4px; }
+    #b-f3 { left: 216.2px; top: 886.0px; width: 39.0px; height: 75.9px; transform-origin: 19.7px 67.5px; }
+    #b-f4 { left: 305.9px; top: 940.8px; width: 41.1px; height: 78.0px; transform-origin: 20.8px 69.6px; }
+    #b-f5 { left: 408.2px; top: 995.7px; width: 45.4px; height: 86.5px; transform-origin: 22.1px 78.0px; }
+    #b-f6 { left: 534.7px; top: 1067.4px; width: 49.6px; height: 97.0px; transform-origin: 24.3px 88.6px; }
+    #b-f7 { left: 689.8px; top: 1149.6px; width: 55.9px; height: 105.5px; transform-origin: 27.4px 97.0px; }
+    #b-text { position: absolute; left: 96px; right: 96px; top: 250px; }
+    .b-cap { display: flex; align-items: center; gap: 22px; font: 500 32px/1.2 'Fustat', sans-serif; letter-spacing: 0.04em; text-transform: uppercase; color: #12110b; }
+    .b-dia { display: block; width: 22px; height: 22px; }
+    .b-dia i { display: block; width: 100%; height: 100%; background: #f5502f; border-radius: 4px; transform: rotate(45deg); }
+    .b-h { margin-top: 40px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 104px; line-height: 0.98; letter-spacing: -0.045em; color: #12110b; }
+    .b-h .b-s { color: #6f6a61; }
+    .b-wd { display: inline-block; }
+    .b-t { margin-left: -0.09em; }
+    #b-flash { position: absolute; inset: 0; background: #fcf8f6; }
+  </style>
+  <div id="root" data-composition-id="b" data-width="1080" data-height="1920">
+    <div id="b-cam" data-layout-allow-overflow><div id="b-pan">
+      <img class="b-img" id="b-ghost" src="assets/img/row-ghost.png" alt="" />
+      <img class="b-img" id="b-color" src="assets/img/row.png" alt="Seven clear glass diyas in a row" />
+      <img class="b-f" id="b-f1" src="assets/img/flame-1.png" alt="" />
+      <img class="b-f" id="b-f2" src="assets/img/flame-2.png" alt="" />
+      <img class="b-f" id="b-f3" src="assets/img/flame-3.png" alt="" />
+      <img class="b-f" id="b-f4" src="assets/img/flame-4.png" alt="" />
+      <img class="b-f" id="b-f5" src="assets/img/flame-5.png" alt="" />
+      <img class="b-f" id="b-f6" src="assets/img/flame-6.png" alt="" />
+      <img class="b-f" id="b-f7" src="assets/img/flame-7.png" alt="" />
+    </div></div>
+    <div id="b-text">
+      <p class="b-cap" id="b-cap"><span class="b-dia"><i></i></span><span>Diwali 2026</span></p>
+      <h1 class="b-h"><span class="b-wd b-w">A</span> <span class="b-wd b-w">bright</span> <span class="b-wd b-w">year</span> <span class="b-wd b-w">ahead<span class="b-t">.</span></span><br /><span class="b-s b-wd" id="b-l2">For you and yours<span class="b-t">.</span></span></h1>
+    </div>
+    <div id="b-flash"></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Out of the flash, the camera pulls back from the front flame.
+    tl.fromTo('#b-flash', { opacity: 1 }, { opacity: 0, duration: 0.35, ease: 'power2.out' }, 0);
+    tl.fromTo('#b-cam', { scale: 2.2 }, { scale: 1, duration: 1.15, ease: 'expo.out' }, 0);
+    // The lamps light front to back on the music's half-beats: each blooms into colour and its flame flares.
+    const at = [0.0, 0.36, 0.71, 1.06, 1.43, 1.8, 2.15];
+    at.forEach((t, i) => {
+      const n = 7 - i;
+      tl.fromTo('#b-color', { ['--l' + n]: 0 }, { ['--l' + n]: 1, duration: 0.6, ease: 'power3.out' }, t);
+      tl.fromTo('#b-f' + n, { opacity: 0, scale: 1 }, { opacity: 1, scale: 1.45, duration: 0.08, ease: 'power2.out' }, t + 0.02);
+      tl.fromTo('#b-f' + n, { scale: 1.45 }, { scale: 1, duration: 0.5, ease: 'power3.out', immediateRender: false }, t + 0.1);
+    });
+    // Once all seven are lit, open every mask wide so the whole photograph shows, untouched.
+    tl.to('#b-color', { '--l1': 4, '--l2': 4, '--l3': 4, '--l4': 4, '--l5': 4, '--l6': 4, '--l7': 4, duration: 0.6, ease: 'power1.in' }, 2.75);
+    // The camera follows the light toward the back of the row.
+    tl.fromTo('#b-pan', { x: 0, y: 0 }, { x: 28, y: 18, duration: 2.0, ease: 'power2.inOut' }, 0.8);
+    // Type: caption, then the first beat word by word from light grey to ink, then the second beat.
+    tl.fromTo('#b-cap', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.18, ease: 'power2.out' }, 0.55);
+    tl.fromTo('.b-w', { opacity: 0, color: '#d6cfc7' }, { opacity: 1, duration: 0.08, ease: 'none', stagger: 0.09 }, 0.78);
+    tl.fromTo('.b-w', { color: '#d6cfc7' }, { color: '#12110b', duration: 0.18, ease: 'power1.out', stagger: 0.09, immediateRender: false }, 0.9);
+    tl.fromTo('#b-l2', { opacity: 0, filter: 'blur(8px)' }, { opacity: 1, filter: 'blur(0px)', duration: 0.2, ease: 'power2.out' }, 1.62);
+    // Out: the type blurs away, the row lifts and fades on the same paper.
+    tl.fromTo('#b-cap, .b-w, #b-l2', { opacity: 1, filter: 'blur(0px)' }, { opacity: 0, filter: 'blur(8px)', duration: 0.16, ease: 'power2.in', stagger: 0.025, immediateRender: false }, 4.42);
+    tl.fromTo('#b-cam', { opacity: 1, scale: 1 }, { opacity: 0, scale: 1.06, duration: 0.45, ease: 'power2.in', immediateRender: false }, 4.6);
+    window.__timelines['b'] = tl;
+  </script>
+</template>

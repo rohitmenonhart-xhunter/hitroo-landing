@@ -211,7 +211,7 @@ export async function POST(request: NextRequest) {
                         recapBody: esc(context),
                         preheader: 'We’ll reply within a day. Here’s what happens next.',
                     }),
-                    text: `Thanks${data.name ? `, ${data.name}` : ''}. We'll reply within a day.\n\nWhat happens next\n01  We read your message\n02  We reply within a day to set up your free call\n03  You get a clear scope and a plan, before anything is built\n\nYour message:\n${context}\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nhitroo · Chennai, Tamil Nadu, India`,
+                    text: `Thanks${data.name ? `, ${data.name}` : ''}. We'll reply within a day.\n\nWhat happens next\n01  We read your message\n02  We reply within a day to set up your free call\n03  You get a clear scope and a plan, before anything is built\n\nYour message:\n${context}\n\nNeed us sooner? info@hitroo.com · +91 7550000805\n\nhitroo · hitroo.com`,
                 });
             } catch (ackErr) {
                 console.error('Acknowledgment email failed (non-fatal):', ackErr);

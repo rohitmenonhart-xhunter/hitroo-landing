@@ -1,0 +1,32 @@
+<!doctype html>
+<!-- hitroo · Diwali 2026 Reel (1080 × 1920, 12.5 s). Three scenes timed to the music's beats ("Lakshmi", Epidemic Sound):
+     a (0–3.155 s) the hook: two glass diyas sharing one flame, then a dive into the flame;
+     b (3.155–8.265 s) seven glass diyas light one after another, front to back, on the half-beats;
+     c (8.265–12.5 s) the sign-off: a glass diya and the wordmark. -->
+<html lang="en" data-resolution="portrait">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: #fcf8f6; }
+      #root { position: relative; width: 100%; height: 100%; background: #fcf8f6; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="12.5" data-width="1080" data-height="1920">
+      <div id="a" data-composition-id="a" data-composition-src="compositions/a.html" data-start="0" data-duration="3.155"
+        data-track-index="1" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
+      <div id="b" data-composition-id="b" data-composition-src="compositions/b.html" data-start="3.155" data-duration="5.11"
+        data-track-index="2" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
+      <div id="c" data-composition-id="c" data-composition-src="compositions/c.html" data-start="8.265" data-duration="4.235"
+        data-track-index="3" data-track-kind="graphics" data-width="1080" data-height="1920"></div>
+      <!-- Music ("Lakshmi", Epidemic Sound) and effects, pre-mixed to -14 LUFS by work/mix.py -->
+      <audio id="master" class="clip" data-start="0" data-duration="12.5" data-track-index="4" src="assets/audio/master.wav" data-volume="1"></audio>
+    </div>
+    <script>
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

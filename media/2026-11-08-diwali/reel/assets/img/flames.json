@@ -1,0 +1,71 @@
+{
+ "image": [
+  1024,
+  1536
+ ],
+ "flames": [
+  {
+   "file": "assets/img/flame-1.png",
+   "x": 43,
+   "y": 772,
+   "w": 34,
+   "h": 68,
+   "baseX": 59.7,
+   "baseY": 832
+  },
+  {
+   "file": "assets/img/flame-2.png",
+   "x": 124,
+   "y": 816,
+   "w": 35,
+   "h": 71,
+   "baseX": 141.7,
+   "baseY": 879
+  },
+  {
+   "file": "assets/img/flame-3.png",
+   "x": 205,
+   "y": 859,
+   "w": 37,
+   "h": 72,
+   "baseX": 223.7,
+   "baseY": 923
+  },
+  {
+   "file": "assets/img/flame-4.png",
+   "x": 290,
+   "y": 911,
+   "w": 39,
+   "h": 74,
+   "baseX": 309.7,
+   "baseY": 977
+  },
+  {
+   "file": "assets/img/flame-5.png",
+   "x": 387,
+   "y": 963,
+   "w": 43,
+   "h": 82,
+   "baseX": 408,
+   "baseY": 1037
+  },
+  {
+   "file": "assets/img/flame-6.png",
+   "x": 507,
+   "y": 1031,
+   "w": 47,
+   "h": 92,
+   "baseX": 530,
+   "baseY": 1115
+  },
+  {
+   "file": "assets/img/flame-7.png",
+   "x": 654,
+   "y": 1109,
+   "w": 53,
+   "h": 100,
+   "baseX": 680,
+   "baseY": 1201
+  }
+ ]
+}

@@ -50,7 +50,7 @@ export const COMPANY: Company = {
   email: 'info@hitroo.com',
   phone: '+91 7550000805',
   phoneHref: 'tel:+917550000805',
-  location: 'Chennai, Tamil Nadu, India',
+  location: 'India',
   oneLiner: 'One foundation for software, automation, AI and creative growth.',
   about:
     'hitroo is a technology company built as one foundation with four divisions: Software (our products, custom software, mobile and desktop apps, managed services), Automation (workflows and AI agents), AI (custom models and computer vision) and Creatives (social media, done for you). hitroo designs, builds, secures and supports everything it ships.',

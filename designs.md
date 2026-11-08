@@ -71,3 +71,6 @@ Quiet and purposeful: the hero's glass ripples, the pinned division cards slidin
 - **Photography is art-directed from references.** For each division, study the most creative players in that vertical (Awwwards, Dribbble, Behance) and recreate their direction in our style; never copy or edit their images. Briefs name the camera, lens, aperture, angle, light and film look; no people presented as our team, no readable text, no fake UI mocks, cursors, gradients or glows.
 - **The owner reviews every generated image before it goes on the site.**
 - The founder's own photo is `public/people/rohit.webp`; post covers always show in warm monochrome (`.duotone-warm`).
+
+## Social posts
+Instagram and LinkedIn posts follow every rule above on a 1080 px canvas, with the site's sizes × 2.4 (`media/_brand/brand.css`): warm paper, a caption with the ember diamond, a two-beat Jakarta headline with the second beat in stone, one art-directed photo on paper (backdrop evened to #FCF8F6 so it has no edges), and the wordmark at the foot. No gold, glitter, templates or stock festival art. Carousels are 1080 × 1350, Stories 1080 × 1920 with text clear of the top 250 px and the bottom third. Workflow and sizes: [media/README.md](media/README.md); what performs and why: `media/strategy.md`.

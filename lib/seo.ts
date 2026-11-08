@@ -65,7 +65,7 @@ export const organizationLd = (COMPANY: Company, DIVISIONS: Division[]) => ({
   telephone: COMPANY.phone.replace(/\s+/g, '-'),
   foundingDate: '2024',
   employee: [{ '@type': 'Person', name: 'Rohit', jobTitle: 'Head of Technology', image: abs('/people/rohit.webp'), worksFor: { '@id': ORG_ID } }],
-  address: { '@type': 'PostalAddress', addressLocality: 'Chennai', addressRegion: 'Tamil Nadu', addressCountry: 'IN' },
+  address: { '@type': 'PostalAddress', addressCountry: 'IN' },
   areaServed: 'Worldwide',
   contactPoint: [
     {

@@ -2,6 +2,25 @@
 
 All notable changes to the HITROO website and its infrastructure. Newest first. Dates are IST.
 
+## 2026-11-08 — The city comes off the site
+
+### Removed
+- **Chennai** from everything outside the Terms page:
+  - The footer now reads "operated by Mockello".
+  - The contact panel drops its "Office" and "Registered office" rows.
+  - The structured-data address keeps only the country.
+  - `llms.txt` says "based in India".
+  - The lead and careers acknowledgment emails now sign off with hitroo.com.
+  - Built-in copy defaults to "India".
+
+  The Terms page keeps the operator's legal address and its jurisdiction clause. The owner doesn't want the city named (8 November), and `CLAUDE.md` now says so.
+
+## 2026-11-08 — Social posts: the media folder and the Diwali post
+
+### Added
+- **`media/`**: hitroo's Instagram and LinkedIn posts in the site's design language. It includes the research (`strategy.md`), the shared brand CSS and fonts, and tools: `flatten.py` evens a photo's backdrop to paper, `render.mjs` exports stills with headless Chrome, and `zernio.mjs` posts through the Zernio API. `media/profile/` holds the profile picture: the "hi" in ember on paper. The API key is in the macOS keychain. Photos and renders are git-ignored like `/marketing/`.
+- **Diwali 2026** (`media/2026-11-08-diwali/`): a two-slide carousel of clear glass diyas on paper ("Happy Diwali. One flame lights the next."), a 12.5-second Reel built in HyperFrames after the rg viral-shorts recipe (the lamps light on the music's beats, with Epidemic Sound music and effects, mixed to −14 LUFS) that is also used as the Story, and the same slides as a PDF document for the LinkedIn page. The photos were made with Codex and Gemini, and the owner reviews the post before it goes out.
+
 ## 2026-11-05 — The database moves to hitroo-1; functions to Frankfurt
 
 ### Changed

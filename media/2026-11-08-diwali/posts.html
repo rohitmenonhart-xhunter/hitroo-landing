@@ -1,0 +1,76 @@
+<!doctype html>
+<!-- Diwali 2026: a two-slide carousel (Instagram, and a PDF document on LinkedIn) and a still Story. The Reel is the HyperFrames project in reel/.
+     Open with ?f=<frame id> to see one frame; media/tools/render.mjs exports each to PNG. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>hitroo · Diwali 2026</title>
+<link rel="stylesheet" href="../_brand/brand.css">
+<style>
+  .frame { display: none; }
+  .frame.on { display: block; }
+  .photo { position: absolute; display: block; }
+  /* Soften a photo's edges into the paper so no seam shows (the backdrop is already flattened to paper). */
+  .feather {
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fx, 8%), #000 calc(100% - var(--fx, 8%)), transparent 100%),
+                        linear-gradient(to bottom, transparent 0, #000 var(--fy, 8%), #000 calc(100% - var(--fy, 8%)), transparent 100%);
+    -webkit-mask-composite: source-in; mask-composite: intersect;
+  }
+  .top { position: absolute; left: var(--pad); right: var(--pad); top: var(--pad); }
+  .foot { position: absolute; left: var(--pad); right: var(--pad); bottom: var(--pad); display: flex; align-items: flex-end; justify-content: space-between; }
+
+  /* Carousel slides, 1080 x 1350 (4:5). The profile grid shows a 3:4 crop, about 34 px off each side. */
+  .slide { width: 1080px; height: 1350px; }
+  .slide .h { font-size: 104px; margin-top: 44px; }
+  .slide .wordmark { font-size: 64px; }
+
+  /* 1: two glass diyas, one flame passing between them (Gemini). Shown near its native 768 px width. */
+  #slide-1 .photo { width: 883px; left: 99px; top: -236px; --fx: 6%; --fy: 8%; }
+  /* 2: the row of seven lit glass diyas (Codex). */
+  #slide-2 .photo { width: 1080px; left: 0; top: -246px; }
+
+  /* Story, 1080 x 1920. Instagram's UI covers about 250 px at the top and up to a third at the bottom. */
+  #story { width: 1080px; height: 1920px; }
+  #story .photo { width: 1180px; left: -50px; top: -165px; --fx: 0%; --fy: 10%; }
+  #story .top { top: 300px; }
+  #story .h { font-size: 124px; margin-top: 48px; }
+  #story .foot { bottom: 460px; justify-content: center; }
+  #story .wordmark { font-size: 72px; }
+</style>
+</head>
+<body>
+
+<section class="frame slide" id="slide-1">
+  <img class="photo feather" src="art/flat/gemini-flame-to-flame.png" alt="">
+  <div class="top">
+    <p class="caption">Diwali 2026</p>
+    <h1 class="h">Happy Diwali<span class="t">.</span><br><span class="second">One flame lights the next<span class="t">.</span></span></h1>
+  </div>
+  <div class="foot"><span class="wordmark"><b>hi</b>troo</span><span class="url">hitroo.com</span></div>
+</section>
+
+<section class="frame slide" id="slide-2">
+  <img class="photo" src="art/flat/glass-diyas-row.png" alt="">
+  <div class="top">
+    <p class="caption">Diwali 2026</p>
+    <h1 class="h">A bright year ahead<span class="t">.</span><br><span class="second">For you and yours<span class="t">.</span></span></h1>
+  </div>
+  <div class="foot"><span class="wordmark"><b>hi</b>troo</span><span class="url">hitroo.com</span></div>
+</section>
+
+<section class="frame" id="story">
+  <img class="photo feather" src="art/flat/glass-diya.png" alt="">
+  <div class="top">
+    <p class="caption">Diwali 2026</p>
+    <h1 class="h">Happy Diwali<span class="t">.</span><br><span class="second">One flame lights the next<span class="t">.</span></span></h1>
+  </div>
+  <div class="foot"><span class="wordmark"><b>hi</b>troo</span></div>
+</section>
+
+<script>
+  const id = new URLSearchParams(location.search).get('f');
+  const frames = [...document.querySelectorAll('.frame')];
+  (frames.find((f) => f.id === id) || frames[0]).classList.add('on');
+</script>
+</body>
+</html>

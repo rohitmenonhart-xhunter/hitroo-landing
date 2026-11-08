@@ -1,0 +1,22 @@
+<!doctype html>
+<!-- hitroo profile picture: the "hi" in ember on paper (the favicon's mark, public/brand/hitroo-icon.svg), full-bleed square
+     for Instagram's circle crop and LinkedIn's rounded square. Rendered by media/tools/render.mjs. -->
+<html lang="en"><head><meta charset="utf-8"><title>hitroo profile picture</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: #FCF8F6; }
+  .frame { display: none; background: #FCF8F6; }
+  .frame.on { display: grid; place-items: center; }
+  #dp { width: 1080px; height: 1080px; }
+  #dp-400 { width: 400px; height: 400px; }
+  svg { display: block; width: 100%; height: 100%; }
+</style></head>
+<body>
+<section class="frame" id="dp"><svg viewBox="-250.5 -1028.5 1300 1300" xmlns="http://www.w3.org/2000/svg"><path fill="#F5502F" d="M55.0 0V-757H205.0V-438L187.0 -462Q206.0 -511 248.5 -534.5Q291.0 -558 348.0 -558Q410.0 -558 456.5 -532.0Q503.0 -506 529.0 -459.5Q555.0 -413 555.0 -351V0H405.0V-319Q405.0 -351 392.5 -374.0Q380.0 -397 357.5 -410.0Q335.0 -423 305.0 -423Q276.0 -423 253.0 -410.0Q230.0 -397 217.5 -374.0Q205.0 -351 205.0 -319V0Z M594.0 0V-546H744.0V0ZM594.0 -595V-745H744.0V-595Z"/></svg></section>
+<section class="frame" id="dp-400"><svg viewBox="-250.5 -1028.5 1300 1300" xmlns="http://www.w3.org/2000/svg"><path fill="#F5502F" d="M55.0 0V-757H205.0V-438L187.0 -462Q206.0 -511 248.5 -534.5Q291.0 -558 348.0 -558Q410.0 -558 456.5 -532.0Q503.0 -506 529.0 -459.5Q555.0 -413 555.0 -351V0H405.0V-319Q405.0 -351 392.5 -374.0Q380.0 -397 357.5 -410.0Q335.0 -423 305.0 -423Q276.0 -423 253.0 -410.0Q230.0 -397 217.5 -374.0Q205.0 -351 205.0 -319V0Z M594.0 0V-546H744.0V0ZM594.0 -595V-745H744.0V-595Z"/></svg></section>
+<script>
+  const id = new URLSearchParams(location.search).get('f');
+  const frames = [...document.querySelectorAll('.frame')];
+  (frames.find((f) => f.id === id) || frames[0]).classList.add('on');
+</script>
+</body></html>

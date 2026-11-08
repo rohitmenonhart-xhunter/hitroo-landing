@@ -1,0 +1,52 @@
+{
+  "$comment": "Diwali 2026, 11:00 IST. Instagram: 2-slide carousel + the Reel video as a Story. LinkedIn page: the same slides as a PDF document. Publish only after the owner approves: node media/tools/zernio.mjs post media/2026-11-08-diwali/post.json",
+  "title": "Diwali 2026",
+  "content": "Happy Diwali to everyone celebrating today.\n\nOne flame lights the next. Wishing you and your family a bright year ahead.\n\n#Diwali #Deepavali #HappyDiwali",
+  "mediaItems": [
+    {
+      "type": "image",
+      "file": "export/upload/hitroo-diwali-2026-slide-1.jpg",
+      "altText": "Two clear glass diyas on warm paper, one flame passing from one wick to the other. Text: Happy Diwali. One flame lights the next. hitroo."
+    },
+    {
+      "type": "image",
+      "file": "export/upload/hitroo-diwali-2026-slide-2.jpg",
+      "altText": "Seven lit clear glass diyas in a diagonal row on warm paper. Text: A bright year ahead. For you and yours. hitroo."
+    }
+  ],
+  "platforms": [
+    {
+      "platform": "instagram",
+      "accountId": "6aefdc06453a64563dd72eac"
+    },
+    {
+      "platform": "instagram",
+      "accountId": "6aefdc06453a64563dd72eac",
+      "customMedia": [
+        {
+          "type": "video",
+          "file": "export/upload/hitroo-diwali-2026-reel.mp4"
+        }
+      ],
+      "platformSpecificData": {
+        "contentType": "story"
+      }
+    },
+    {
+      "platform": "linkedin",
+      "accountId": "6aefdc2894c7b4382f8573cc",
+      "customContent": "Happy Diwali to everyone celebrating today.\n\nTonight, lamps are lit one from another. One flame lights the next.\n\nWishing you, your family and your teams a bright year ahead.\n\n#Diwali #Deepavali",
+      "customMedia": [
+        {
+          "type": "document",
+          "file": "export/upload/hitroo-diwali-2026.pdf"
+        }
+      ],
+      "platformSpecificData": {
+        "documentTitle": "Happy Diwali from hitroo"
+      }
+    }
+  ],
+  "scheduledFor": "2026-11-08T11:00:00",
+  "timezone": "Asia/Kolkata"
+}

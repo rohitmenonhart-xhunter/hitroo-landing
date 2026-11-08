@@ -38,3 +38,16 @@ next-env.d.ts
 # marketing assets (large ad renders / videos — kept out of git history)
 /marketing/
 .env*
+
+# social posts (media/): keep the sources (HTML, briefs, captions, tools, fonts); photos and renders stay out of git history, like /marketing/
+/media/**/*.png
+/media/**/*.jpg
+/media/**/*.jpeg
+/media/**/*.webp
+/media/**/*.pdf
+/media/**/*.mp4
+/media/**/*.wav
+/media/**/*.mp3
+/media/**/renders/
+/media/**/.hyperframes/
+/media/**/.waveform-cache/
